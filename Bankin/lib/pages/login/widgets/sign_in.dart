@@ -7,6 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:Bankin/widgets/route_manager.dart';
 import '../style/theme.dart' as Theme;
 
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
+import 'package:http/http.dart' as http;
+
 class SignIn extends StatefulWidget {
   SignIn();
 
@@ -15,6 +19,14 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final credentials = new CognitoCredentials('api-could-computing.auth.eu-west-2.amazoncognito.com', userPool);
+  await credentials.getAwsCredentials(session.getIdToken().getJwtToken());
+  const endpoint = 'https://33nxen3737.execute-api.eu-west-2.amazonaws.com/dev';
+
+  final awsSigV4Client = new AwsSigV4Client(credentials.accessKeyId, credentials.secretAccessKey, 
+  endpoint, sessionToken: credentials.sessionToken,region: 'eu-west-2');
+
+
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
   TextEditingController loginEmailController = TextEditingController();
