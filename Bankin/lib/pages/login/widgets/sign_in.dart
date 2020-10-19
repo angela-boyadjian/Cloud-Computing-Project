@@ -8,8 +8,6 @@ import 'package:Bankin/widgets/route_manager.dart';
 import '../style/theme.dart' as Theme;
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
-import 'package:http/http.dart' as http;
 
 class SignIn extends StatefulWidget {
   SignIn();
@@ -19,18 +17,15 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final credentials = new CognitoCredentials('api-could-computing.auth.eu-west-2.amazoncognito.com', userPool);
-  await credentials.getAwsCredentials(session.getIdToken().getJwtToken());
-  const endpoint = 'https://33nxen3737.execute-api.eu-west-2.amazonaws.com/dev';
 
-  final awsSigV4Client = new AwsSigV4Client(credentials.accessKeyId, credentials.secretAccessKey, 
-  endpoint, sessionToken: credentials.sessionToken,region: 'eu-west-2');
-
-
+  final userPool = new CognitoUserPool('eu-west-2_kT5EeqP0M', '5loolat0v6rftppvpasmg89b5a');
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
+  
   TextEditingController loginEmailController = TextEditingController();
   TextEditingController loginPasswordController = TextEditingController();
+
+  CognitoUserSession session;
   bool _obscureTextLogin = true;
 
   void _toggleLogin() {
@@ -38,8 +33,8 @@ class _SignInState extends State<SignIn> {
       _obscureTextLogin = !_obscureTextLogin;
     });
   }
-
-  Widget build(BuildContext context) {
+  
+Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 23.0),
       child: Column(
@@ -77,7 +72,7 @@ class _SignInState extends State<SignIn> {
                               color: Colors.black,
                               size: 22.0,
                             ),
-                            hintText: "Email Address",
+                            hintText: "Username",
                             hintStyle: TextStyle(
                                 fontFamily: "WorkSansSemiBold",
                                 fontSize: 17.0,
@@ -170,9 +165,20 @@ class _SignInState extends State<SignIn> {
                           fontFamily: "WorkSansBold"),
                     ),
                   ),
-                  onPressed: () =>
-                      Provider.of<RouteManager>(context, listen: false)
-                          .showNavBar(context),
+                  onPressed: () async {
+                  try {
+                    final cognitoUser = new CognitoUser(loginEmailController.text, userPool);
+                    final authDetails = new AuthenticationDetails(username: loginEmailController.text, password: loginPasswordController.text);
+                    session = await cognitoUser.authenticateUser(authDetails);
+                  } on CognitoClientException catch (e) {
+                      print("Erreur d'authentification" + e.message);
+                  } catch (e) {
+                    print("Erreur" + e.message);
+                  }
+                  print(session.getAccessToken().getJwtToken());
+                  Provider.of<RouteManager>(context, listen: false)
+                  .showNavBar(context);
+                  }
                 ),
               ),
             ],

@@ -1,5 +1,6 @@
 import 'package:Bankin/widgets/route_manager.dart';
 import 'package:easy_localization/easy_localization_provider.dart';
+import 'package:Bankin/pages/login/widgets/user_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,8 @@ void main() {
   runApp(EasyLocalization(
     child: MultiProvider(providers: [
       Provider(create: (_) => new RouteManager()),
+      ListenableProvider(create: (_) => new UserData()),
+      ListenableProvider(create: (_) => new Storage()),
     ], child: MyApp()),
   ));
 }

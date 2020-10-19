@@ -2,6 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:Bankin/pages/login/widgets/user_storage.dart';
+
+import 'package:provider/provider.dart';
+import 'package:Bankin/widgets/route_manager.dart';
 
 import '../style/theme.dart' as Theme;
 
@@ -13,7 +18,13 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
+  final userPool = new CognitoUserPool('eu-west-2_kT5EeqP0M', '5loolat0v6rftppvpasmg89b5a');
+
+  CognitoUserSession session;
+  var data;
   String error = "";
+
   bool _obscureTextSignup = true;
   bool _obscureTextSignupConfirm = true;
   final FocusNode myFocusNodePassword = FocusNode();
@@ -22,8 +33,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController signupEmailController = TextEditingController();
   TextEditingController signupNameController = TextEditingController();
   TextEditingController signupPasswordController = TextEditingController();
-  TextEditingController signupConfirmPasswordController =
-      TextEditingController();
+  TextEditingController signupConfirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -63,7 +73,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 child: Container(
                   width: 300.0,
-                  height: 280.0,
+                  height: 300.0,
                   child: Column(
                     children: <Widget>[
                       Padding(
@@ -84,6 +94,36 @@ class _SignUpState extends State<SignUp> {
                               color: Colors.black,
                             ),
                             hintText: "Email Address",
+                            hintStyle: TextStyle(
+                                fontFamily: "WorkSansSemiBold",
+                                fontSize: 16.0,
+                                color: Colors.black),
+                          ),
+                        ),
+                      ), 
+                      Container(
+                        width: 250.0,
+                        height: 1.0,
+                        color: Colors.grey[400],
+                      ),
+                       Padding(
+                        padding: EdgeInsets.only(
+                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                        child: TextField(
+                          focusNode: myFocusNodeName,
+                          controller: signupNameController,
+                          keyboardType: TextInputType.emailAddress,
+                          style: TextStyle(
+                              fontFamily: "WorkSansSemiBold",
+                              fontSize: 16.0,
+                              color: Colors.black),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            icon: Icon(
+                              FontAwesomeIcons.addressCard,
+                              color: Colors.black,
+                            ),
+                            hintText: "Username",
                             hintStyle: TextStyle(
                                 fontFamily: "WorkSansSemiBold",
                                 fontSize: 16.0,
@@ -122,45 +162,6 @@ class _SignUpState extends State<SignUp> {
                               onTap: _toggleSignup,
                               child: Icon(
                                 _obscureTextSignup
-                                    ? FontAwesomeIcons.eye
-                                    : FontAwesomeIcons.eyeSlash,
-                                size: 15.0,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 250.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          controller: signupConfirmPasswordController,
-                          obscureText: _obscureTextSignupConfirm,
-                          style: TextStyle(
-                              fontFamily: "WorkSansSemiBold",
-                              fontSize: 16.0,
-                              color: Colors.black),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              FontAwesomeIcons.lock,
-                              color: Colors.black,
-                            ),
-                            hintText: "Confirmation",
-                            hintStyle: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 16.0,
-                                color: Colors.black),
-                            suffixIcon: GestureDetector(
-                              onTap: _toggleSignupConfirm,
-                              child: Icon(
-                                _obscureTextSignupConfirm
                                     ? FontAwesomeIcons.eye
                                     : FontAwesomeIcons.eyeSlash,
                                 size: 15.0,
@@ -214,7 +215,20 @@ class _SignUpState extends State<SignUp> {
                           fontFamily: "WorkSansBold"),
                     ),
                   ),
-                  onPressed: () => print('Pressed Sign up'),
+                  onPressed: () async {
+                    print('Pressed Sign up');
+                    final userAttribute = [new AttributeArg(name:'email', value: signupEmailController.text)];
+                    try {
+                      data = await userPool.signUp(signupNameController.text, signupPasswordController.text, userAttributes: userAttribute);
+                    } catch (e){
+                      print(e);
+                      return;
+                    }
+                    print('RegistratinConfirmed');
+                    Provider.of<UserData>(context, listen: false).setUsername(signupNameController.text);
+                    Provider.of<RouteManager>(context, listen: false)
+                    .showConfirmingUser(context);
+                  }
                 ),
               ),
             ],
