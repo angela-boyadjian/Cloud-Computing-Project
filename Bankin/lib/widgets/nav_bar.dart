@@ -1,3 +1,4 @@
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -6,12 +7,14 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'package:Bankin/pages/budget/budget.dart';
 import 'package:Bankin/pages/saving/saving.dart';
-import 'package:Bankin/pages/coaching/coaching.dart';
+import 'package:Bankin/pages/chatbot/chatbot.dart';
 import 'package:Bankin/pages/analysis/analysis.dart';
 import 'package:Bankin/pages/accounts/accounts.dart';
 
 class NavBar extends StatefulWidget {
-  NavBar();
+  final CognitoCredentials user;
+
+  NavBar(this.user);
   @override
   _NavBarState createState() => _NavBarState();
 }
@@ -19,12 +22,13 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
-    return NavBarInit();
+    return NavBarInit(widget.user);
   }
 }
 
 class NavBarInit extends StatefulWidget {
-  NavBarInit();
+  final CognitoCredentials user;
+  NavBarInit(this.user);
 
   @override
   NavBarInitState createState() => new NavBarInitState();
@@ -73,7 +77,7 @@ class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMi
             Budget(),
             Accounts(),
             Saving(),
-            Coaching(),
+            ChatBot(widget.user),
           ],
           controller: pageController,
           onPageChanged: onPageChanged,

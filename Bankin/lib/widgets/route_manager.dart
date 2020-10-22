@@ -12,11 +12,11 @@ class RouteManager {
           builder: (context) => Login(),
         ));
   }
-  showNavBar(context) {
+  showNavBar(context, user) {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => NavBar(),
+          builder: (context) => NavBar(user),
         ));
   }
   showConfirmingUser(context) {
