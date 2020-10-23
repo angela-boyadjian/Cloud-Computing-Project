@@ -182,11 +182,10 @@ class _SignInState extends State<SignIn> {
                       final credentials = new CognitoCredentials(
                           "eu-west-2:5618d01e-2a79-4c2a-996c-55a6a117fd0f",
                           userPool);
-                      print("GET CREDENTIALS");
                       await credentials.getAwsCredentials(
                           session.getIdToken().getJwtToken());
                       Provider.of<RouteManager>(context, listen: false)
-                          .showNavBar(context, credentials);
+                          .showNavBar(context, credentials, session.getIdToken());
                     }),
               ),
             ],

@@ -13,8 +13,9 @@ import 'package:Bankin/pages/accounts/accounts.dart';
 
 class NavBar extends StatefulWidget {
   final CognitoCredentials user;
+  final CognitoIdToken idToken;
 
-  NavBar(this.user);
+  NavBar(this.user, this.idToken);
   @override
   _NavBarState createState() => _NavBarState();
 }
@@ -22,13 +23,15 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
-    return NavBarInit(widget.user);
+    return NavBarInit(widget.user, widget.idToken);
   }
 }
 
 class NavBarInit extends StatefulWidget {
   final CognitoCredentials user;
-  NavBarInit(this.user);
+  final CognitoIdToken idToken;
+
+  NavBarInit(this.user, this.idToken);
 
   @override
   NavBarInitState createState() => new NavBarInitState();
@@ -77,7 +80,7 @@ class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMi
             Budget(),
             Accounts(),
             Saving(),
-            ChatBot(widget.user),
+            ChatBot(widget.user, widget.idToken),
           ],
           controller: pageController,
           onPageChanged: onPageChanged,
