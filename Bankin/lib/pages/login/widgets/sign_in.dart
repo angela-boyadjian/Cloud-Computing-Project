@@ -172,8 +172,7 @@ class _SignInState extends State<SignIn> {
                         final authDetails = new AuthenticationDetails(
                             username: loginEmailController.text,
                             password: loginPasswordController.text);
-                        session =
-                            await cognitoUser.authenticateUser(authDetails);
+                        session = await cognitoUser.authenticateUser(authDetails);
                       } on CognitoClientException catch (e) {
                         print("Authentification error " + e.message);
                       } catch (e) {

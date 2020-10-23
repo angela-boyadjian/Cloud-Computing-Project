@@ -30,6 +30,7 @@ class _ChatBotState extends State<ChatBot> {
       'https://runtime.lex.eu-west-2.amazonaws.com',
       region: 'eu-west-2',
       serviceName: 'lex',
+      // defaultContentType: 'application/json; charset=utf-8',
     );
     final signedRequest = new SigV4Request(
       client,
@@ -51,8 +52,8 @@ class _ChatBotState extends State<ChatBot> {
     // final service = LexRuntimeService(
     //     region: 'eu-west-2_kT5EeqP0M',
     //     credentials: AwsClientCredentials(
-    //         secretKey: secretKey,
-    //         accessKey: accessKey,
+    //         secretKey: DotEnv().env['ACCESS_KEY'],
+    //         accessKey: DotEnv().env['SECRET_KEY'],
     //         sessionToken: widget.user.sessionToken));
     // final response = await service.postText(
     //     botAlias: "First",
