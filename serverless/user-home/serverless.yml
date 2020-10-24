@@ -25,6 +25,8 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-2
+  environment:
+    RECEIPTS_TABLE: bankinReceipts
 
 # you can overwrite defaults here
 #  stage: dev
@@ -46,6 +48,8 @@ provider:
 #            - "Ref" : "ServerlessDeploymentBucket"
 #            - "/*"
 
+
+
 # you can define service wide environment variables here
 #  environment:
 #    variable1: value1
@@ -58,6 +62,8 @@ provider:
 #  exclude:
 #    - exclude-me.js
 #    - exclude-me-dir/**
+
+
 
 functions:
   user:
@@ -87,6 +93,24 @@ functions:
         authorizer:
           name: authorizer
           arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+  expenses_get:
+    handler: expenses.get
+    events:
+      - http:
+          path: /user/receipts
+          method: get
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+  expenses_post:
+    handler: expenses.post
+    events:
+      - http:
+          path: /user/receipts
+          method: post
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 #  Authorizer:
 #    Type: AWS::ApiGateway::Authorizer
 #    Properties:
@@ -97,3 +121,18 @@ functions:
 
 plugins:
   - serverless-import-apigateway
+
+resources:
+  Resources:
+    receipts:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: bankinReceipts
+        AttributeDefinitions:
+          - AttributeName: receiptId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: receiptId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
