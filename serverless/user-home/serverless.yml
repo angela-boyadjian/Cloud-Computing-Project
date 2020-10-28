@@ -69,6 +69,7 @@ functions:
           authorizer:
             name: authorizer
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+    
   user_update:
     handler: user_update.update
     events:
@@ -78,6 +79,7 @@ functions:
           authorizer:
             name: authorizer
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+
   user_delete:
     handler: user_delete.delete
     events:
@@ -87,6 +89,26 @@ functions:
         authorizer:
           name: authorizer
           arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+
+  lex_setBudget:
+    handler: chatbot/setBudget.lex_setBudget
+    events:
+      - http:
+          path: /chatbot/setBudget
+          method: post
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+
+  lex_getBudget:
+    handler: chatbot/getBudget.lex_getBudget
+    events:
+      - http:
+          path: /chatbot/getBudget
+          method: get
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 #  Authorizer:
 #    Type: AWS::ApiGateway::Authorizer
 #    Properties:
