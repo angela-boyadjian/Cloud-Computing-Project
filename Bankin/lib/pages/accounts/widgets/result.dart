@@ -44,7 +44,7 @@ class Result extends StatelessWidget {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(_receipt.price + ' ', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(_receipt.price.toString() + ' ', style: TextStyle(fontWeight: FontWeight.bold)),
                 Icon(FontAwesomeIcons.dollarSign, color: Colors.red)
               ],
             ),

@@ -1,4 +1,5 @@
-import 'package:Bankin/pages/accounts/widgets/result.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -6,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
 import 'utils/receipts.dart';
+import 'widgets/result.dart';
 
 class Accounts extends StatefulWidget {
   final CognitoIdToken idToken;
@@ -20,61 +22,51 @@ class _AccountsState extends State<Accounts> {
   final http.Client _client = http.Client();
   var _url =
       'https://gwdz2qxtl2.execute-api.eu-west-2.amazonaws.com/dev/user/receipts';
+  final _storeController = TextEditingController();
+  final _categoryController = TextEditingController();
+  final _priceController = TextEditingController();
   Map<String, String> _headers;
 
   @override
   void initState() {
     super.initState();
-    // _headers = {
-    //   'Authorization': widget.idToken.getJwtToken(),
-    // };
-    // getReceipts();
-    _buildLists();
+    _headers = {
+      'Authorization': widget.idToken.getJwtToken(),
+    };
+    getReceipts();
   }
 
   @override
   void dispose() {
     _client.close();
+    _storeController.dispose();
+    _categoryController.dispose();
+    _priceController.dispose();
     super.dispose();
   }
 
   Future<void> getReceipts() async {
-    var response = await http.get(_url, headers: _headers);
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-  }
+    final response = await _client.get(_url, headers: _headers);
+    final jsonResponse = json.decode(response.body);
+    List<Receipts> tmpList = List();
 
-  _buildLists() {
-    List<Receipts> tmpReceipts = List();
-    tmpReceipts.add(Receipts('Monoprix', 'Grocery', "74.2"));
-    tmpReceipts.add(Receipts('Amazon', 'Shopping', "30"));
-    tmpReceipts.add(Receipts('Engie', 'Bills', "150"));
-    tmpReceipts.add(Receipts('RATP', 'Transport', "1.9"));
-    tmpReceipts.add(Receipts('Steam', 'Entertainment', "59.99"));
-    tmpReceipts.add(Receipts('Deliveroo', 'Food', "15"));
-    // var tmpList = await db.getProfessionals(); // TODO Get receipts call db
-
-    // for (int i = 0; i < tmpList.length; ++i) {
-    //     tmpReceipts.add(tmpList[i]);
-    // }
-    setState(() {
-      _receipts = tmpReceipts;
-    });
-
-    // displayList(_receipts);
-  }
-
-  displayList(List toDisplay) {
-    for (int i = 0; i < toDisplay.length; ++i) {
-      print(toDisplay[i]);
+    for (int i = 0; i < jsonResponse['result']['Items'].length; ++i) {
+      tmpList.add(Receipts.fromJson(jsonResponse['result']['Items'][i]));
     }
+    setState(() {
+      _receipts = tmpList;
+    });
   }
 
-  Future<void> postReceipts() async {
+  Future<void> postReceipts(Receipts receipt) async {
     var response = await _client.post(
       _url,
       headers: _headers,
-      body: {'store': 'Monoprix', 'price': '10', 'category': 'Grocery'},
+      body: {
+        'store': receipt.store,
+        'price': receipt.price.toString(),
+        'category': receipt.category
+      },
     );
     if (response.statusCode != 200) {
       print('Error: ' + response.toString());
@@ -107,7 +99,7 @@ class _AccountsState extends State<Accounts> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
-            obscureText: false,
+            controller: _storeController,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Store',
@@ -115,7 +107,7 @@ class _AccountsState extends State<Accounts> {
           ),
           SizedBox(height: 10.0),
           TextField(
-            obscureText: false,
+            controller: _categoryController,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Category',
@@ -123,7 +115,7 @@ class _AccountsState extends State<Accounts> {
           ),
           SizedBox(height: 10.0),
           TextField(
-            obscureText: false,
+            controller: _priceController,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Price',
@@ -137,7 +129,14 @@ class _AccountsState extends State<Accounts> {
             borderRadius: BorderRadius.circular(18.0),
           ),
           color: Colors.green,
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            postReceipts(Receipts(
+                store: _storeController.text,
+                category: _categoryController.text,
+                price: double.parse(_priceController.text)));
+            _clearControllers();
+            Navigator.pop(context);
+          },
           child: Text('SAVE'),
         ),
         FlatButton(
@@ -145,11 +144,20 @@ class _AccountsState extends State<Accounts> {
             borderRadius: BorderRadius.circular(18.0),
           ),
           color: Colors.red,
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            _clearControllers();
+            Navigator.pop(context);
+          },
           child: Text('CANCEL'),
         ),
       ],
     );
+  }
+
+  _clearControllers() {
+    _storeController.clear();
+    _categoryController.clear();
+    _priceController.clear();
   }
 
   Widget addButton(String text, Function onPressedFunc) {
@@ -165,7 +173,6 @@ class _AccountsState extends State<Accounts> {
           onPressed: () {
             showDialog<void>(
                 context: context, builder: (context) => addDialog());
-            // onPressedFunc();
           },
           color: Colors.blue,
           textColor: Colors.white,
@@ -173,6 +180,14 @@ class _AccountsState extends State<Accounts> {
         ),
       ),
     );
+  }
+
+  int _getTotal() {
+    double res = 0;
+    for (int i = 0; i < _receipts.length; ++i) {
+      res += _receipts[i].price.toDouble();
+    }
+    return res.truncate();
   }
 
   @override
@@ -201,6 +216,8 @@ class _AccountsState extends State<Accounts> {
           children: [
             Column(children: <Widget>[
               addButton('Add receipt', postReceipts),
+              Text('Spent: ' + _getTotal().toString() + '\$',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               Expanded(child: buildCorrectList(_receipts)),
             ]),
             Column(children: <Widget>[

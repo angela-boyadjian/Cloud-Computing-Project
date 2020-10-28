@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bankin',
       debugShowCheckedModeBanner: false,
-      home: NavBar(null),
-      // home: Login(),
+      // home: NavBar(null),
+      home: Login(),
     );
   }
 }
