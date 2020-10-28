@@ -177,7 +177,7 @@ Widget build(BuildContext context) {
                   }
                   print(session.getAccessToken().getJwtToken());
                   Provider.of<RouteManager>(context, listen: false)
-                  .showNavBar(context);
+                  .showNavBar(context, session.getIdToken());
                   }
                 ),
               ),

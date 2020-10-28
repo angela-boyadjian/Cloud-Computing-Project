@@ -174,7 +174,7 @@ class _ConfirmingUser extends State<ConfirmingUser> {
                         }
                         print(registrationConfirmed);
                         Provider.of<RouteManager>(context, listen: false)
-                            .showNavBar(context);
+                            .showNavBar(context, null);
                       }),
                 ),
               ],

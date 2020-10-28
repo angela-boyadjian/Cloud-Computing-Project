@@ -1,3 +1,4 @@
+import 'package:Bankin/widgets/nav_bar.dart';
 import 'package:Bankin/widgets/route_manager.dart';
 import 'package:easy_localization/easy_localization_provider.dart';
 import 'package:Bankin/pages/login/widgets/user_storage.dart';
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bankin',
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: NavBar(null),
+      // home: Login(),
     );
   }
 }

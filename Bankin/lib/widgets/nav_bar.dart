@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -11,7 +12,10 @@ import 'package:Bankin/pages/analysis/analysis.dart';
 import 'package:Bankin/pages/accounts/accounts.dart';
 
 class NavBar extends StatefulWidget {
-  NavBar();
+  final CognitoIdToken idToken;
+
+
+  NavBar(this.idToken);
   @override
   _NavBarState createState() => _NavBarState();
 }
@@ -19,12 +23,14 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
-    return NavBarInit();
+    return NavBarInit(widget.idToken);
   }
 }
 
 class NavBarInit extends StatefulWidget {
-  NavBarInit();
+  final CognitoIdToken idToken;
+
+  NavBarInit(this.idToken);
 
   @override
   NavBarInitState createState() => new NavBarInitState();
@@ -71,7 +77,7 @@ class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMi
           children: <Widget>[
             Analysis(),
             Budget(),
-            Accounts(),
+            Accounts(widget.idToken),
             Saving(),
             Coaching(),
           ],
