@@ -16,11 +16,11 @@ class RouteManager {
           builder: (context) => Login(),
         ));
   }
-  showNavBar(context, idToken) {
+  showNavBar(context, user) {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => NavBar(idToken),
+          builder: (context) => NavBar(user),
         ));
   }
   showProfileEdit(context) {

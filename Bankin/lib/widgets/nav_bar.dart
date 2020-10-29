@@ -1,3 +1,4 @@
+import 'package:Bankin/models/user.dart';
 import 'package:Bankin/pages/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,10 +13,9 @@ import 'package:Bankin/pages/analysis/analysis.dart';
 import 'package:Bankin/pages/accounts/accounts.dart';
 
 class NavBar extends StatefulWidget {
-  final CognitoIdToken idToken;
+  final User user;
+  NavBar(this.user);
 
-
-  NavBar(this.idToken);
   @override
   _NavBarState createState() => _NavBarState();
 }
@@ -23,14 +23,14 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
-    return NavBarInit(widget.idToken);
+    return NavBarInit(widget.user);
   }
 }
 
 class NavBarInit extends StatefulWidget {
-  final CognitoIdToken idToken;
+  final User user;
 
-  NavBarInit(this.idToken);
+  NavBarInit(this.user);
 
   @override
   NavBarInitState createState() => new NavBarInitState();
@@ -77,9 +77,9 @@ class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMi
           children: <Widget>[
             Analysis(),
             Budget(),
-            Accounts(widget.idToken),
+            Accounts(widget.user),
             Coaching(),
-            Profile(),
+            Profile(widget.user),
           ],
           controller: pageController,
           onPageChanged: onPageChanged,

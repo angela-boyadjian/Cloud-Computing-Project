@@ -1,13 +1,17 @@
-import 'package:Bankin/widgets/route_manager.dart';
-import 'package:flare_flutter/flare_cache_builder.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flare_flutter/flare_actor.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_cache_builder.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
+import 'package:Bankin/models/user.dart';
+import 'package:Bankin/utils/route_manager.dart';
 
 class Profile extends StatefulWidget {
-  Profile();
+  final User user;
+
+  Profile(this.user);
   @override
   _ProfileState createState() => _ProfileState();
 }

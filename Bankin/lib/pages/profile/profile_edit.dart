@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:Bankin/widgets/route_manager.dart';
+import 'package:Bankin/utils/route_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

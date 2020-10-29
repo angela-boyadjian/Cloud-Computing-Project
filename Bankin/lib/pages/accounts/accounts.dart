@@ -1,18 +1,19 @@
 import 'dart:convert';
 
+import 'package:Bankin/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
-import 'utils/receipts.dart';
+import 'package:Bankin/models/receipts.dart';
+
 import 'widgets/result.dart';
 
 class Accounts extends StatefulWidget {
-  final CognitoIdToken idToken;
+  final User user;
 
-  Accounts(this.idToken);
+  Accounts(this.user);
   @override
   _AccountsState createState() => _AccountsState();
 }
@@ -31,7 +32,7 @@ class _AccountsState extends State<Accounts> {
   void initState() {
     super.initState();
     _headers = {
-      'Authorization': widget.idToken.getJwtToken(),
+      'Authorization': widget.user.token,
     };
     getReceipts();
   }
@@ -50,7 +51,9 @@ class _AccountsState extends State<Accounts> {
     final jsonResponse = json.decode(response.body);
     List<Receipts> tmpList = List();
 
-    for (int i = 0; i < jsonResponse['result']['Items'].length; ++i) {
+    if (jsonResponse == null || jsonResponse['result'] == null
+      || jsonResponse['result']['Items'] == null) return;
+    for (int i = 0; jsonResponse['result']['Items'] != null && i < jsonResponse['result']['Items'].length; ++i) {
       tmpList.add(Receipts.fromJson(jsonResponse['result']['Items'][i]));
     }
     setState(() {
@@ -184,7 +187,7 @@ class _AccountsState extends State<Accounts> {
 
   int _getTotal() {
     double res = 0;
-    for (int i = 0; i < _receipts.length; ++i) {
+    for (int i = 0; _receipts != null && i < _receipts.length; ++i) {
       res += _receipts[i].price.toDouble();
     }
     return res.truncate();

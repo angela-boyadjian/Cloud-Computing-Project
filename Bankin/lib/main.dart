@@ -1,5 +1,5 @@
 import 'package:Bankin/widgets/nav_bar.dart';
-import 'package:Bankin/widgets/route_manager.dart';
+import 'package:Bankin/utils/route_manager.dart';
 import 'package:easy_localization/easy_localization_provider.dart';
 import 'package:Bankin/pages/login/widgets/user_storage.dart';
 import 'package:flutter/material.dart';

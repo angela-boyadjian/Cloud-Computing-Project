@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../utils/receipts.dart';
+import '../../../models/receipts.dart';
 
 class Result extends StatelessWidget {
   final Receipts _receipt;
