@@ -177,8 +177,7 @@ class _SignInState extends State<SignIn> {
                         session =
                             await cognitoUser.authenticateUser(authDetails);
                         user = User(
-                          username: cognitoUser.username,
-                          email: loginEmailController.text,
+                          username: loginEmailController.text,
                           avatar: '',
                           token: session.getIdToken().getJwtToken(),
                         );

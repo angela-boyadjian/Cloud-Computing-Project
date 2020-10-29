@@ -199,6 +199,7 @@ class _AccountsState extends State<Accounts> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: Center(),
           centerTitle: true,
           backgroundColor: Colors.orange,
           title: Text('Account', style: TextStyle(fontWeight: FontWeight.bold)),

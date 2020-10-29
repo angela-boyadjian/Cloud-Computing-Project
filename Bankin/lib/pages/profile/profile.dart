@@ -45,7 +45,7 @@ class _ProfileState extends State<Profile> {
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 200.0),
-          child: Text('Angela',
+          child: Text(widget.user.username,
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
