@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 import '../../../models/receipts.dart';
 
 class Result extends StatelessWidget {
   final Receipts _receipt;
   final Map<String, IconData> _catogoryMap = {
-     'Shopping': FontAwesomeIcons.shoppingCart,
-     'Food': FontAwesomeIcons.utensils,
-     'Grocery': FontAwesomeIcons.carrot,
-     'Bills': FontAwesomeIcons.fileInvoiceDollar,
-     'Health': FontAwesomeIcons.cross,
-     'Entertainment': FontAwesomeIcons.gamepad,
-     'Transport': FontAwesomeIcons.car,
-   };
+    'Shopping': FontAwesomeIcons.shoppingCart,
+    'Food': FontAwesomeIcons.utensils,
+    'Grocery': FontAwesomeIcons.carrot,
+    'Bills': FontAwesomeIcons.fileInvoiceDollar,
+    'Health': FontAwesomeIcons.cross,
+    'Entertainment': FontAwesomeIcons.gamepad,
+    'Transport': FontAwesomeIcons.car,
+  };
 
   Result(this._receipt);
 
   categoryIcon() {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, left: 7.0),
-      child: Icon(_catogoryMap[_receipt.category], size: 25, color: Colors.blue),
+      child:
+          Icon(_catogoryMap[_receipt.category], size: 25, color: Colors.blue),
     );
   }
 
+  String getDate() {
+    final f = new DateFormat('yyyy-MM-dd hh:mm');
+    return f.format(DateTime.fromMillisecondsSinceEpoch(_receipt.date));
+  }
 
   Flexible buildCard(context) {
     return Flexible(
@@ -40,11 +46,12 @@ class Result extends StatelessWidget {
             title: Text(_receipt.store,
                 style: TextStyle(
                     color: Colors.blueGrey, fontWeight: FontWeight.bold)),
-            subtitle: Text('Main account'),
+            subtitle: Text(getDate()),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(_receipt.price.toString() + ' ', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(_receipt.price.toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Icon(FontAwesomeIcons.dollarSign, color: Colors.red)
               ],
             ),
