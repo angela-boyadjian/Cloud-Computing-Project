@@ -1,3 +1,4 @@
+import 'package:Bankin/pages/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -6,7 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'package:Bankin/pages/budget/budget.dart';
-import 'package:Bankin/pages/saving/saving.dart';
 import 'package:Bankin/pages/coaching/coaching.dart';
 import 'package:Bankin/pages/analysis/analysis.dart';
 import 'package:Bankin/pages/accounts/accounts.dart';
@@ -78,8 +78,8 @@ class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMi
             Analysis(),
             Budget(),
             Accounts(widget.idToken),
-            Saving(),
             Coaching(),
+            Profile(),
           ],
           controller: pageController,
           onPageChanged: onPageChanged,
@@ -95,9 +95,9 @@ class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMi
                 size: pageIndex == 1 ? iconSize + 5 : iconSize, color: iconColor),
             Icon(FontAwesomeIcons.wallet,
                 size: pageIndex == 2 ? iconSize + 5 : iconSize, color: iconColor),
-            Icon(FontAwesomeIcons.coins,
-                size: pageIndex == 3 ? iconSize + 5 : iconSize, color: iconColor),
             Icon(FontAwesomeIcons.headset,
+                size: pageIndex == 3 ? iconSize + 5 : iconSize, color: iconColor),
+            Icon(FontAwesomeIcons.userAlt,
                 size: pageIndex == 4 ? iconSize + 5 : iconSize, color: iconColor),
           ],
           color: Colors.orange,

@@ -11,6 +11,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flare_flutter: ^1.8.3
+  cached_network_image: ^2.0.0-rc.1
   flutter_spinkit: "^4.1.2"
   http: ^0.12.2
   flutter_secure_storage: ^3.3.3
@@ -38,3 +40,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/animations/
