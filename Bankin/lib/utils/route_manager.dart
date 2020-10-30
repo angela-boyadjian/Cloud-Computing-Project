@@ -23,11 +23,11 @@ class RouteManager {
           builder: (context) => NavBar(user),
         ));
   }
-  showProfileEdit(context) {
+  showProfileEdit(context, user, attributes) {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ProfileEdit(),
+          builder: (context) => ProfileEdit(user, attributes),
         ));
   }
   showImageEditor(context, {CropStyle cropStyle, callback, String path}) async {

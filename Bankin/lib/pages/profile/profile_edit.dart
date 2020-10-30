@@ -1,20 +1,36 @@
-import 'dart:io';
-
-import 'package:Bankin/utils/route_manager.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:provider/provider.dart';
+
+import 'package:Bankin/models/user.dart';
+
+import 'widgets/avatar.dart';
 
 class ProfileEdit extends StatefulWidget {
-  ProfileEdit();
+  final User user;
+  final Map<String, String> attributes;
+
+  ProfileEdit(this.user, this.attributes);
+
   @override
   _ProfileEditState createState() => _ProfileEditState();
 }
 
 class _ProfileEditState extends State<ProfileEdit> {
-  String avatarUrl = '';
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.text = widget.attributes['name'];
+    _emailController.text = widget.attributes['email'];
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
 
   AppBar _buildAppBar() {
     return AppBar(
@@ -37,49 +53,67 @@ class _ProfileEditState extends State<ProfileEdit> {
     );
   }
 
-
-  callbackUpdateAvatar(String avatar, File file) {
-    setState(() {
-      avatarUrl = avatar;
-    });
+  Widget buildTextFields() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+          child: TextField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Username',
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
+          child: TextField(
+            controller: _emailController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Email',
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Column(
-        children: <Widget>[
-          CircleAvatar(
-              backgroundColor: Colors.grey,
-              backgroundImage: CachedNetworkImageProvider('url'),
-              radius: 75.0),
-          Positioned(
-            bottom: 1,
-            right: 0,
-            child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 5, color: Colors.white),
-                  color: Colors.deepPurple,
-                  borderRadius: BorderRadius.circular(30.0),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            GestureDetector(
+              child: Avatar(widget.attributes['avatar']),
+              onTap: () {
+                print('IMAGE PICKER');
+              },
+            ),
+            buildTextFields(),
+            ButtonTheme(
+              minWidth: double.infinity,
+              height: 50.0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.blue)),
+                  onPressed: () {},
+                  color: Colors.green,
+                  textColor: Colors.white,
+                  child: Text('SAVE', style: TextStyle(fontSize: 18)),
                 ),
-                child: IconButton(
-                    icon: Icon(FontAwesomeIcons.edit, size: 28),
-                    color: Colors.white,
-                    onPressed: () async {
-                      var result = await Provider.of<RouteManager>(
-                              context,
-                              listen: false)
-                          .showImageEditor(context,
-                              cropStyle: CropStyle.circle,
-                              callback: callbackUpdateAvatar,
-                              path: "avatar");
-                      setState(() {
-                        avatarUrl = result.mediaUrl;
-                      });
-                    })),
-          ),
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

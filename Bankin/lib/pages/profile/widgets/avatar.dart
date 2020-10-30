@@ -1,27 +1,31 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
+
 class Avatar extends StatelessWidget {
-  Avatar({Key key, this.contactImage, this.color, this.onTap})
-      : super(key: key);
+  final String avatar;
 
-  final String contactImage;
-  final Color color;
-  final VoidCallback onTap;
+  const Avatar(this.avatar);
 
+  @override
   Widget build(BuildContext context) {
-    return new Material(
-      child: Center(
-        child: new InkWell(
-          onTap: onTap,
-          child: CircleAvatar(
-                  backgroundImage: !contactImage.startsWith("http")
-                      ? FileImage(File(contactImage))
-                      : NetworkImage(contactImage),
-                  radius: 85)
-        ),
-      ),
-    );
+    return avatar != ''
+        ? Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: CircleAvatar(
+              radius: 60.0,
+              backgroundColor: Colors.grey,
+              backgroundImage:
+                  CachedNetworkImageProvider(avatar),
+            ),
+          )
+        : Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: CircleAvatar(
+              radius: 60.0,
+              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+              backgroundColor: Colors.transparent,
+            ),
+          );
   }
 }

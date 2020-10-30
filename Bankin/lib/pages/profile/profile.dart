@@ -4,10 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache_builder.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:Bankin/models/user.dart';
 import 'package:Bankin/utils/route_manager.dart';
+
+import 'widgets/avatar.dart';
 
 class Profile extends StatefulWidget {
   final User user;
@@ -53,25 +54,7 @@ class _ProfileState extends State<Profile> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _attributes['avatar'] != ''
-            ? Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: CircleAvatar(
-                  radius: 60.0,
-                  backgroundColor: Colors.grey,
-                  backgroundImage:
-                      CachedNetworkImageProvider(_attributes['avatar']),
-                ),
-              )
-            : Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: CircleAvatar(
-                  radius: 60.0,
-                  backgroundImage:
-                      NetworkImage('https://via.placeholder.com/150'),
-                  backgroundColor: Colors.transparent,
-                ),
-              ),
+        Avatar(_attributes['avatar']),
         Padding(
           padding: const EdgeInsets.only(bottom: 200.0),
           child: Text(_attributes['name'],
@@ -90,7 +73,7 @@ class _ProfileState extends State<Profile> {
                   borderRadius: BorderRadius.circular(18.0)),
               onPressed: () {
                 Provider.of<RouteManager>(context, listen: false)
-                    .showProfileEdit(context);
+                    .showProfileEdit(context, widget.user, _attributes);
               },
               color: Colors.orange,
               textColor: Colors.white,
