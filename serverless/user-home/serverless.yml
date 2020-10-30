@@ -25,7 +25,7 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-2
-
+  
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -90,25 +90,7 @@ functions:
           name: authorizer
           arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 
-  lex_setBudget:
-    handler: chatbot/setBudget.lex_setBudget
-    events:
-      - http:
-          path: /chatbot/setBudget
-          method: post
-          authorizer:
-            name: authorizer
-            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 
-  lex_getBudget:
-    handler: chatbot/getBudget.lex_getBudget
-    events:
-      - http:
-          path: /chatbot/getBudget
-          method: get
-          authorizer:
-            name: authorizer
-            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 #  Authorizer:
 #    Type: AWS::ApiGateway::Authorizer
 #    Properties:
@@ -117,8 +99,7 @@ functions:
 #      ProviderARNs: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 #      existing: true
 
-plugins:
-  - serverless-import-apigateway
+
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
