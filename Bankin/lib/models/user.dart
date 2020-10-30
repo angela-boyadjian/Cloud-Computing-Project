@@ -1,7 +1,8 @@
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+
 class User {
-  final String username;
-  final String avatar;
+  final CognitoUser cognitoUser;
   final String token;
 
-  User({this.username, this.avatar, this.token});
+  User({this.cognitoUser, this.token});
 }

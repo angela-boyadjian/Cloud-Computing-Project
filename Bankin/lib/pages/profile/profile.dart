@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache_builder.dart';
+import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:Bankin/models/user.dart';
@@ -18,34 +19,62 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String _animation = 'success';
+  Map<String, String> _attributes = {
+    'name': '',
+    'email': '',
+    'avatar': '',
+  };
 
   @override
   void initState() {
     super.initState();
+    getAttributes();
+  }
+
+  Future<void> getAttributes() async {
+    List<CognitoUserAttribute> attributes;
+    Map<String, String> tmp = _attributes;
+    try {
+      attributes = await widget.user.cognitoUser.getUserAttributes();
+      attributes.forEach((attribute) {
+        if (tmp.containsKey(attribute.getName())) {
+          tmp[attribute.getName()] = attribute.getValue();
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      _attributes = tmp;
+    });
   }
 
   Widget _profileInfos() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // '' != null
-        //     ? CircleAvatar(
-        //         radius: 50.0,
-        //         backgroundColor: Colors.grey,
-        //         backgroundImage:
-        //             CachedNetworkImageProvider(null),
-        //       ) :
-        Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: CircleAvatar(
-            radius: 60.0,
-            backgroundImage: NetworkImage('https://via.placeholder.com/150'),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
+        _attributes['avatar'] != ''
+            ? Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: CircleAvatar(
+                  radius: 60.0,
+                  backgroundColor: Colors.grey,
+                  backgroundImage:
+                      CachedNetworkImageProvider(_attributes['avatar']),
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: CircleAvatar(
+                  radius: 60.0,
+                  backgroundImage:
+                      NetworkImage('https://via.placeholder.com/150'),
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
         Padding(
           padding: const EdgeInsets.only(bottom: 200.0),
-          child: Text(widget.user.username,
+          child: Text(_attributes['name'],
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

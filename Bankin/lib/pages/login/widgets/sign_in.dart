@@ -35,6 +35,35 @@ class _SignInState extends State<SignIn> {
     });
   }
 
+  Future<void> _loginUser() async {
+    User user;
+    try {
+      final cognitoUser = new CognitoUser(loginEmailController.text, userPool);
+      final authDetails = new AuthenticationDetails(
+          username: loginEmailController.text,
+          password: loginPasswordController.text);
+      session = await cognitoUser.authenticateUser(authDetails);
+      final List<CognitoUserAttribute> attributes = [];
+      attributes.add(new CognitoUserAttribute(
+          name: 'name', value: loginEmailController.text));
+      try {
+        await cognitoUser.updateAttributes(attributes);
+      } catch (e) {
+        print(e);
+      }
+      user = User(
+        cognitoUser: cognitoUser,
+        token: session.getIdToken().getJwtToken(),
+      );
+    } on CognitoClientException catch (e) {
+      print("Erreur d'authentification" + e.message);
+    } catch (e) {
+      print("Erreur" + e.message);
+    }
+    print(session.getAccessToken().getJwtToken());
+    Provider.of<RouteManager>(context, listen: false).showNavBar(context, user);
+  }
+
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 23.0),
@@ -153,43 +182,21 @@ class _SignInState extends State<SignIn> {
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Theme.Colors.loginGradientEnd,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        "LOGIN",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontFamily: "WorkSansBold"),
-                      ),
+                  highlightColor: Colors.transparent,
+                  splashColor: Theme.Colors.loginGradientEnd,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 42.0),
+                    child: Text(
+                      "LOGIN",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                          fontFamily: "WorkSansBold"),
                     ),
-                    onPressed: () async {
-                      User user;
-                      try {
-                        final cognitoUser = new CognitoUser(
-                            loginEmailController.text, userPool);
-                        final authDetails = new AuthenticationDetails(
-                            username: loginEmailController.text,
-                            password: loginPasswordController.text);
-                        session =
-                            await cognitoUser.authenticateUser(authDetails);
-                        user = User(
-                          username: loginEmailController.text,
-                          avatar: '',
-                          token: session.getIdToken().getJwtToken(),
-                        );
-                      } on CognitoClientException catch (e) {
-                        print("Erreur d'authentification" + e.message);
-                      } catch (e) {
-                        print("Erreur" + e.message);
-                      }
-                      print(session.getAccessToken().getJwtToken());
-                      Provider.of<RouteManager>(context, listen: false)
-                          .showNavBar(context, user);
-                    }),
+                  ),
+                  onPressed: () => _loginUser(),
+                ),
               ),
             ],
           ),
