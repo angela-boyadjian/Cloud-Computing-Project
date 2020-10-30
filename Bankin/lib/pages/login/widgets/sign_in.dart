@@ -1,10 +1,11 @@
+import 'package:Bankin/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Bankin/widgets/route_manager.dart';
+import 'package:Bankin/utils/route_manager.dart';
 import '../style/theme.dart' as Theme;
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
@@ -32,6 +33,35 @@ class _SignInState extends State<SignIn> {
     setState(() {
       _obscureTextLogin = !_obscureTextLogin;
     });
+  }
+
+  Future<void> _loginUser() async {
+    User user;
+    try {
+      final cognitoUser = new CognitoUser(loginEmailController.text, userPool);
+      final authDetails = new AuthenticationDetails(
+          username: loginEmailController.text,
+          password: loginPasswordController.text);
+      session = await cognitoUser.authenticateUser(authDetails);
+      final List<CognitoUserAttribute> attributes = [];
+      attributes.add(new CognitoUserAttribute(
+          name: 'name', value: loginEmailController.text));
+      try {
+        await cognitoUser.updateAttributes(attributes);
+      } catch (e) {
+        print(e);
+      }
+      user = User(
+        cognitoUser: cognitoUser,
+        token: session.getIdToken().getJwtToken(),
+      );
+    } on CognitoClientException catch (e) {
+      print("Error: " + e.message);
+    } catch (e) {
+      print("Error: " + e.message);
+    }
+    print(session.getAccessToken().getJwtToken());
+    Provider.of<RouteManager>(context, listen: false).showNavBar(context, user);
   }
 
   Widget build(BuildContext context) {
@@ -152,40 +182,21 @@ class _SignInState extends State<SignIn> {
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Theme.Colors.loginGradientEnd,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        "LOGIN",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontFamily: "WorkSansBold"),
-                      ),
+                  highlightColor: Colors.transparent,
+                  splashColor: Theme.Colors.loginGradientEnd,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 42.0),
+                    child: Text(
+                      "LOGIN",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                          fontFamily: "WorkSansBold"),
                     ),
-                    onPressed: () async {
-                      try {
-                        final cognitoUser = new CognitoUser(
-                            loginEmailController.text, userPool);
-                        final authDetails = new AuthenticationDetails(
-                            username: loginEmailController.text,
-                            password: loginPasswordController.text);
-                        session = await cognitoUser.authenticateUser(authDetails);
-                      } on CognitoClientException catch (e) {
-                        print("Authentification error " + e.message);
-                      } catch (e) {
-                        print("Error " + e.message);
-                      }
-                      final credentials = new CognitoCredentials(
-                          "eu-west-2:5618d01e-2a79-4c2a-996c-55a6a117fd0f",
-                          userPool);
-                      await credentials.getAwsCredentials(
-                          session.getIdToken().getJwtToken());
-                      Provider.of<RouteManager>(context, listen: false)
-                          .showNavBar(context, credentials, session.getIdToken());
-                    }),
+                  ),
+                  onPressed: () => _loginUser(),
+                ),
               ),
             ],
           ),

@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
-class ChatBot extends StatefulWidget {
-  final CognitoCredentials user;
-  final CognitoIdToken idToken;
+import 'package:Bankin/models/user.dart';
 
-  ChatBot(this.user, this.idToken);
+class ChatBot extends StatefulWidget {
+  final User user;
+
+  ChatBot(this.user);
   @override
   _ChatBotState createState() => _ChatBotState();
 }
@@ -24,7 +25,7 @@ class _ChatBotState extends State<ChatBot> {
   void initState() {
     super.initState();
     _headers = {
-      'Authorization': widget.idToken.getJwtToken(),
+      'Authorization': widget.user.token,
     };
     initChatBot();
   }
