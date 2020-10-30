@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -23,7 +25,7 @@ class _ProfileState extends State<Profile> {
   Map<String, String> _attributes = {
     'name': '',
     'email': '',
-    'avatar': '',
+    'picture': '',
   };
 
   @override
@@ -56,7 +58,7 @@ class _ProfileState extends State<Profile> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: Avatar(null),
+          child: Avatar(_attributes['picture'] == '' ? null : File(_attributes['picture'])),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 200.0),

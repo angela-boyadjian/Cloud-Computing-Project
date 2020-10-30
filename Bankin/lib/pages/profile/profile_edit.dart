@@ -27,6 +27,7 @@ class _ProfileEditState extends State<ProfileEdit> {
   @override
   void initState() {
     super.initState();
+    if (widget.attributes['picture'] != '') _image = File(widget.attributes['picture']);
     _nameController.text = widget.attributes['name'];
     _emailController.text = widget.attributes['email'];
   }
@@ -47,13 +48,17 @@ class _ProfileEditState extends State<ProfileEdit> {
     if (_image != null) {
       List<int> imageBytes = _image.readAsBytesSync();
       String base64Image = base64.encode(imageBytes);
+      // ignore: todo
+      // TODO Upload in S3 and store URL in Cognito
       attributes.add(CognitoUserAttribute(name: 'picture', value: base64Image));
+      print('IMG SIZE: ' + base64Image.length.toString());
     }
     try {
       await widget.user.cognitoUser.updateAttributes(attributes);
     } catch (e) {
       print(e);
     }
+    Navigator.pop(context);
   }
 
   Future<void> _imgFromCamera() async {
@@ -178,7 +183,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                       side: BorderSide(color: Colors.blue)),
-                  onPressed: () {},
+                  onPressed: () => _save(),
                   color: Colors.green,
                   textColor: Colors.white,
                   child: Text('SAVE', style: TextStyle(fontSize: 18)),
