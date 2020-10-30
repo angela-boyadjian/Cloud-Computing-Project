@@ -54,7 +54,10 @@ class _ProfileState extends State<Profile> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Avatar(_attributes['avatar']),
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Avatar(null),
+        ),
         Padding(
           padding: const EdgeInsets.only(bottom: 200.0),
           child: Text(_attributes['name'],
