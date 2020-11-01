@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flip_card/flip_card.dart';
+
 class Budget extends StatefulWidget {
   Budget();
   @override
@@ -7,13 +9,78 @@ class Budget extends StatefulWidget {
 }
 
 class _BudgetState extends State<Budget> {
+  _renderContent(BuildContext context, Color color, String category, int total) {
+    return Card(
+      elevation: 0.0,
+      margin: EdgeInsets.only(left: 32.0, right: 32.0, top: 20.0, bottom: 0.0),
+      color: Color(0x00000000),
+      child: FlipCard(
+        direction: FlipDirection.HORIZONTAL,
+        speed: 500,
+        onFlipDone: (status) {
+          print(status);
+        },
+        front: Container(
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(category, style: TextStyle(color: Colors.white, fontSize: 40)),
+            ],
+          ),
+        ),
+        back: Container(
+          decoration: BoxDecoration(
+            color: Colors.green,
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('\$' + total.toString(), style: TextStyle(color: Colors.white, fontSize: 40)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "BUDGET",
-        style: TextStyle(
-            color: Colors.green, fontSize: 25.0, fontFamily: "WorkSansBold"),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        leading: Container(),
+        title: Text("Budget"),
+        centerTitle: true,
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              ),
+            child: _renderContent(context, Colors.blue, 'Family', 140),
+          ),
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              ),
+            child: _renderContent(context, Colors.pink, 'Vacation', 643),
+          ),
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              ),
+            child: _renderContent(context, Colors.indigo, 'Saving', 10),
+          ),
+        ],
       ),
     );
   }

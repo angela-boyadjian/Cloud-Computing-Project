@@ -11,6 +11,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flip_card: ^0.4.4
   image: ^2.0.7
   image_cropper: ^1.1.2
   image_picker: ^0.6.0+2
