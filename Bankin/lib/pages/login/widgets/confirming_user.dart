@@ -8,7 +8,7 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:Bankin/pages/login/widgets/user_storage.dart';
 
 import 'package:provider/provider.dart';
-import 'package:Bankin/widgets/route_manager.dart';
+import 'package:Bankin/utils/route_manager.dart';
 
 import '../style/theme.dart' as Theme;
 
@@ -174,7 +174,7 @@ class _ConfirmingUser extends State<ConfirmingUser> {
                         }
                         print(registrationConfirmed);
                         Provider.of<RouteManager>(context, listen: false)
-                            .showNavBar(context, null, null);
+                            .showNavBar(context, null);
                       }),
                 ),
               ],
