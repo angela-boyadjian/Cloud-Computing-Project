@@ -41,13 +41,21 @@ module.exports = {
         const data = qs.parse(event.body);
         const userId = event.requestContext.authorizer.claims.sub;
 
-        if (data.store === undefined || data.price === undefined || data.category === undefined) {
+        if (data.store === undefined || data.price === undefineds) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({
                     error: "Missing parameters."
                 })
             }
+        }
+
+        if (data.category === undefined) {
+            /* TODO:
+                Determine category using Comprehend and RDS
+                New lambda func for this ?
+            */
+           data.category = "Food"; //Default value for now.
         }
         const Item = {
             receiptId: uuid.v4(),

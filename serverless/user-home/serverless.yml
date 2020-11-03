@@ -141,4 +141,12 @@ resources:
           - AttributeName: receiptId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-
+    expenses_categories:
+      Type: AWS::RDS::DBInstance
+      Properties:
+        DBName: expenses_categories
+        Engine: Aurora
+        AllocatedStorage: "100",
+        DBInstanceClass: "db.t2.small",
+        MasterUsername: "expenses_cat_user",
+        MasterUserPassword: "expenses_cat_pass"
