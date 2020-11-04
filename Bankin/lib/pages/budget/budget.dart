@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:Bankin/models/budgets.dart';
-import 'package:Bankin/models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:Bankin/models/user.dart';
+import 'package:Bankin/models/budgets.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:flip_card/flip_card.dart';
@@ -28,11 +28,8 @@ class _BudgetState extends State<Budget> {
     _headers = {
       'Authorization': widget.user.token,
     };
-    print('1');
-    postBudget(Budgets(amount: '60', category: "family"));
-    print('2');
+    // postBudget(Budgets(amount: '60', category: "family"));
     getBudgets();
-    print('3');
   }
 
   @override
