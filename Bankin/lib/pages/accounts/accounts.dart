@@ -163,6 +163,11 @@ class _AccountsState extends State<Accounts> {
     _priceController.clear();
   }
 
+  Future onGoBack(dynamic value) async {
+    await getReceipts();
+    setState(() {});
+  }
+
   Widget addButton(String text, Function onPressedFunc) {
     return ButtonTheme(
       minWidth: double.infinity,
@@ -175,7 +180,7 @@ class _AccountsState extends State<Accounts> {
               side: BorderSide(color: Colors.blue)),
           onPressed: () {
             showDialog<void>(
-                context: context, builder: (context) => addDialog());
+                context: context, builder: (context) => addDialog()).then(onGoBack);
           },
           color: Colors.blue,
           textColor: Colors.white,

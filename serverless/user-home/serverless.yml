@@ -27,6 +27,7 @@ provider:
   region: eu-west-2
   environment:
     RECEIPTS_TABLE: receipts
+    BUDGETS_TABLE: budgets
 
 # you can overwrite defaults here
 #  stage: dev
@@ -109,6 +110,24 @@ functions:
     events:
       - http:
           path: /user/receipts
+          method: post
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+  budgets_get:
+    handler: budgets.get
+    events:
+      - http:
+          path: /user/budgets
+          method: get
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+  budget_post:
+    handler: budgets.post
+    events:
+      - http:
+          path: /user/budgets
           method: post
           authorizer:
             name: authorizer
