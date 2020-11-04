@@ -40,7 +40,7 @@ module.exports = {
     post: async(event, context) => {
         const data = qs.parse(event.body);
         const userId = event.requestContext.authorizer.claims.sub;
-
+        
         if (data.amount === undefined || data.category === undefined) {
             return {
                 statusCode: 400,
