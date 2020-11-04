@@ -7,7 +7,6 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-2
-  # role : myBudgetRole
   apiGateway:
     restApiId: ajexrc4gb4
     restApiRootResourceId: qkfc6i9nvg
@@ -51,27 +50,6 @@ custom:
     name: ${self:provider.stage}-user-home
 resources:
   Resources:
-    # myBudgetRole:
-    #   Type: AWS::IAM::Role
-    #   Properties:
-    #     Path: /
-    #     RoleName: myBudgetRole
-    #   Policies:
-    #     - PolicyName: budgetPolicy
-    #       PolicyDocument:
-    #         Version: '2012-10-17'
-    #         Statement:
-    #           - Effect: Allow # note that these rights are given in the default policy and are required if you want logs out of your lambda(s)
-    #             Action:
-    #               - dynamodb:Query
-    #               - dynamodb:Scan
-    #               - dynamodb:GetItem
-    #               - dynamodb:PutItem
-    #               - dynamodb:UpdateItem
-    #               - dynamodb:DeleteItem
-    #         Resource:
-    #           - "arn:aws:dynamodb:eu-west-2::"
-
     budgets:
       Type: AWS::DynamoDB::Table
       Properties:
