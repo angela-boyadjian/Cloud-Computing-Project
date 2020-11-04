@@ -10,7 +10,7 @@ provider:
     restApiId: ajexrc4gb4
     restApiRootResourceId: qkfc6i9nvg
   environment:
-    RECEIPTS_TABLE: receipts
+    RECEIPTS_TABLE: user_budget
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -21,7 +21,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - "arn:aws:dynamodb:eu-west-2:843314631316:table/receipts"
+        - "arn:aws:dynamodb:eu-west-2:843314631316:table/user_budget"
 
 functions:
   expenses_get:
@@ -31,7 +31,7 @@ functions:
           path: /receipts
           method: get
           authorizer:
-            name: Authorization
+            name: AuthorizationReceipts
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
   expenses_post:
     handler: expenses.post
@@ -40,26 +40,25 @@ functions:
           path: /receipts
           method: post
           authorizer:
-            name: Authorization
+            name: AuthorizationReceipts
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 
 plugins:
   - serverless-import-apigateway
-
 resources:
  Resources:
    receipts:
      Type: AWS::DynamoDB::Table
      Properties:
-       TableName: receipts
+       TableName: user_budget
        AttributeDefinitions:
          - AttributeName: userId
            AttributeType: S
-         - AttributeName: receiptId
+         - AttributeName: date
            AttributeType: S
        KeySchema:
          - AttributeName: userId
            KeyType: HASH
-         - AttributeName: receiptId
+         - AttributeName: date
            KeyType: RANGE
        BillingMode: PAY_PER_REQUEST
