@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:flare_flutter/flare_actor.dart';
-import 'package:flare_flutter/flare_cache_builder.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
 import 'package:Bankin/models/user.dart';
@@ -21,7 +19,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String _animation = 'success';
   Map<String, String> _attributes = {
     'name': '',
     'email': '',
@@ -53,26 +50,27 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget _profileInfos() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return ListView(
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: Avatar(_attributes['picture'] == '' ? null : File(_attributes['picture'])),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 200.0),
-          child: Text(_attributes['name'],
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30.0)),
+          padding: const EdgeInsets.only(top: 50.0),
+          child: Center(
+            child: Text(_attributes['name'],
+                style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30.0)),
+          ),
         ),
         ButtonTheme(
           minWidth: double.infinity,
           height: 40.0,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.only(top: 150.0, bottom: 50.0, left: 20.0, right: 20.0),
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0)),
@@ -94,19 +92,6 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        FlareCacheBuilder(
-          ["assets/animations/ranking_bg.flr"],
-          builder: (context, bool isWarm) {
-            return isWarm == false
-                ? Container(color: Colors.black)
-                : FlareActor("assets/animations/ranking_bg.flr",
-                    alignment: Alignment.center,
-                    fit: BoxFit.contain,
-                    animation: _animation, callback: (string) {
-                    if (_animation == 'success') _animation = 'go';
-                  });
-          },
-        ),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
