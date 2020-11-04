@@ -15,7 +15,6 @@ provider:
       Resource:
         - { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ]]}
         - "arn:aws:s3:::user-asset-bucket/*"
-        - "arn:aws:dynamodb:eu-west-2::"
 
 custom:
   assets:
@@ -53,42 +52,6 @@ functions:
         authorizer:
           name: Authorization
           arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
-  expenses_get:
-    handler: expenses.get
-    events:
-      - http:
-          path: /user/receipts
-          method: get
-          authorizer:
-            name: Authorization
-            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
-  expenses_post:
-    handler: expenses.post
-    events:
-      - http:
-          path: /user/receipts
-          method: post
-          authorizer:
-            name: Authorization
-            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 plugins:
   - serverless-import-apigateway
   - serverless-s3-deploy
-
-resources:
- Resources:
-   receipts:
-     Type: AWS::DynamoDB::Table
-     Properties:
-       TableName: receipts
-       AttributeDefinitions:
-         - AttributeName: userId
-           AttributeType: S
-         - AttributeName: receiptId
-           AttributeType: S
-       KeySchema:
-         - AttributeName: userId
-           KeyType: HASH
-         - AttributeName: receiptId
-           KeyType: RANGE
-       BillingMode: PAY_PER_REQUEST
