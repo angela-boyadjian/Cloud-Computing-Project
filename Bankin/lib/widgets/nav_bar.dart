@@ -76,7 +76,7 @@ class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMi
         body: PageView(
           children: <Widget>[
             Analysis(),
-            Budget(),
+            Budget(widget.user),
             Accounts(widget.user),
             ChatBot(widget.user),
             Profile(widget.user),
