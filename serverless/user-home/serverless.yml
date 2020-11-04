@@ -15,6 +15,7 @@ provider:
       Resource:
         - { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ]]}
         - "arn:aws:s3:::user-asset-bucket/*"
+        - "arn:aws:dynamodb:eu-west-2::"
 
 custom:
   assets:

@@ -7,7 +7,7 @@ AWS.config.update({region: process.env.AWS_REGION});
 const db = new AWS.DynamoDB.DocumentClient();
 const TableName = process.env.BUDGETS_TABLE;
 
-module.exports.budgetsFunction = {
+module.exports = {
     get: async(event, context) => {
         const userId = event.requestContext.authorizer.claims.sub;
         const params = {
