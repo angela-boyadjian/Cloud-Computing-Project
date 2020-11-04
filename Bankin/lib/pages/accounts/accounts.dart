@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:Bankin/models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:Bankin/models/user.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:http/http.dart' as http;
@@ -22,7 +22,7 @@ class _AccountsState extends State<Accounts> {
   List<Receipts> _receipts;
   final http.Client _client = http.Client();
   var _url =
-      'https://gwdz2qxtl2.execute-api.eu-west-2.amazonaws.com/dev/user/receipts';
+      "https://ajexrc4gb4.execute-api.eu-west-2.amazonaws.com/dev/user/receipts";
   final _storeController = TextEditingController();
   final _categoryController = TextEditingController();
   final _priceController = TextEditingController();
@@ -48,17 +48,26 @@ class _AccountsState extends State<Accounts> {
 
   Future<void> getReceipts() async {
     final response = await _client.get(_url, headers: _headers);
-    final jsonResponse = json.decode(response.body);
-    List<Receipts> tmpList = List();
+    if (response.body.isNotEmpty) {
+      final jsonResponse = json.decode(response.body);
 
-    if (jsonResponse == null || jsonResponse['result'] == null
-      || jsonResponse['result']['Items'] == null) return;
-    for (int i = 0; jsonResponse['result']['Items'] != null && i < jsonResponse['result']['Items'].length; ++i) {
-      tmpList.add(Receipts.fromJson(jsonResponse['result']['Items'][i]));
+      List<Receipts> tmpList = List();
+
+      if (jsonResponse == null ||
+          jsonResponse['result'] == null ||
+          jsonResponse['result']['Items'] == null) return;
+      for (int i = 0;
+          jsonResponse['result']['Items'] != null &&
+              i < jsonResponse['result']['Items'].length;
+          ++i) {
+        tmpList.add(Receipts.fromJson(jsonResponse['result']['Items'][i]));
+      }
+      setState(() {
+        _receipts = tmpList;
+      });
+    } else {
+      return;
     }
-    setState(() {
-      _receipts = tmpList;
-    });
   }
 
   Future<void> postReceipts(Receipts receipt) async {
@@ -72,7 +81,7 @@ class _AccountsState extends State<Accounts> {
       },
     );
     if (response.statusCode != 200) {
-      print('Error: ' + response.toString());
+      print(response.body);
     }
   }
 
@@ -98,8 +107,8 @@ class _AccountsState extends State<Accounts> {
   Widget addDialog() {
     return AlertDialog(
       title: Text('Add expense'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+      content: ListView(
+        shrinkWrap: true,
         children: [
           TextField(
             controller: _storeController,
@@ -163,6 +172,11 @@ class _AccountsState extends State<Accounts> {
     _priceController.clear();
   }
 
+  Future onGoBack(dynamic value) async {
+    await getReceipts();
+    setState(() {});
+  }
+
   Widget addButton(String text, Function onPressedFunc) {
     return ButtonTheme(
       minWidth: double.infinity,
@@ -175,7 +189,8 @@ class _AccountsState extends State<Accounts> {
               side: BorderSide(color: Colors.blue)),
           onPressed: () {
             showDialog<void>(
-                context: context, builder: (context) => addDialog());
+                context: context,
+                builder: (context) => addDialog()).then(onGoBack);
           },
           color: Colors.blue,
           textColor: Colors.white,
@@ -198,6 +213,7 @@ class _AccountsState extends State<Accounts> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           leading: Center(),
           centerTitle: true,

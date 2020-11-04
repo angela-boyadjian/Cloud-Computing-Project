@@ -21,7 +21,7 @@ class ChatBot extends StatefulWidget {
 class _ChatBotState extends State<ChatBot> {
   final http.Client _client = http.Client();
   final String _url =
-      "https://gwdz2qxtl2.execute-api.eu-west-2.amazonaws.com/dev/chatbot/setBudget";
+      "https://ajexrc4gb4.execute-api.eu-west-2.amazonaws.com/dev/chatbot/setBudget";
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
   Map<String, String> _body;
