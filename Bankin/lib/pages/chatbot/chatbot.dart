@@ -51,6 +51,7 @@ class _ChatBotState extends State<ChatBot> {
           'Authorization': widget.user.token,
         },
         body: jsonEncode(_body));
+    print("RESPONSE == " + response.body);
     final jsonResponse = json.decode(response.body);
     _botResponse = ChatBotResponse.fromJson(jsonResponse).message;
   }

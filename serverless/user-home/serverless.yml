@@ -25,13 +25,9 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-2
-<<<<<<< HEAD
-  
-=======
   environment:
     RECEIPTS_TABLE: receipts
 
->>>>>>> 7aa3731820110db6298cb0efc1a3f43330c2a11e
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -99,10 +95,6 @@ functions:
         authorizer:
           name: authorizer
           arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
-<<<<<<< HEAD
-
-
-=======
   expenses_get:
     handler: expenses.get
     events:
@@ -121,7 +113,6 @@ functions:
           authorizer:
             name: authorizer
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
->>>>>>> 7aa3731820110db6298cb0efc1a3f43330c2a11e
 #  Authorizer:
 #    Type: AWS::ApiGateway::Authorizer
 #    Properties:
