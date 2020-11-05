@@ -21,7 +21,6 @@ module.exports = {
             TableName
         }
         let result = {};
-
         try {
             result = await db.query(params).promise();
         } catch (error) {
@@ -33,7 +32,7 @@ module.exports = {
         return {
             statusCode: 200,
             body: JSON.stringify({
-                result
+                receipts: result.Items[0].receipts
             })
         }
     },
@@ -41,7 +40,7 @@ module.exports = {
         const data = qs.parse(event.body);
         const userId = event.requestContext.authorizer.claims.sub;
 
-        if (data.store === undefined || data.price === undefined || data.category === undefined) {
+        if (data.name === undefined || data.amount === undefined || data.category === undefined) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({
@@ -49,22 +48,46 @@ module.exports = {
                 })
             }
         }
-        const Item = {
-            receiptId: uuid.v4(),
-            userId: userId,
-            store: data.store,
-            price: parseFloat(data.price),
+        const isNumeric = (str) => {
+            if (typeof str != "string") return false;
+            return !isNaN(str) && !isNaN(parseFloat(str));
+        }
+        if (!isNumeric(data.amount)) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({
+                    error: "Missing parameters."
+                })
+            }
+        }
+
+        const item = {
+            id: uuid.v4(),
+            name: data.name,
+            amount: parseFloat(data.amount),
             category: data.category,
             date: new Date().getTime()
         }
+        const params = {
+            TableName,
+            Key:{
+                "userId": userId,
+            },
+            UpdateExpression: "set #attrName = list_append(#attrName, :i)",
+            ExpressionAttributeNames : {
+                "#attrName" : "receipts"
+            },
+            ExpressionAttributeValues:{
+                ":i": [item]
+            },
+            ReturnValues:"UPDATED_NEW"
+        };
+
         let result = {};
 
         try {
-            result = await db.put({
-                TableName,
-                Item
-            }).promise();
-        } catch (error) {
+            result = await db.update(params).promise();
+        } catch(error) {
             console.log("oh. An error occured.", error);
             return {
                 statusCode: 500

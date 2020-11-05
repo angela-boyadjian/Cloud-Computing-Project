@@ -1,4 +1,4 @@
-service: budgets
+service: finances
 
 frameworkVersion: '2'
 
@@ -25,24 +25,16 @@ provider:
         - "arn:aws:dynamodb:eu-west-2:843314631316:table/user_finances"
 
 functions:
-  budgets_get:
-    handler: budgets.get
+  finances_get:
+    handler: finances.get
     events:
       - http:
-          path: /budgets
+          path: /finances
           method: get
           authorizer:
-            name: AuthorizationBudgets
+            name: AuthorizationFinances
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
-  budgets_post:
-    handler: budgets.post
-    events:
-      - http:
-          path: /budgets
-          method: post
-          authorizer:
-            name: AuthorizationBudgets
-            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+
 plugins:
   - serverless-import-apigateway
 custom:

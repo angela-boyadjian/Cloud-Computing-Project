@@ -1,5 +1,4 @@
-service: budgets
-
+service: expenses
 frameworkVersion: '2'
 
 provider:
@@ -8,10 +7,10 @@ provider:
   stage: dev
   region: eu-west-2
   apiGateway:
-    restApiId: ajexrc4gb4
-    restApiRootResourceId: qkfc6i9nvg
+    restApiId: k8sjcbmqde
+    restApiRootResourceId: 3et3hse7ki
   environment:
-    BUDGETS_TABLE: user_finances
+    RECEIPTS_TABLE: user_finances
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -25,26 +24,37 @@ provider:
         - "arn:aws:dynamodb:eu-west-2:843314631316:table/user_finances"
 
 functions:
-  budgets_get:
-    handler: budgets.get
+  expenses_get:
+    handler: expenses.get
     events:
       - http:
-          path: /budgets
+          path: /receipts
           method: get
           authorizer:
-            name: AuthorizationBudgets
+            name: AuthorizationReceipts
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
-  budgets_post:
-    handler: budgets.post
+  expenses_post:
+    handler: expenses.post
     events:
       - http:
-          path: /budgets
+          path: /receipts
           method: post
           authorizer:
-            name: AuthorizationBudgets
+            name: AuthorizationReceipts
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+
 plugins:
   - serverless-import-apigateway
-custom:
-  importApiGateway:
-    name: ${self:provider.stage}-user-home
+resources:
+ Resources:
+   receipts:
+     Type: AWS::DynamoDB::Table
+     Properties:
+       TableName: user_finances
+       AttributeDefinitions:
+         - AttributeName: userId
+           AttributeType: S
+       KeySchema:
+         - AttributeName: userId
+           KeyType: HASH
+       BillingMode: PAY_PER_REQUEST
