@@ -20,7 +20,7 @@ functions:
           path: /chatbot/setBudget
           method: post
           authorizer:
-            name: Authorization
+            name: AuthorizationChatbot
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 plugins:
   - serverless-import-apigateway

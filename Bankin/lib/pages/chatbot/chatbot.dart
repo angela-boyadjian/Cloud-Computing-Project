@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 
 import 'package:Bankin/models/user.dart';
+import 'package:Bankin/models/chatbot.dart';
 
 import 'widgets/chat_message.dart';
 
@@ -18,15 +21,21 @@ class ChatBot extends StatefulWidget {
 
 class _ChatBotState extends State<ChatBot> {
   final http.Client _client = http.Client();
-  final String _url =
-      "https://gwdz2qxtl2.execute-api.eu-west-2.amazonaws.com/dev/chatbot/setBudget";
+  final String _url = DotEnv().env['API_URL'] + "chatbot/setBudget";
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
+  Map<String, String> _body;
+  String _botResponse;
 
   @override
   void initState() {
     super.initState();
-    initChatBot();
+    _body = {
+      "name": "BudgetBud",
+      "alias": "\$LATEST",
+      "inputText": '',
+      "userId": widget.user.cognitoUser.getUsername(),
+    };
   }
 
   @override
@@ -35,29 +44,25 @@ class _ChatBotState extends State<ChatBot> {
     super.dispose();
   }
 
-  Future<void> initChatBot() async {
-    var response = await _client.post(
-      _url,
-      headers: {
-        'Authorization': widget.user.token,
-      },
-      body: {
-        "name": "BudgetBud",
-        "alias": "First",
-        "inputText": "set a budget of 60 for family",
-        "userId": "AngelaB",
-      },
-    );
-    print('RESPONSE BODY: ' + response.body);
+  Future<void> sendMsgToBot(message) async {
+    _body['inputText'] = message;
+    var response = await _client.post(_url,
+        headers: {
+          'Authorization': widget.user.token,
+        },
+        body: jsonEncode(_body));
+    print("RESPONSE == " + response.body);
+    final jsonResponse = json.decode(response.body);
+    _botResponse = ChatBotResponse.fromJson(jsonResponse).message;
   }
 
   void _handleSubmitted(String text) {
-    _textController.clear();
     ChatMessage message = ChatMessage(
       text: text,
       name: widget.user.cognitoUser.getUsername(),
       type: true,
     );
+    _textController.clear();
     setState(() {
       _messages.insert(0, message);
     });
@@ -65,15 +70,16 @@ class _ChatBotState extends State<ChatBot> {
   }
 
   void response(query) async {
-    _textController.clear();
+    await sendMsgToBot(query);
     ChatMessage message = ChatMessage(
-      text: 'Hi! How may I help you?',
+      text: _botResponse,
       name: "Bot",
       type: false,
     );
     setState(() {
       _messages.insert(0, message);
     });
+    _textController.clear();
   }
 
   Widget _buildTextComposer() {
