@@ -11,7 +11,7 @@ provider:
     restApiId: ajexrc4gb4
     restApiRootResourceId: qkfc6i9nvg
   environment:
-    BUDGETS_TABLE: user_budgets
+    BUDGETS_TABLE: user_finances
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -22,7 +22,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - "arn:aws:dynamodb:eu-west-2:843314631316:table/user_budgets"
+        - "arn:aws:dynamodb:eu-west-2:843314631316:table/user_finances"
 
 functions:
   budgets_get:
