@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:Bankin/models/user.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:http/http.dart' as http;
@@ -21,8 +22,7 @@ class Accounts extends StatefulWidget {
 class _AccountsState extends State<Accounts> {
   List<Receipts> _receipts;
   final http.Client _client = http.Client();
-  var _url =
-      "https://ajexrc4gb4.execute-api.eu-west-2.amazonaws.com/dev/user/receipts";
+  final String _url = DotEnv().env['API_URL'] + "finances";
   final _storeController = TextEditingController();
   final _categoryController = TextEditingController();
   final _priceController = TextEditingController();
@@ -35,7 +35,8 @@ class _AccountsState extends State<Accounts> {
     _headers = {
       'Authorization': widget.user.token,
     };
-    getReceipts();
+    // getReceipts();
+    getFinances();
   }
 
   @override
@@ -45,6 +46,16 @@ class _AccountsState extends State<Accounts> {
     _categoryController.dispose();
     _priceController.dispose();
     super.dispose();
+  }
+
+  Future<void> getFinances() async {
+    final response = await _client.get(_url, headers: _headers);
+    print('BODY:');
+    print(response.body);
+    // if (response.body.isNotEmpty) {
+    // } else {
+    //   return;
+    // }
   }
 
   Future<void> getReceipts() async {

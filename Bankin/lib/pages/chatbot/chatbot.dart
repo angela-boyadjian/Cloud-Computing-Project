@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -20,8 +21,7 @@ class ChatBot extends StatefulWidget {
 
 class _ChatBotState extends State<ChatBot> {
   final http.Client _client = http.Client();
-  final String _url =
-      "https://ajexrc4gb4.execute-api.eu-west-2.amazonaws.com/dev/chatbot/setBudget";
+  final String _url = DotEnv().env['API_URL'] + "chatbot/setBudget";
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
   Map<String, String> _body;
