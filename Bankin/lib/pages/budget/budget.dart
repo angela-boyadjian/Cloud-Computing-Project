@@ -40,8 +40,6 @@ class _BudgetState extends State<Budget> {
 
   Future<void> getBudgets() async {
     final response = await _client.get(_url, headers: _headers);
-    print('BODY: ');
-    print(response.body);
     if (response.body.isNotEmpty) {
       final jsonResponse = json.decode(response.body);
 

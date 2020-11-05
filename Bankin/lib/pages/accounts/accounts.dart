@@ -26,6 +26,7 @@ class _AccountsState extends State<Accounts> {
   final _storeController = TextEditingController();
   final _categoryController = TextEditingController();
   final _priceController = TextEditingController();
+  bool _postSuccess = false;
   Map<String, String> _headers;
 
   @override
@@ -83,6 +84,7 @@ class _AccountsState extends State<Accounts> {
     if (response.statusCode != 200) {
       print(response.body);
     }
+    _postSuccess = true;
   }
 
   void postIncome() {
@@ -142,12 +144,13 @@ class _AccountsState extends State<Accounts> {
           ),
           color: Colors.green,
           onPressed: () {
-            postReceipts(Receipts(
+            Receipts newReceipt = Receipts(
                 store: _storeController.text,
                 category: _categoryController.text,
-                price: double.parse(_priceController.text)));
+                price: double.parse(_priceController.text));
+            postReceipts(newReceipt);
             _clearControllers();
-            Navigator.pop(context);
+            Navigator.pop(context, _postSuccess ? newReceipt : null);
           },
           child: Text('SAVE'),
         ),
@@ -172,11 +175,6 @@ class _AccountsState extends State<Accounts> {
     _priceController.clear();
   }
 
-  Future onGoBack(dynamic value) async {
-    await getReceipts();
-    setState(() {});
-  }
-
   Widget addButton(String text, Function onPressedFunc) {
     return ButtonTheme(
       minWidth: double.infinity,
@@ -190,7 +188,7 @@ class _AccountsState extends State<Accounts> {
           onPressed: () {
             showDialog<void>(
                 context: context,
-                builder: (context) => addDialog()).then(onGoBack);
+                builder: (context) => addDialog());
           },
           color: Colors.blue,
           textColor: Colors.white,
