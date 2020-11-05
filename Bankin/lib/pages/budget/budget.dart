@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:Bankin/models/user.dart';
 import 'package:Bankin/models/budgets.dart';
@@ -17,19 +15,14 @@ class Budget extends StatefulWidget {
 
 class _BudgetState extends State<Budget> {
   final http.Client _client = http.Client();
-  var _url =
-      "https://ajexrc4gb4.execute-api.eu-west-2.amazonaws.com/dev/budgets";
-  Map<String, String> _headers;
   List<Budgets> _budgets;
 
   @override
   initState() {
     super.initState();
-    _headers = {
-      'Authorization': widget.user.token,
-    };
-    // postBudget(Budgets(amount: '60', category: "family"));
-    getBudgets();
+    setState(() {
+      _budgets = widget.user.finances.budgets;
+    });
   }
 
   @override
@@ -38,46 +31,8 @@ class _BudgetState extends State<Budget> {
     super.dispose();
   }
 
-  Future<void> getBudgets() async {
-    final response = await _client.get(_url, headers: _headers);
-    if (response.body.isNotEmpty) {
-      final jsonResponse = json.decode(response.body);
-
-      List<Budgets> tmpList = List();
-
-      if (jsonResponse == null ||
-          jsonResponse['result'] == null ||
-          jsonResponse['result']['Items'] == null) return;
-      for (int i = 0;
-          jsonResponse['result']['Items'] != null &&
-              i < jsonResponse['result']['Items'].length;
-          ++i) {
-        tmpList.add(Budgets.fromJson(jsonResponse['result']['Items'][i]));
-      }
-      setState(() {
-        _budgets = tmpList;
-      });
-    } else {
-      return;
-    }
-  }
-
-  Future<void> postBudget(Budgets budget) async {
-    var response = await _client.post(
-      _url,
-      headers: _headers,
-      body: {
-        'amount': budget.amount,
-        'category': budget.category,
-      },
-    );
-    if (response.statusCode != 200) {
-      print(response.body);
-    }
-    print(response.statusCode);
-  }
-
-  _renderContent(BuildContext context, Color color, String category, int total) {
+  _renderContent(
+      BuildContext context, Color color, String category, double total) {
     return Card(
       elevation: 0.0,
       margin: EdgeInsets.only(left: 32.0, right: 32.0, top: 20.0, bottom: 0.0),
@@ -96,7 +51,8 @@ class _BudgetState extends State<Budget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(category, style: TextStyle(color: Colors.white, fontSize: 40)),
+              Text(category,
+                  style: TextStyle(color: Colors.white, fontSize: 40)),
             ],
           ),
         ),
@@ -108,7 +64,8 @@ class _BudgetState extends State<Budget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('\$' + total.toString(), style: TextStyle(color: Colors.white, fontSize: 40)),
+              Text('\$' + total.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 40)),
             ],
           ),
         ),
@@ -131,22 +88,25 @@ class _BudgetState extends State<Budget> {
             height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              ),
-            child: _renderContent(context, Colors.blue, _budgets == null ? 'Car' : _budgets[0].category, _budgets == null ? 500 : _budgets[0].amount),
+            ),
+            child: _renderContent(
+                context, Colors.blue, 'Family', _budgets[0].amount),
           ),
           Container(
             height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              ),
-            child: _renderContent(context, Colors.pink, 'Vacation', 643),
+            ),
+            child: _renderContent(
+                context, Colors.pink, 'Vacation', _budgets[1].amount),
           ),
           Container(
             height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              ),
-            child: _renderContent(context, Colors.indigo, 'Saving', 10),
+            ),
+            child: _renderContent(
+                context, Colors.indigo, 'Saving', _budgets[2].amount),
           ),
         ],
       ),
