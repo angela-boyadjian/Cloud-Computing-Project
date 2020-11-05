@@ -6,11 +6,17 @@ class Finances {
   final List<Budgets> budgets;
 
   const Finances({this.receipts, this.budgets});
-  
+
   factory Finances.fromJson(Map<String, dynamic> parsedJson) {
+    var tmpReceipts = parsedJson['receipts'] as List;
+    List<Receipts> receiptsList =
+        tmpReceipts.map((i) => Receipts.fromJson(i)).toList();
+    var tmpBudgets = parsedJson['budgets'] as List;
+    List<Budgets> budgetsList =
+        tmpBudgets.map((i) => Budgets.fromJson(i)).toList();
     return Finances(
-      // receipts: parsedJson['store'] as String,
-      // budgets: parsedJson['category'] as String,
+      receipts: receiptsList,
+      budgets: budgetsList,
     );
   }
 }

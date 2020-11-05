@@ -132,7 +132,7 @@ class _BudgetState extends State<Budget> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
               ),
-            child: _renderContent(context, Colors.blue, _budgets == null ? 'Car' : _budgets[0].category, _budgets == null ? 500 : int.parse(_budgets[0].amount)),
+            child: _renderContent(context, Colors.blue, _budgets == null ? 'Car' : _budgets[0].category, _budgets == null ? 500 : _budgets[0].amount),
           ),
           Container(
             height: 200,

@@ -1,17 +1,17 @@
 class Receipts {
-  final String store;
+  final String name;
   final String category;
   final int date;
-  final double price;
+  final double amount;
 
-  const Receipts({this.store, this.category, this.date, this.price});
+  const Receipts({this.name, this.category, this.date, this.amount});
   
   factory Receipts.fromJson(Map<String, dynamic> parsedJson) {
     return Receipts(
-      store: parsedJson['store'] as String,
+      name: parsedJson['name'] as String,
       category: parsedJson['category'] as String,
       date: parsedJson['date'] as int,
-      price: parsedJson['price'].toDouble() as double,
+      amount: parsedJson['amount'].toDouble() as double,
     );
   }
 }
