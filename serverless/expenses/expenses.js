@@ -41,7 +41,7 @@ module.exports = {
         const data = qs.parse(event.body);
         const userId = event.requestContext.authorizer.claims.sub;
 
-        if (data.store === undefined || data.price === undefineds) {
+        if (data.store === undefined || data.price === undefined) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({
@@ -52,8 +52,7 @@ module.exports = {
 
         if (data.category === undefined) {
             /* TODO:
-                Determine category using Comprehend and RDS
-                New lambda func for this ?
+                Determine category using Athena and S3 and find the closest shop with the name in the POST request.
             */
            data.category = "Food"; //Default value for now.
         }

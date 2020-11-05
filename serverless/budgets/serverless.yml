@@ -11,7 +11,7 @@ provider:
     restApiId: ajexrc4gb4
     restApiRootResourceId: qkfc6i9nvg
   environment:
-    BUDGETS_TABLE: budgets
+    BUDGETS_TABLE: user_budgets
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -22,7 +22,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - "arn:aws:dynamodb:eu-west-2:843314631316:table/budgets"
+        - "arn:aws:dynamodb:eu-west-2:843314631316:table/user_budgets"
 
 functions:
   budgets_get:
@@ -48,20 +48,3 @@ plugins:
 custom:
   importApiGateway:
     name: ${self:provider.stage}-user-home
-resources:
-  Resources:
-    budgets:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: budgets
-        AttributeDefinitions:
-          - AttributeName: userId
-            AttributeType: S
-          - AttributeName: budgetsId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: userId
-            KeyType: HASH
-          - AttributeName: budgetsId
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST

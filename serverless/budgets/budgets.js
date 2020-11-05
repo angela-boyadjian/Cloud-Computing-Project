@@ -54,6 +54,7 @@ module.exports = {
             userId: userId,
             amount: data.amount,
             category: data.category,
+            date: new Date().getTime()
         }
         let result = {};
 
