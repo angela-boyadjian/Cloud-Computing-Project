@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -19,13 +20,11 @@ class ChatBot extends StatefulWidget {
 }
 
 class _ChatBotState extends State<ChatBot> {
+  String _botResponse;
+  Map<String, String> _body;
   final http.Client _client = http.Client();
-  final String _url =
-      "https://ajexrc4gb4.execute-api.eu-west-2.amazonaws.com/dev/chatbot/setBudget";
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
-  Map<String, String> _body;
-  String _botResponse;
 
   @override
   void initState() {
@@ -46,12 +45,11 @@ class _ChatBotState extends State<ChatBot> {
 
   Future<void> sendMsgToBot(message) async {
     _body['inputText'] = message;
-    var response = await _client.post(_url,
+    var response = await _client.post(DotEnv().env['URL_CHATBOT'],
         headers: {
           'Authorization': widget.user.token,
         },
         body: jsonEncode(_body));
-    print("RESPONSE == " + response.body);
     final jsonResponse = json.decode(response.body);
     _botResponse = ChatBotResponse.fromJson(jsonResponse).message;
   }

@@ -43,14 +43,14 @@ class Result extends StatelessWidget {
               color: Colors.grey.withAlpha(50)),
           child: ListTile(
             leading: categoryIcon(),
-            title: Text(_receipt.store,
+            title: Text(_receipt.name,
                 style: TextStyle(
                     color: Colors.blueGrey, fontWeight: FontWeight.bold)),
             subtitle: Text(getDate()),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(_receipt.price.toString(),
+                Text(_receipt.amount.toString(),
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 Icon(FontAwesomeIcons.dollarSign, color: Colors.red)
               ],
