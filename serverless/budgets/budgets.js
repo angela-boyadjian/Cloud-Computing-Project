@@ -33,7 +33,7 @@ module.exports = {
         return {
             statusCode: 200,
             body: JSON.stringify({
-                result
+                budgets: result.Items[0].budgets
             })
         }
     },
@@ -49,19 +49,42 @@ module.exports = {
                 })
             }
         }
-        const Item = {
-            budgetsId: uuid.v4(),
-            userId: userId,
-            amount: data.amount,
+        const isNumeric = (str) => {
+            if (typeof str != "string") return false;
+            return !isNaN(str) && !isNaN(parseFloat(str));
+        }
+        if (!isNumeric(data.amount)) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({
+                    error: "Missing parameters."
+                })
+            }
+        }
+
+        const item = {
+            id: uuid.v4(),
+            amount: parseFloat(data.amount),
             category: data.category,
         }
+        const params = {
+            TableName,
+            Key:{
+                "userId": userId,
+            },
+            UpdateExpression: "set #attrName = list_append(#attrName, :i)",
+            ExpressionAttributeNames : {
+                "#attrName" : "budgets"
+            },
+            ExpressionAttributeValues:{
+                ":i": [item]
+            },
+            ReturnValues:"UPDATED_NEW"
+        };
         let result = {};
 
         try {
-            result = await db.put({
-                TableName,
-                Item
-            }).promise();
+            result = await db.update(params).promise();
         } catch (error) {
             console.log("oh. An error occured.", error);
             return {
