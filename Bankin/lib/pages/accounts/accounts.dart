@@ -5,36 +5,31 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'package:provider/provider.dart';
 import 'package:Bankin/models/receipts.dart';
 
 import 'widgets/result.dart';
 
 class Accounts extends StatefulWidget {
-  final User user;
-
-  Accounts(this.user);
+  Accounts();
   @override
   _AccountsState createState() => _AccountsState();
 }
 
 class _AccountsState extends State<Accounts> {
-  List<Receipts> _receipts;
   final http.Client _client = http.Client();
   final _nameController = TextEditingController();
   final _categoryController = TextEditingController();
   final _amountController = TextEditingController();
-  bool _postSuccess = false;
   Map<String, String> _headers;
 
   @override
   void initState() {
     super.initState();
+    var user = Provider.of<User>(context, listen: false);
     _headers = {
-      'Authorization': widget.user.token,
+      'Authorization': user.token,
     };
-    setState(() {
-      _receipts = widget.user.finances.receipts;
-    });
   }
 
   @override
@@ -56,26 +51,28 @@ class _AccountsState extends State<Accounts> {
         'category': receipt.category
       },
     );
-    print('CODE = ' + response.statusCode.toString());
     if (response.statusCode != 200) {
       print(response.body);
     }
-    _postSuccess = true;
+    var user = Provider.of<User>(context, listen: false);
+    user.addRceipt(receipt);
   }
 
   void postIncome() {
     return;
   }
 
-  buildCorrectList(List<Receipts> toDisplay) {
+  buildCorrectList() {
     return Container(
-        child: toDisplay != null
-            ? ListView.builder(
-                itemCount: toDisplay.length,
-                itemBuilder: (context, int idx) {
-                  return Result(toDisplay[idx]);
-                },
-              )
+        child: Provider.of<User>(context, listen: false).receipts != null
+            ? Consumer<User>(builder: (context, user, child) {
+                return ListView.builder(
+                  itemCount: user.receipts.length,
+                  itemBuilder: (context, int idx) {
+                    return Result(user.receipts[idx]);
+                  },
+                );
+              })
             : SpinKitFadingCube(
                 color: Colors.deepPurple,
                 size: 50.0,
@@ -126,7 +123,7 @@ class _AccountsState extends State<Accounts> {
                 amount: double.parse(_amountController.text));
             postReceipts(newReceipt);
             _clearControllers();
-            Navigator.pop(context, _postSuccess ? newReceipt : null);
+            Navigator.pop(context);
           },
           child: Text('SAVE'),
         ),
@@ -163,8 +160,7 @@ class _AccountsState extends State<Accounts> {
               side: BorderSide(color: Colors.blue)),
           onPressed: () {
             showDialog<void>(
-                context: context,
-                builder: (context) => addDialog());
+                context: context, builder: (context) => addDialog());
           },
           color: Colors.blue,
           textColor: Colors.white,
@@ -175,9 +171,12 @@ class _AccountsState extends State<Accounts> {
   }
 
   int _getTotal() {
+    List<Receipts> receipts = Provider.of<User>(context, listen: false).receipts;
+    if (receipts == null) return 0;
     double res = 0;
-    for (int i = 0; _receipts != null && i < _receipts.length; ++i) {
-      res += _receipts[i].amount.toDouble();
+
+    for (int i = 0; receipts != null && i < receipts.length; ++i) {
+      res += receipts[i].amount.toDouble();
     }
     return res.truncate();
   }
@@ -212,7 +211,7 @@ class _AccountsState extends State<Accounts> {
               addButton('Add receipt', postReceipts),
               Text('Spent: ' + _getTotal().toString() + '\$',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              Expanded(child: buildCorrectList(_receipts)),
+              Expanded(child: buildCorrectList()),
             ]),
             Column(children: <Widget>[
               addButton('Add income', postIncome),

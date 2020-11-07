@@ -16,18 +16,18 @@ class RouteManager {
           builder: (context) => Login(),
         ));
   }
-  showNavBar(context, user) {
+  showNavBar(context) {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => NavBar(user),
+          builder: (context) => NavBar(),
         ));
   }
-  showProfileEdit(context, user, attributes) {
+  showProfileEdit(context, attributes) {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ProfileEdit(user, attributes),
+          builder: (context) => ProfileEdit(attributes),
         ));
   }
   showImageEditor(context, {CropStyle cropStyle, callback, String path}) async {

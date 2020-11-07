@@ -4,11 +4,10 @@ import 'package:Bankin/models/budgets.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:flip_card/flip_card.dart';
+import 'package:provider/provider.dart';
 
 class Budget extends StatefulWidget {
-  final User user;
-
-  Budget(this.user);
+  Budget();
   @override
   _BudgetState createState() => _BudgetState();
 }
@@ -20,8 +19,9 @@ class _BudgetState extends State<Budget> {
   @override
   initState() {
     super.initState();
+    var user = Provider.of<User>(context, listen: false);
     setState(() {
-      _budgets = widget.user.finances.budgets;
+      _budgets = user.finances.budgets;
     });
   }
 

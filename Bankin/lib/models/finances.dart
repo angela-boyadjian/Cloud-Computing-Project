@@ -1,11 +1,13 @@
+import 'package:flutter/cupertino.dart';
+
 import 'budgets.dart';
 import 'receipts.dart';
 
 class Finances {
-  final List<Receipts> receipts;
-  final List<Budgets> budgets;
+  List<Receipts> receipts;
+  List<Budgets> budgets;
 
-  const Finances({this.receipts, this.budgets});
+  Finances({this.receipts, this.budgets});
 
   factory Finances.fromJson(Map<String, dynamic> parsedJson) {
     var tmpReceipts = parsedJson['receipts'] as List;

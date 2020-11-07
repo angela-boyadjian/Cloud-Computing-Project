@@ -11,9 +11,7 @@ import 'package:Bankin/utils/route_manager.dart';
 import 'widgets/avatar.dart';
 
 class Profile extends StatefulWidget {
-  final User user;
-
-  Profile(this.user);
+  Profile();
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -32,10 +30,12 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> getAttributes() async {
+    var user = Provider.of<User>(context);
+
     List<CognitoUserAttribute> attributes;
     Map<String, String> tmp = _attributes;
     try {
-      attributes = await widget.user.cognitoUser.getUserAttributes();
+      attributes = await user.cognitoUser.getUserAttributes();
       attributes.forEach((attribute) {
         if (tmp.containsKey(attribute.getName())) {
           tmp[attribute.getName()] = attribute.getValue();
@@ -76,7 +76,7 @@ class _ProfileState extends State<Profile> {
                   borderRadius: BorderRadius.circular(18.0)),
               onPressed: () {
                 Provider.of<RouteManager>(context, listen: false)
-                    .showProfileEdit(context, widget.user, _attributes);
+                    .showProfileEdit(context, _attributes);
               },
               color: Colors.orange,
               textColor: Colors.white,

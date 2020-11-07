@@ -14,7 +14,7 @@ class UserData with ChangeNotifier {
   }
 
   void setUsername(_username) {
-    this.username =  _username;
+    this.username = _username;
     notifyListeners();
   }
 }

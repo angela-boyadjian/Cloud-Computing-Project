@@ -29,7 +29,9 @@ class Result extends StatelessWidget {
 
   String getDate() {
     final f = new DateFormat('yyyy-MM-dd hh:mm');
-    return f.format(DateTime.fromMillisecondsSinceEpoch(_receipt.date));
+    return f.format(DateTime.fromMillisecondsSinceEpoch(_receipt.date == null
+        ? DateTime.now().millisecondsSinceEpoch
+        : _receipt.date));
   }
 
   Flexible buildCard(context) {

@@ -3,7 +3,6 @@ import 'package:Bankin/pages/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -13,8 +12,7 @@ import 'package:Bankin/pages/analysis/analysis.dart';
 import 'package:Bankin/pages/accounts/accounts.dart';
 
 class NavBar extends StatefulWidget {
-  final User user;
-  NavBar(this.user);
+  NavBar();
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -23,14 +21,13 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
-    return NavBarInit(widget.user);
+    return NavBarInit();
   }
 }
 
 class NavBarInit extends StatefulWidget {
-  final User user;
 
-  NavBarInit(this.user);
+  NavBarInit();
 
   @override
   NavBarInitState createState() => new NavBarInitState();
@@ -76,10 +73,10 @@ class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMi
         body: PageView(
           children: <Widget>[
             Analysis(),
-            Budget(widget.user),
-            Accounts(widget.user),
-            ChatBot(widget.user),
-            Profile(widget.user),
+            Budget(),
+            Accounts(),
+            ChatBot(),
+            Profile(),
           ],
           controller: pageController,
           onPageChanged: onPageChanged,

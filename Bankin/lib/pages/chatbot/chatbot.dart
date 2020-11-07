@@ -8,13 +8,12 @@ import 'package:http/http.dart' as http;
 
 import 'package:Bankin/models/user.dart';
 import 'package:Bankin/models/chatbot.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/chat_message.dart';
 
 class ChatBot extends StatefulWidget {
-  final User user;
-
-  ChatBot(this.user);
+  ChatBot();
   @override
   _ChatBotState createState() => _ChatBotState();
 }
@@ -29,12 +28,6 @@ class _ChatBotState extends State<ChatBot> {
   @override
   void initState() {
     super.initState();
-    _body = {
-      "name": "BudgetBud",
-      "alias": "\$LATEST",
-      "inputText": '',
-      "userId": widget.user.cognitoUser.getUsername(),
-    };
   }
 
   @override
@@ -43,32 +36,38 @@ class _ChatBotState extends State<ChatBot> {
     super.dispose();
   }
 
-  Future<void> sendMsgToBot(message) async {
+  Future<void> sendMsgToBot(User user, message) async {
+    _body = {
+      "name": "BudgetBud",
+      "alias": "\$LATEST",
+      "inputText": message,
+      "userId": user.cognitoUser.getUsername(),
+    };
     _body['inputText'] = message;
     var response = await _client.post(DotEnv().env['URL_CHATBOT'],
         headers: {
-          'Authorization': widget.user.token,
+          'Authorization': user.token,
         },
         body: jsonEncode(_body));
     final jsonResponse = json.decode(response.body);
     _botResponse = ChatBotResponse.fromJson(jsonResponse).message;
   }
 
-  void _handleSubmitted(String text) {
+  void _handleSubmitted(User user, String text) {
     ChatMessage message = ChatMessage(
       text: text,
-      name: widget.user.cognitoUser.getUsername(),
+      name: user.cognitoUser.getUsername(),
       type: true,
     );
     _textController.clear();
     setState(() {
       _messages.insert(0, message);
     });
-    response(text);
+    response(user, text);
   }
 
-  void response(query) async {
-    await sendMsgToBot(query);
+  void response(user, query) async {
+    await sendMsgToBot(user, query);
     ChatMessage message = ChatMessage(
       text: _botResponse,
       name: "Bot",
@@ -80,7 +79,7 @@ class _ChatBotState extends State<ChatBot> {
     _textController.clear();
   }
 
-  Widget _buildTextComposer() {
+  Widget _buildTextComposer(User user) {
     return IconTheme(
       data: IconThemeData(color: Theme.of(context).accentColor),
       child: Container(
@@ -92,7 +91,7 @@ class _ChatBotState extends State<ChatBot> {
                 onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                 child: TextField(
                   controller: _textController,
-                  onSubmitted: _handleSubmitted,
+                  // onSubmitted: () _handleSubmitted,
                   decoration:
                       InputDecoration.collapsed(hintText: "Send a message"),
                 ),
@@ -102,7 +101,7 @@ class _ChatBotState extends State<ChatBot> {
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: () => _handleSubmitted(_textController.text)),
+                  onPressed: () => _handleSubmitted(user, _textController.text)),
             ),
           ],
         ),
@@ -112,6 +111,7 @@ class _ChatBotState extends State<ChatBot> {
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<User>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
@@ -130,7 +130,7 @@ class _ChatBotState extends State<ChatBot> {
         Divider(height: 1.0),
         Container(
           decoration: BoxDecoration(color: Theme.of(context).cardColor),
-          child: _buildTextComposer(),
+          child: _buildTextComposer(user),
         ),
       ]),
     );

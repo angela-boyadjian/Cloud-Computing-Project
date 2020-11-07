@@ -56,7 +56,8 @@ class _SignInState extends State<SignIn> {
     _headers = {
       'Authorization': token,
     };
-    final response = await _client.get(DotEnv().env['URL_FINANCES'], headers: _headers);
+    final response =
+        await _client.get(DotEnv().env['URL_FINANCES'], headers: _headers);
     if (response.body.isNotEmpty) {
       final jsonResponse = json.decode(response.body);
       setState(() {
@@ -68,7 +69,7 @@ class _SignInState extends State<SignIn> {
   }
 
   Future<void> _loginUser() async {
-    User user;
+    // User user;
     try {
       final cognitoUser = new CognitoUser(loginEmailController.text, userPool);
       final authDetails = new AuthenticationDetails(
@@ -84,17 +85,19 @@ class _SignInState extends State<SignIn> {
         print(e);
       }
       await getFinances(session.getIdToken().getJwtToken());
-      user = User(
-        cognitoUser: cognitoUser,
-        token: session.getIdToken().getJwtToken(),
-        finances: _finances,
-      );
+      ChangeNotifierProvider<User>(
+          create: (_) => User(cognitoUser, session.getIdToken().getJwtToken(), _finances),
+        );
+      var user = Provider.of<User>(context, listen: false);
+      user.cognitoUser = cognitoUser;
+      user.token = session.getIdToken().getJwtToken();
+      user.finances = _finances;
     } on CognitoClientException catch (e) {
       print("Error: " + e.message);
     } catch (e) {
       print("Error: " + e.message);
     }
-    Provider.of<RouteManager>(context, listen: false).showNavBar(context, user);
+    Provider.of<RouteManager>(context, listen: false).showNavBar(context);
   }
 
   Widget build(BuildContext context) {
