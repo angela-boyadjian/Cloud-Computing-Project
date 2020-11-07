@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:Bankin/models/budgets.dart';
+import 'package:Bankin/pages/budget/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -24,16 +26,37 @@ class _ChatBotState extends State<ChatBot> {
   final http.Client _client = http.Client();
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
+  Map<String, String> _headers;
 
   @override
   void initState() {
     super.initState();
+    var user = Provider.of<User>(context, listen: false);
+    _headers = {
+      'Authorization': user.token,
+    };
   }
 
   @override
   void dispose() {
     _client.close();
     super.dispose();
+  }
+
+  putBudgets(String amount, String category) async {
+    var user = Provider.of<User>(context, listen: false);
+    var response = await _client.put(
+      DotEnv().env['URL_BUDGETS'],
+      headers: _headers,
+      body: {
+        'amount': amount,
+        'category': category
+      },
+    );
+    if (response.statusCode != 200) {
+      print(response.body);
+    }
+    user.addBudgets(Budgets(amount: double.parse(amount), category: category));
   }
 
   Future<void> sendMsgToBot(message) async {
@@ -47,12 +70,11 @@ class _ChatBotState extends State<ChatBot> {
     };
     _body['inputText'] = message;
     var response = await _client.post(DotEnv().env['URL_CHATBOT'],
-        headers: {
-          'Authorization': user.token,
-        },
-        body: jsonEncode(_body));
+        headers: _headers, body: jsonEncode(_body));
     final jsonResponse = json.decode(response.body);
     _botResponse = ChatBotResponse.fromJson(jsonResponse).message;
+    await putBudgets(jsonResponse['sessionAttributes']['amount'],
+        jsonResponse['sessionAttributes']['current_budget']);
   }
 
   void _handleSubmitted(String text) {

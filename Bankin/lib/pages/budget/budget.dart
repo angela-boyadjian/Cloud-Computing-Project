@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:Bankin/models/user.dart';
-import 'package:Bankin/models/budgets.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:flip_card/flip_card.dart';
 import 'package:provider/provider.dart';
+import 'package:flip_card/flip_card.dart';
+
+import 'package:Bankin/models/user.dart';
 
 class Budget extends StatefulWidget {
   Budget();
@@ -14,15 +14,10 @@ class Budget extends StatefulWidget {
 
 class _BudgetState extends State<Budget> {
   final http.Client _client = http.Client();
-  List<Budgets> _budgets;
 
   @override
   initState() {
     super.initState();
-    var user = Provider.of<User>(context, listen: false);
-    setState(() {
-      _budgets = user.finances.budgets;
-    });
   }
 
   @override
@@ -75,6 +70,8 @@ class _BudgetState extends State<Budget> {
 
   @override
   Widget build(BuildContext context) {
+    var budgets = Provider.of<User>(context, listen: false).budgets;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
@@ -90,7 +87,7 @@ class _BudgetState extends State<Budget> {
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
             ),
             child: _renderContent(
-                context, Colors.blue, 'Family', _budgets[0].amount),
+                context, Colors.blue, 'Family', budgets[0].amount),
           ),
           Container(
             height: 200,
@@ -98,7 +95,7 @@ class _BudgetState extends State<Budget> {
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
             ),
             child: _renderContent(
-                context, Colors.pink, 'Vacation', _budgets[1].amount),
+                context, Colors.pink, 'Vacation', budgets[1].amount),
           ),
           Container(
             height: 200,
@@ -106,7 +103,7 @@ class _BudgetState extends State<Budget> {
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
             ),
             child: _renderContent(
-                context, Colors.indigo, 'Saving', _budgets[2].amount),
+                context, Colors.indigo, 'Saving', budgets[2].amount),
           ),
         ],
       ),
