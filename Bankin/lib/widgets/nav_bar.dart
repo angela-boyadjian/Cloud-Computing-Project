@@ -26,14 +26,14 @@ class _NavBarState extends State<NavBar> {
 }
 
 class NavBarInit extends StatefulWidget {
-
   NavBarInit();
 
   @override
   NavBarInitState createState() => new NavBarInitState();
 }
 
-class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMixin {
+class NavBarInitState extends State<NavBarInit>
+    with SingleTickerProviderStateMixin {
   PageController pageController;
   int pageIndex = 2;
   final double iconSize = 20.0;
@@ -64,48 +64,49 @@ class NavBarInitState extends State<NavBarInit> with SingleTickerProviderStateMi
     pageController.animateToPage(pageIndex,
         duration: Duration(milliseconds: 250), curve: Curves.easeInOut);
   }
+
   final Color iconColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        body: PageView(
-          children: <Widget>[
-            Analysis(),
-            Budget(),
-            Accounts(),
-            ChatBot(),
-            Profile(),
-          ],
-          controller: pageController,
-          onPageChanged: onPageChanged,
-        ),
-        bottomNavigationBar: CurvedNavigationBar(
-          key: _bottomNavigationKey,
-          index: pageIndex,
-          height: 50.0,
-          items: <Widget>[
-            Icon(FontAwesomeIcons.chartLine,
-                size: pageIndex == 0 ? iconSize + 5 : iconSize, color: iconColor),
-            Icon(FontAwesomeIcons.chartPie,
-                size: pageIndex == 1 ? iconSize + 5 : iconSize, color: iconColor),
-            Icon(FontAwesomeIcons.wallet,
-                size: pageIndex == 2 ? iconSize + 5 : iconSize, color: iconColor),
-            Icon(FontAwesomeIcons.headset,
-                size: pageIndex == 3 ? iconSize + 5 : iconSize, color: iconColor),
-            Icon(FontAwesomeIcons.userAlt,
-                size: pageIndex == 4 ? iconSize + 5 : iconSize, color: iconColor),
-          ],
-          color: Colors.orange,
-          buttonBackgroundColor: Colors.red,
-          backgroundColor: Colors.white,
-          animationCurve: Curves.easeInOut,
-          animationDuration: Duration(milliseconds: 400),
-          onTap: (index) {
-            onTap(index);
-          },
-        ),
+      key: _scaffoldKey,
+      body: PageView(
+        children: <Widget>[
+          Analysis(),
+          Budget(),
+          Accounts(),
+          ChatBot(),
+          Profile(),
+        ],
+        controller: pageController,
+        onPageChanged: onPageChanged,
+      ),
+      bottomNavigationBar: CurvedNavigationBar(
+        key: _bottomNavigationKey,
+        index: pageIndex,
+        height: 50.0,
+        items: <Widget>[
+          Icon(FontAwesomeIcons.chartLine,
+              size: pageIndex == 0 ? iconSize + 5 : iconSize, color: iconColor),
+          Icon(FontAwesomeIcons.chartPie,
+              size: pageIndex == 1 ? iconSize + 5 : iconSize, color: iconColor),
+          Icon(FontAwesomeIcons.wallet,
+              size: pageIndex == 2 ? iconSize + 5 : iconSize, color: iconColor),
+          Icon(FontAwesomeIcons.headset,
+              size: pageIndex == 3 ? iconSize + 5 : iconSize, color: iconColor),
+          Icon(FontAwesomeIcons.userAlt,
+              size: pageIndex == 4 ? iconSize + 5 : iconSize, color: iconColor),
+        ],
+        color: Colors.orange,
+        buttonBackgroundColor: Colors.red,
+        backgroundColor: Colors.white,
+        animationCurve: Curves.easeInOut,
+        animationDuration: Duration(milliseconds: 400),
+        onTap: (index) {
+          onTap(index);
+        },
+      ),
     );
   }
 }

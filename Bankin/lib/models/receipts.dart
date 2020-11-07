@@ -5,7 +5,7 @@ class Receipts {
   final double amount;
 
   const Receipts({this.name, this.category, this.date, this.amount});
-  
+
   factory Receipts.fromJson(Map<String, dynamic> parsedJson) {
     return Receipts(
       name: parsedJson['name'] as String,

@@ -18,9 +18,9 @@ Future<void> main() async {
       Provider(create: (_) => new RouteManager()),
       ListenableProvider(create: (_) => new UserData()),
       ListenableProvider(create: (_) => new Storage()),
-        ChangeNotifierProvider<User>(
-          create: (_) => User(null, null, null),
-        ),
+      ChangeNotifierProvider<User>(
+        create: (_) => User(null, null, null),
+      ),
     ], child: MyApp()),
   ));
 }

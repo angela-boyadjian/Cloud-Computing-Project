@@ -27,7 +27,8 @@ class _ProfileEditState extends State<ProfileEdit> {
   @override
   void initState() {
     super.initState();
-    if (widget.attributes['picture'] != '') _image = File(widget.attributes['picture']);
+    if (widget.attributes['picture'] != '')
+      _image = File(widget.attributes['picture']);
     _nameController.text = widget.attributes['name'];
     _emailController.text = widget.attributes['email'];
   }

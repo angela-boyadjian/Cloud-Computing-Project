@@ -5,7 +5,7 @@ import 'budgets.dart';
 import 'finances.dart';
 import 'receipts.dart';
 
-class User extends ChangeNotifier{
+class User extends ChangeNotifier {
   CognitoUser _cognitoUser;
   String _token;
   Finances _finances;
@@ -26,14 +26,17 @@ class User extends ChangeNotifier{
     _finances.receipts = value;
     notifyListeners();
   }
+
   void setBudgets(List<Budgets> value) async {
     _finances.budgets = value;
     notifyListeners();
   }
+
   void addRceipt(Receipts value) async {
     _finances.receipts.add(value);
     notifyListeners();
   }
+
   void addBudgets(Budgets value) async {
     _finances.budgets.add(value);
     notifyListeners();

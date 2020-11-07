@@ -36,7 +36,9 @@ class _ChatBotState extends State<ChatBot> {
     super.dispose();
   }
 
-  Future<void> sendMsgToBot(User user, message) async {
+  Future<void> sendMsgToBot(message) async {
+    var user = Provider.of<User>(context, listen: false);
+
     _body = {
       "name": "BudgetBud",
       "alias": "\$LATEST",
@@ -53,7 +55,8 @@ class _ChatBotState extends State<ChatBot> {
     _botResponse = ChatBotResponse.fromJson(jsonResponse).message;
   }
 
-  void _handleSubmitted(User user, String text) {
+  void _handleSubmitted(String text) {
+    var user = Provider.of<User>(context, listen: false);
     ChatMessage message = ChatMessage(
       text: text,
       name: user.cognitoUser.getUsername(),
@@ -63,11 +66,11 @@ class _ChatBotState extends State<ChatBot> {
     setState(() {
       _messages.insert(0, message);
     });
-    response(user, text);
+    response(text);
   }
 
-  void response(user, query) async {
-    await sendMsgToBot(user, query);
+  void response(query) async {
+    await sendMsgToBot(query);
     ChatMessage message = ChatMessage(
       text: _botResponse,
       name: "Bot",
@@ -79,7 +82,7 @@ class _ChatBotState extends State<ChatBot> {
     _textController.clear();
   }
 
-  Widget _buildTextComposer(User user) {
+  Widget _buildTextComposer() {
     return IconTheme(
       data: IconThemeData(color: Theme.of(context).accentColor),
       child: Container(
@@ -101,7 +104,7 @@ class _ChatBotState extends State<ChatBot> {
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: () => _handleSubmitted(user, _textController.text)),
+                  onPressed: () => _handleSubmitted(_textController.text)),
             ),
           ],
         ),
@@ -111,7 +114,6 @@ class _ChatBotState extends State<ChatBot> {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<User>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
@@ -121,16 +123,17 @@ class _ChatBotState extends State<ChatBot> {
       ),
       body: Column(children: <Widget>[
         Flexible(
-            child: ListView.builder(
-          padding: EdgeInsets.all(8.0),
-          reverse: true,
-          itemBuilder: (_, int index) => _messages[index],
-          itemCount: _messages.length,
-        )),
+          child: ListView.builder(
+            padding: EdgeInsets.all(8.0),
+            reverse: true,
+            itemBuilder: (_, int index) => _messages[index],
+            itemCount: _messages.length,
+          ),
+        ),
         Divider(height: 1.0),
         Container(
           decoration: BoxDecoration(color: Theme.of(context).cardColor),
-          child: _buildTextComposer(user),
+          child: _buildTextComposer(),
         ),
       ]),
     );

@@ -20,7 +20,6 @@ class UserData with ChangeNotifier {
 }
 
 class Storage with ChangeNotifier {
-
   final _storage = FlutterSecureStorage();
   List<_SecItem> _items = [];
 

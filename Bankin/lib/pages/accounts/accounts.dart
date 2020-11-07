@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:Bankin/models/user.dart';
+
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import 'package:http/http.dart' as http;
-
-import 'package:provider/provider.dart';
+import 'package:Bankin/models/user.dart';
 import 'package:Bankin/models/receipts.dart';
 
 import 'widgets/result.dart';
@@ -171,7 +171,8 @@ class _AccountsState extends State<Accounts> {
   }
 
   int _getTotal() {
-    List<Receipts> receipts = Provider.of<User>(context, listen: false).receipts;
+    List<Receipts> receipts =
+        Provider.of<User>(context, listen: false).receipts;
     if (receipts == null) return 0;
     double res = 0;
 

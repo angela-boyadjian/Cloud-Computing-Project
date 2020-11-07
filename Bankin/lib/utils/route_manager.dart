@@ -16,6 +16,7 @@ class RouteManager {
           builder: (context) => Login(),
         ));
   }
+
   showNavBar(context) {
     Navigator.push(
         context,
@@ -23,6 +24,7 @@ class RouteManager {
           builder: (context) => NavBar(),
         ));
   }
+
   showProfileEdit(context, attributes) {
     Navigator.push(
         context,
@@ -30,17 +32,19 @@ class RouteManager {
           builder: (context) => ProfileEdit(attributes),
         ));
   }
+
   showImageEditor(context, {CropStyle cropStyle, callback, String path}) async {
     return await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ImageCapture(
-                cropStyle: cropStyle, path: path)));
+            builder: (context) =>
+                ImageCapture(cropStyle: cropStyle, path: path)));
   }
+
   showConfirmingUser(context) {
     Navigator.push(
-      context,
-      MaterialPageRoute(
+        context,
+        MaterialPageRoute(
           builder: (context) => ConfirmingUser(),
         ));
   }

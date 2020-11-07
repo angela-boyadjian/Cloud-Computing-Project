@@ -86,8 +86,9 @@ class _SignInState extends State<SignIn> {
       }
       await getFinances(session.getIdToken().getJwtToken());
       ChangeNotifierProvider<User>(
-          create: (_) => User(cognitoUser, session.getIdToken().getJwtToken(), _finances),
-        );
+        create: (_) =>
+            User(cognitoUser, session.getIdToken().getJwtToken(), _finances),
+      );
       var user = Provider.of<User>(context, listen: false);
       user.cognitoUser = cognitoUser;
       user.token = session.getIdToken().getJwtToken();
