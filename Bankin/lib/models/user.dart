@@ -38,7 +38,12 @@ class User extends ChangeNotifier {
   }
 
   void addBudgets(Budgets value) async {
-    _finances.budgets.add(value);
+    for (int i = 0; i < _finances.budgets.length; ++i) {
+      if (_finances.budgets[i].category == value.category) {
+        _finances.budgets[i] = value;
+        break;
+      }
+    }
     notifyListeners();
   }
 }

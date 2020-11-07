@@ -50,13 +50,13 @@ class _ChatBotState extends State<ChatBot> {
       headers: _headers,
       body: {
         'amount': amount,
-        'category': category
+        'category': category.toLowerCase()
       },
     );
     if (response.statusCode != 200) {
       print(response.body);
     }
-    user.addBudgets(Budgets(amount: double.parse(amount), category: category));
+    user.addBudgets(Budgets(amount: double.parse(amount), category: category.toLowerCase()));
   }
 
   Future<void> sendMsgToBot(message) async {
