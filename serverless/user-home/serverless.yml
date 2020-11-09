@@ -3,7 +3,7 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: dev2
+  stage: dev
   region: eu-west-2
   environment:
     RECEIPTS_TABLE: receipts
@@ -19,6 +19,10 @@ provider:
         - "s3:*"
         - 's3:ListBucket'
       Resource: "arn:aws:s3:::*/*"
+    - Effect: 'Allow'
+      Action:
+        - "cognito-idp:AdminUpdateUserAttributes"
+      Resource: "arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M"
   apiGateway:
     binaryMediaTypes:
           - '*/*'
@@ -43,7 +47,7 @@ functions:
             name: Authorization
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
       - s3:
-          bucket: userbucketupload2
+          bucket: users-profile-picture
           event: "s3:ObjectCreated:*"
   user_pp_post:
     handler: user_picture.post
