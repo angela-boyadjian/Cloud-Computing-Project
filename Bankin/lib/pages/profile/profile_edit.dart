@@ -6,14 +6,14 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
 import 'package:Bankin/models/user.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/avatar.dart';
 
 class ProfileEdit extends StatefulWidget {
-  final User user;
   final Map<String, String> attributes;
 
-  ProfileEdit(this.user, this.attributes);
+  ProfileEdit(this.attributes);
 
   @override
   _ProfileEditState createState() => _ProfileEditState();
@@ -27,7 +27,8 @@ class _ProfileEditState extends State<ProfileEdit> {
   @override
   void initState() {
     super.initState();
-    if (widget.attributes['picture'] != '') _image = File(widget.attributes['picture']);
+    if (widget.attributes['picture'] != '')
+      _image = File(widget.attributes['picture']);
     _nameController.text = widget.attributes['name'];
     _emailController.text = widget.attributes['email'];
   }
@@ -39,7 +40,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     super.dispose();
   }
 
-  Future<void> _save() async {
+  Future<void> _save(User user) async {
     final List<CognitoUserAttribute> attributes = [];
     attributes
         .add(CognitoUserAttribute(name: 'name', value: _nameController.text));
@@ -54,7 +55,7 @@ class _ProfileEditState extends State<ProfileEdit> {
       print('IMG SIZE: ' + base64Image.length.toString());
     }
     try {
-      await widget.user.cognitoUser.updateAttributes(attributes);
+      await user.cognitoUser.updateAttributes(attributes);
     } catch (e) {
       print(e);
     }
@@ -159,6 +160,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<User>(context);
     return Scaffold(
       appBar: _buildAppBar(),
       body: Center(
@@ -183,7 +185,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                       side: BorderSide(color: Colors.blue)),
-                  onPressed: () => _save(),
+                  onPressed: () => _save(user),
                   color: Colors.green,
                   textColor: Colors.white,
                   child: Text('SAVE', style: TextStyle(fontSize: 18)),

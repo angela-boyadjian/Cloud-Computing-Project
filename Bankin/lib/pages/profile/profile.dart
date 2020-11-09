@@ -11,9 +11,7 @@ import 'package:Bankin/utils/route_manager.dart';
 import 'widgets/avatar.dart';
 
 class Profile extends StatefulWidget {
-  final User user;
-
-  Profile(this.user);
+  Profile();
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -32,10 +30,12 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> getAttributes() async {
+    var user = Provider.of<User>(context);
+
     List<CognitoUserAttribute> attributes;
     Map<String, String> tmp = _attributes;
     try {
-      attributes = await widget.user.cognitoUser.getUserAttributes();
+      attributes = await user.cognitoUser.getUserAttributes();
       attributes.forEach((attribute) {
         if (tmp.containsKey(attribute.getName())) {
           tmp[attribute.getName()] = attribute.getValue();
@@ -54,7 +54,9 @@ class _ProfileState extends State<Profile> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: Avatar(_attributes['picture'] == '' ? null : File(_attributes['picture'])),
+          child: Avatar(_attributes['picture'] == ''
+              ? null
+              : File(_attributes['picture'])),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 50.0),
@@ -70,13 +72,14 @@ class _ProfileState extends State<Profile> {
           minWidth: double.infinity,
           height: 40.0,
           child: Padding(
-            padding: const EdgeInsets.only(top: 150.0, bottom: 50.0, left: 20.0, right: 20.0),
+            padding: const EdgeInsets.only(
+                top: 150.0, bottom: 50.0, left: 20.0, right: 20.0),
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0)),
               onPressed: () {
                 Provider.of<RouteManager>(context, listen: false)
-                    .showProfileEdit(context, widget.user, _attributes);
+                    .showProfileEdit(context, _attributes);
               },
               color: Colors.orange,
               textColor: Colors.white,

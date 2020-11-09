@@ -14,13 +14,12 @@ class UserData with ChangeNotifier {
   }
 
   void setUsername(_username) {
-    this.username =  _username;
+    this.username = _username;
     notifyListeners();
   }
 }
 
 class Storage with ChangeNotifier {
-
   final _storage = FlutterSecureStorage();
   List<_SecItem> _items = [];
 

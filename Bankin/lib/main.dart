@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization_provider.dart';
 import 'package:Bankin/utils/route_manager.dart';
 import 'package:Bankin/pages/login/widgets/user_storage.dart';
 
+import 'models/user.dart';
 import 'pages/login/login.dart';
 
 Future<void> main() async {
@@ -17,6 +18,9 @@ Future<void> main() async {
       Provider(create: (_) => new RouteManager()),
       ListenableProvider(create: (_) => new UserData()),
       ListenableProvider(create: (_) => new Storage()),
+      ChangeNotifierProvider<User>(
+        create: (_) => User(null, null, null),
+      ),
     ], child: MyApp()),
   ));
 }

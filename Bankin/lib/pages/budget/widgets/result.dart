@@ -46,7 +46,7 @@ class Result extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('\$' + _budgets.amount,
+              Text('\$' + _budgets.amount.toString(),
                   style: TextStyle(color: Colors.white, fontSize: 40)),
             ],
           ),
