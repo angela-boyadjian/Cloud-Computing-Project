@@ -7,22 +7,25 @@ provider:
   region: eu-west-2
   environment:
     RECEIPTS_TABLE: receipts
-    BUDGETS_TABLE: budgets
   iamRoleStatements:
     - Effect: "Allow"
       Action:
         - "s3:*"
-      Resource:
-        - { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ]]}
-        - "arn:aws:s3:::user-asset-bucket/*"
-
-custom:
-  assets:
-    targets:
-      - bucket: user-asset-bucket
-        files:
-          defaultContentType: image/jpeg
-        acl: bucket-owner-full-control
+        - "s3:PutObject"
+        - "s3:GetObject"
+      Resource: "arn:aws:s3:::*/*"
+    - Effect: 'Allow'
+      Action:
+        - "s3:*"
+        - 's3:ListBucket'
+      Resource: "arn:aws:s3:::*/*"
+    - Effect: 'Allow'
+      Action:
+        - "cognito-idp:AdminUpdateUserAttributes"
+      Resource: "arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M"
+  apiGateway:
+    binaryMediaTypes:
+          - '*/*'
 
 functions:
   user:
@@ -34,24 +37,33 @@ functions:
           authorizer:
             name: Authorization
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
-  user_update:
-    handler: user_update.update
+  user_pp_get:
+    handler: user_picture.get
     events:
       - http:
           path: /user/pp-upload
-          method: put
+          method: get
           authorizer:
             name: Authorization
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
-  user_delete:
-    handler: user_delete.delete
+      - s3:
+          bucket: users-profile-picture
+          event: "s3:ObjectCreated:*"
+  user_pp_post:
+    handler: user_picture.post
+    events:
+      - http:
+          path: /user/pp-upload
+          method: post
+          authorizer:
+            name: Authorization
+            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+  user_pp_delete:
+    handler: user_picture.delete
     events:
     - http:
-        path: /user/delete
-        method: post
+        path: /user/pp-upload
+        method: delete
         authorizer:
           name: Authorization
           arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
-plugins:
-  - serverless-import-apigateway
-  - serverless-s3-deploy

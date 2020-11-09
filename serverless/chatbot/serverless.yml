@@ -1,4 +1,3 @@
-
 service: chatbot
 
 frameworkVersion: '2'
@@ -10,14 +9,8 @@ provider:
   region: eu-west-2
   role : arn:aws:iam::843314631316:role/chatbot-dev-eu-west-2-lambdaRole
   apiGateway:
-    restApiId: ajexrc4gb4
-    restApiRootResourceId: qkfc6i9nvg
-  # iamRoleStatements:
-  #    - Effect: 'Allow'
-  #      Action:
-  #        - lex:readonly
-  #        - lex:runbotsonly
-  #      Resource: "*"
+    restApiId: k8sjcbmqde
+    restApiRootRessourceId: 3et3hse7ki
 
 functions:
   lex_setBudget:
@@ -31,6 +24,8 @@ functions:
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
 plugins:
   - serverless-import-apigateway
+
 custom:
   importApiGateway:
     name: ${self:provider.stage}-user-home
+            
