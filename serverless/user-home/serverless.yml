@@ -7,14 +7,21 @@ provider:
   region: eu-west-2
   environment:
     RECEIPTS_TABLE: receipts
-
   iamRoleStatements:
     - Effect: "Allow"
       Action:
         - "s3:*"
-      Resource:
-        - { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ]]}
-        - "arn:aws:s3:::userbucketupload/*"
+        - "s3:PutObject"
+        - "s3:GetObject"
+      Resource: "arn:aws:s3:::*/*"
+    - Effect: 'Allow'
+      Action:
+        - "s3:*"
+        - 's3:ListBucket'
+      Resource: "arn:aws:s3:::*/*"
+  apiGateway:
+    binaryMediaTypes:
+          - '*/*'
 
 functions:
   user:
@@ -36,14 +43,14 @@ functions:
             name: Authorization
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
       - s3:
-          bucket: userbucketupload
-          event: s3:ObjectCreated:*
-  user_pp_get:
-    handler: user_picture.get
+          bucket: userbucketupload2
+          event: "s3:ObjectCreated:*"
+  user_pp_post:
+    handler: user_picture.post
     events:
       - http:
           path: /user/pp-upload
-          method: get
+          method: post
           authorizer:
             name: Authorization
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
