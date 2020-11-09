@@ -3,9 +3,14 @@
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 const FileType = require('file-type');
+const Jimp = require('jimp');
+
+
+      
 
 module.exports = {
     post: async (event, context, callback) => {
+      //Verify body type
       if (event.body === undefined || event.body === null || event.body === '') {
         return {
           statusCode: 400,
@@ -13,26 +18,37 @@ module.exports = {
         }
       }
       const allowedExt = ['png', 'jpg'];
-      const decodedImage = Buffer.from(event.body, 'base64');
+      let decodedImage = Buffer.from(event.body, 'base64');
       const type = await FileType.fromBuffer(decodedImage);
-      console.log(type);
       if (allowedExt.indexOf(type.ext) < 0) {
         return {
           statusCode: 422,
           body: JSON.stringify({ description: 'Picture file extension is invalid. (Only png and jpg supported)', result: 'error', ext: type.ext})
         }
       }
+      //Transform to PNG if JPEG
+      if (type.ext === "jpg") {
+        try {
+          let jimpManipulation = await Jimp.read(decodedImage);
+          decodedImage = await jimpManipulation.getBufferAsync("image/png");
+        } catch(err) {
+          console.log("An error occured: " + err);
+          return {
+            statusCode: 500, 
+            body: JSON.stringify({ description: 'something went wrong', result: 'error'})
+          }
+        }
+      }
 
+      //Upload to S3 Bucket
       const userId = event.requestContext.authorizer.claims.sub;
-      console.log("userId: " + userId);
       const params = {
         "Body": decodedImage,
         "Bucket": "users-profile-picture",
-        "Key": userId+"."+type.ext  
+        "Key": userId+".png"
       };
       try {
         await s3.putObject(params).promise();
-        console.log("done");
       } catch(err) {
         console.log(err);
         return {
@@ -41,7 +57,7 @@ module.exports = {
         }
       }
 
-      // UPDATE COGNITO
+      // Update Cognito picture attrbute
       const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
         apiVersion: '2016-04-18'
       });
@@ -50,7 +66,7 @@ module.exports = {
           UserAttributes: [
             {
               Name: 'picture',
-              Value: 'https://users-profile-picture.s3.eu-west-2.amazonaws.com/'+userId+'.'+type.ext
+              Value: 'https://users-profile-picture.s3.eu-west-2.amazonaws.com/'+userId+'.png'
             }
           ],
           UserPoolId: "eu-west-2_kT5EeqP0M",
@@ -58,40 +74,53 @@ module.exports = {
         }).promise();
         return {
           statusCode: 200,
-          body: JSON.stringify({ description: 'Profile picture uploaded', result: 'ok' })
+          body: JSON.stringify({ description: 'Profile picture uploaded',
+          result: 'ok'
+        })
         }
       } catch(err) {
-        console.log(err);
+        console.log("An error occured: " + err);
         return {
           statusCode: 500, 
-          body: JSON.stringify({ description: 'something went wrong', result: 'error', debug: event.requestContext})
+          body: JSON.stringify({ description: 'something went wrong', result: 'error'})
         }
       }
     },
     get: async (event, res, callback) => {
+      const userId = event.requestContext.authorizer.claims.sub;
+      let params = {
+        "Bucket": "users-profile-picture",
+        "Key": userId+".png",
+      };
+
+      //Verify picture exist
       try {
-        const tmp = JSON.parse(event.body);
-        var filename = tmp.filepath;
-        console.log(filename);
-        var params = {
-          Bucket: "userbucketupload2", 
-          Key: filename
-        };
-        s3.getObject(params, function(err, data) {
-          if (err)
-            return err;
-          let objectData = data.Body;
-          let response = {
-            "statusCode": 200,
-            "body": `${objectData}`,
-            "isBase64Encoded": false
-          };
-          console.log(response);
-          return(response);
-        });
-      } catch (err) {
-          callback(err, null);
+          const headCode = await s3.headObject(params).promise();
+          console.log(headCode);
+          //object = await s3.getObject(params).promise();
+      } catch(err) {
+        return {
+          statusCode: 404, 
+          body: JSON.stringify({ description: 'No picture', result: 'error'})
+        }
       }
+
+      //Get a signed URL for S3 Bucket item
+      let object = {};
+      try {
+        params["Expires"] = 60 * 15 //Seconds (15 Minutes)
+        object = await s3.getSignedUrlPromise('getObject', params);
+      } catch(err) {
+        console.log("An error occured: "+ err);
+        return {
+          statusCode: 500, 
+          body: JSON.stringify({ description: 'something went wrong', result: 'error'})
+        }
+      }
+      return {
+        statusCode: 200,
+        body: JSON.stringify({url: object})
+      };
     },  
     delete :  async (event) => {
       if (event.body !== null && event.body !== undefined) {

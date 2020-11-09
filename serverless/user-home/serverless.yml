@@ -37,12 +37,12 @@ functions:
           authorizer:
             name: Authorization
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
-  user_pp_put:
-    handler: user_picture.put
+  user_pp_get:
+    handler: user_picture.get
     events:
       - http:
           path: /user/pp-upload
-          method: put
+          method: get
           authorizer:
             name: Authorization
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
