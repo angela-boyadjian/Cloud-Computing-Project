@@ -6,6 +6,9 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-2
+  tracing:
+    apiGateway: true
+    lamba: true
   apiGateway:
     restApiId: k8sjcbmqde
     restApiRootResourceId: 3et3hse7ki

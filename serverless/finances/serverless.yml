@@ -12,6 +12,9 @@ provider:
     restApiRootResourceId: qkfc6i9nvg
   environment:
     BUDGETS_TABLE: user_finances
+  tracing:
+    apiGateway: true
+    lamba: true
   iamRoleStatements:
     - Effect: "Allow"
       Action:
