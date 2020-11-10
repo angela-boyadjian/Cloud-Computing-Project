@@ -28,7 +28,7 @@ provider:
           - '*/*'
   tracing:
     apiGateway: true
-    lamba: true
+    lambda: true
 
 functions:
   user:

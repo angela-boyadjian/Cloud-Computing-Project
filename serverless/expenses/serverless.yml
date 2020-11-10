@@ -8,7 +8,7 @@ provider:
   region: eu-west-2
   tracing:
     apiGateway: true
-    lamba: true
+    lambda: true
   apiGateway:
     restApiId: k8sjcbmqde
     restApiRootResourceId: 3et3hse7ki

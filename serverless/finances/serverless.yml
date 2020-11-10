@@ -14,7 +14,7 @@ provider:
     BUDGETS_TABLE: user_finances
   tracing:
     apiGateway: true
-    lamba: true
+    lambda: true
   iamRoleStatements:
     - Effect: "Allow"
       Action:
