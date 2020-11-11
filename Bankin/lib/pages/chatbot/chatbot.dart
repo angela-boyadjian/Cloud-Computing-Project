@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:Bankin/models/budgets.dart';
-import 'package:Bankin/pages/budget/budget.dart';
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:http/http.dart' as http;
-
 import 'package:Bankin/models/user.dart';
+import 'package:Bankin/models/budgets.dart';
 import 'package:Bankin/models/chatbot.dart';
-import 'package:provider/provider.dart';
 
 import 'widgets/chat_message.dart';
 

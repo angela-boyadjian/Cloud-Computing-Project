@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
 import 'package:Bankin/models/user.dart';
@@ -23,36 +25,60 @@ class _ProfileEditState extends State<ProfileEdit> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   File _image;
+  final http.Client _client = http.Client();
+  Map<String, String> _headers;
 
   @override
   void initState() {
     super.initState();
-    if (widget.attributes['picture'] != '')
+    var user = Provider.of<User>(context, listen: false);
+    _headers = {
+      'Authorization': user.token,
+    };
+    if (widget.attributes['picture'] != '') {
       _image = File(widget.attributes['picture']);
-    _nameController.text = widget.attributes['name'];
-    _emailController.text = widget.attributes['email'];
+    }
+    setState(() {
+      _nameController.text = widget.attributes['name'];
+      _emailController.text = widget.attributes['email'];
+    });
+    // print('NAME: ' + widget.attributes['name']);
   }
 
   @override
   void dispose() {
+    _client.close();
     _nameController.dispose();
     _emailController.dispose();
     super.dispose();
   }
 
-  Future<void> _save(User user) async {
+  Future<void> postPicture(String picture) async {
+    var response = await _client.post(
+      DotEnv().env['URL_PICTURE'],
+      headers: _headers,
+      body: {
+        picture: picture,
+      },
+    );
+    if (response.statusCode != 200) {
+      print(response.body);
+    }
+    // attributes.add(CognitoUserAttribute(name: 'picture', value: base64Image));
+    print('CODE:' + response.statusCode.toString());
+  }
+
+  Future<void> _save() async {
+    var user = Provider.of<User>(context, listen: false);
+  
     final List<CognitoUserAttribute> attributes = [];
     attributes
         .add(CognitoUserAttribute(name: 'name', value: _nameController.text));
-    attributes
-        .add(CognitoUserAttribute(name: 'email', value: _emailController.text));
     if (_image != null) {
       List<int> imageBytes = _image.readAsBytesSync();
       String base64Image = base64.encode(imageBytes);
-      // ignore: todo
-      // TODO Upload in S3 and store URL in Cognito
-      attributes.add(CognitoUserAttribute(name: 'picture', value: base64Image));
-      print('IMG SIZE: ' + base64Image.length.toString());
+      await postPicture(base64Image);
+      // attributes.add(CognitoUserAttribute(name: 'picture', value: base64Image));
     }
     try {
       await user.cognitoUser.updateAttributes(attributes);
@@ -132,6 +158,7 @@ class _ProfileEditState extends State<ProfileEdit> {
   }
 
   Widget buildTextFields() {
+    print(_nameController);
     return Column(
       children: <Widget>[
         Padding(
@@ -160,7 +187,6 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<User>(context);
     return Scaffold(
       appBar: _buildAppBar(),
       body: Center(
@@ -185,7 +211,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                       side: BorderSide(color: Colors.blue)),
-                  onPressed: () => _save(user),
+                  onPressed: () => _save(),
                   color: Colors.green,
                   textColor: Colors.white,
                   child: Text('SAVE', style: TextStyle(fontSize: 18)),

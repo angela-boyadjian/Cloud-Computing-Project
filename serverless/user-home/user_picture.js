@@ -5,9 +5,6 @@ const s3 = new AWS.S3();
 const FileType = require('file-type');
 const Jimp = require('jimp');
 
-
-      
-
 module.exports = {
     post: async (event, context, callback) => {
       //Verify body type
@@ -34,7 +31,7 @@ module.exports = {
         } catch(err) {
           console.log("An error occured: " + err);
           return {
-            statusCode: 500, 
+            statusCode: 500,
             body: JSON.stringify({ description: 'something went wrong', result: 'error'})
           }
         }
@@ -52,7 +49,7 @@ module.exports = {
       } catch(err) {
         console.log(err);
         return {
-          statusCode: 500, 
+          statusCode: 500,
           body: JSON.stringify({ description: 'something went wrong', result: 'error'})
         }
       }
@@ -70,7 +67,7 @@ module.exports = {
             }
           ],
           UserPoolId: "eu-west-2_kT5EeqP0M",
-          Username:  event.requestContext.authorizer.claims['cognito:username']
+          Username: event.requestContext.authorizer.claims['cognito:username']
         }).promise();
         return {
           statusCode: 200,
@@ -81,7 +78,7 @@ module.exports = {
       } catch(err) {
         console.log("An error occured: " + err);
         return {
-          statusCode: 500, 
+          statusCode: 500,
           body: JSON.stringify({ description: 'something went wrong', result: 'error'})
         }
       }
@@ -100,7 +97,7 @@ module.exports = {
           //object = await s3.getObject(params).promise();
       } catch(err) {
         return {
-          statusCode: 404, 
+          statusCode: 404,
           body: JSON.stringify({ description: 'No picture', result: 'error'})
         }
       }
@@ -113,7 +110,7 @@ module.exports = {
       } catch(err) {
         console.log("An error occured: "+ err);
         return {
-          statusCode: 500, 
+          statusCode: 500,
           body: JSON.stringify({ description: 'something went wrong', result: 'error'})
         }
       }
@@ -121,8 +118,8 @@ module.exports = {
         statusCode: 200,
         body: JSON.stringify({url: object})
       };
-    },  
-    delete :  async (event) => {
+    },
+    delete : async (event) => {
       if (event.body !== null && event.body !== undefined) {
         const userId = event.requestContext.authorizer.claims.sub;
         let fileContent = event.isBase64Encoded ? Buffer.from(event.body, 'base64') : event.body;

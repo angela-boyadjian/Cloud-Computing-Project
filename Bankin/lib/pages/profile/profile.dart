@@ -29,8 +29,13 @@ class _ProfileState extends State<Profile> {
     getAttributes();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> getAttributes() async {
-    var user = Provider.of<User>(context);
+    var user = Provider.of<User>(context, listen: false);
 
     List<CognitoUserAttribute> attributes;
     Map<String, String> tmp = _attributes;
@@ -93,6 +98,8 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    getAttributes();
+
     return Stack(
       children: <Widget>[
         Scaffold(
