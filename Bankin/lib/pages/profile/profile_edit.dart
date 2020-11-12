@@ -2,13 +2,14 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
 import 'package:Bankin/models/user.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 import 'widgets/avatar.dart';
 
@@ -31,10 +32,6 @@ class _ProfileEditState extends State<ProfileEdit> {
   @override
   void initState() {
     super.initState();
-    var user = Provider.of<User>(context, listen: false);
-    _headers = {
-      'Authorization': user.token,
-    };
     if (widget.attributes['picture'] != '') {
       _image = File(widget.attributes['picture']);
     }
@@ -54,18 +51,20 @@ class _ProfileEditState extends State<ProfileEdit> {
   }
 
   Future<void> postPicture(String picture) async {
+    var user = Provider.of<User>(context, listen: false);
+    _headers = {
+      'Content-Type': 'image/jpeg',
+      'Content-Length': picture.length.toString(),
+      'Authorization': user.token,
+    };
     var response = await _client.post(
       DotEnv().env['URL_PICTURE'],
       headers: _headers,
-      body: {
-        picture: picture,
-      },
+      body: picture,
     );
     if (response.statusCode != 200) {
       print(response.body);
     }
-    // attributes.add(CognitoUserAttribute(name: 'picture', value: base64Image));
-    print('CODE:' + response.statusCode.toString());
   }
 
   Future<void> _save() async {
@@ -78,7 +77,6 @@ class _ProfileEditState extends State<ProfileEdit> {
       List<int> imageBytes = _image.readAsBytesSync();
       String base64Image = base64.encode(imageBytes);
       await postPicture(base64Image);
-      // attributes.add(CognitoUserAttribute(name: 'picture', value: base64Image));
     }
     try {
       await user.cognitoUser.updateAttributes(attributes);

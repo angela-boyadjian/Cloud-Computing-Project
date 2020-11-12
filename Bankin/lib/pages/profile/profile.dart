@@ -1,14 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
 import 'package:Bankin/models/user.dart';
 import 'package:Bankin/utils/route_manager.dart';
-
-import 'widgets/avatar.dart';
 
 class Profile extends StatefulWidget {
   Profile();
@@ -17,6 +18,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final http.Client _client = http.Client();
+  Map<String, String> _headers;
   Map<String, String> _attributes = {
     'name': '',
     'email': '',
@@ -26,11 +29,16 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+    var user = Provider.of<User>(context, listen: false);
+    _headers = {
+      'Authorization': user.token,
+    };
     getAttributes();
   }
 
   @override
   void dispose() {
+    _client.close();
     super.dispose();
   }
 
@@ -42,12 +50,26 @@ class _ProfileState extends State<Profile> {
     try {
       attributes = await user.cognitoUser.getUserAttributes();
       attributes.forEach((attribute) {
-        if (tmp.containsKey(attribute.getName())) {
+        if (attribute.getName() != 'picture' &&
+            tmp.containsKey(attribute.getName())) {
           tmp[attribute.getName()] = attribute.getValue();
         }
       });
+      setState(() {
+        _attributes = tmp;
+      });
     } catch (e) {
       print(e);
+    }
+    final response =
+        await _client.get(DotEnv().env['URL_PICTURE'], headers: _headers);
+    if (response.body.isNotEmpty && response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      tmp['picture'] = jsonResponse['url'];
+    } else {
+      print('BODY: ' + response.body);
+      print('CODE: ' + response.statusCode.toString());
+      return;
     }
     setState(() {
       _attributes = tmp;
@@ -57,12 +79,24 @@ class _ProfileState extends State<Profile> {
   Widget _profileInfos() {
     return ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Avatar(_attributes['picture'] == ''
-              ? null
-              : File(_attributes['picture'])),
-        ),
+        _attributes['picture'] == '' || _attributes == null
+            ? Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: CircleAvatar(
+                  radius: 80.0,
+                  backgroundImage:
+                      NetworkImage("https://via.placeholder.com/150"),
+                  backgroundColor: Colors.transparent,
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: CircleAvatar(
+                  radius: 80.0,
+                  backgroundImage: NetworkImage(_attributes['picture']),
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
         Padding(
           padding: const EdgeInsets.only(top: 50.0),
           child: Center(
