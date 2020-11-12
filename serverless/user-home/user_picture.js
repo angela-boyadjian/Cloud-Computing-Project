@@ -4,6 +4,7 @@ const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 const FileType = require('file-type');
 const Jimp = require('jimp');
+const atob = require('atob');
 
 module.exports = {
     post: async (event, context, callback) => {
@@ -15,15 +16,16 @@ module.exports = {
           error: "No data sent in body."
         }
       }
+      let body = event.body;
+      if (event.headers["x-source"] === "flutter") {
+        body = atob(body);
+      }
       const allowedExt = ['png', 'jpg'];
-      let decodedImage = Buffer.from(event.body, 'base64');
-      console.log(decodedImage);
+      let decodedImage = Buffer.from(body, 'base64');
+      console.log("BASE64SIZE: "+decodedImage.length);
       let type;
       try {
         type = await FileType.fromBuffer(decodedImage);
-        if (type === undefined) {
-          type = {ext: 'jpg'}
-        }
       } catch(err) {
         console.log("An error occured: "+ err);
         return {
@@ -31,11 +33,16 @@ module.exports = {
           body: JSON.stringify({ description: 'something went wrong', result: 'error'})
         }
       }
-      console.log(type);
+      if (type === undefined) {
+        return {
+          statusCode: 415,
+          body: JSON.stringify({ description: 'Unsupported Media Type (PNG / JPEG / JPG files only)', result: 'error'})
+        }
+      }
       if (allowedExt.indexOf(type.ext) < 0) {
         return {
-          statusCode: 422,
-          body: JSON.stringify({ description: 'Picture file extension is invalid. (Only png and jpg supported)', result: 'error', ext: type.ext})
+          statusCode: 415,
+          body: JSON.stringify({ description: 'Unsupported Media Type (PNG / JPEG / JPG files only)', result: 'error'})
         }
       }
       //Transform to JPEG if PNG
@@ -57,6 +64,8 @@ module.exports = {
       const params = {
         "Body": decodedImage,
         "Bucket": "users-profile-picture",
+        "ContentEncoding": 'base64',
+        "ContentType": 'image/jpeg',
         "Key": userId+".jpg"
       };
       try {

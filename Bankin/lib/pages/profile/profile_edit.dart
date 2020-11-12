@@ -56,6 +56,7 @@ class _ProfileEditState extends State<ProfileEdit> {
       'Content-Type': 'image/jpeg',
       'Content-Length': picture.length.toString(),
       'Authorization': user.token,
+      'x-source': 'flutter'
     };
     var response = await _client.post(
       DotEnv().env['URL_PICTURE'],
@@ -69,7 +70,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   Future<void> _save() async {
     var user = Provider.of<User>(context, listen: false);
-  
+
     final List<CognitoUserAttribute> attributes = [];
     attributes
         .add(CognitoUserAttribute(name: 'name', value: _nameController.text));
