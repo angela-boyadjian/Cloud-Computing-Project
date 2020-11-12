@@ -8,6 +8,7 @@ const Jimp = require('jimp');
 module.exports = {
     post: async (event, context, callback) => {
       //Verify body type
+      console.log(event);
       if (event.body === undefined || event.body === null || event.body === '') {
         return {
           statusCode: 400,
@@ -16,18 +17,32 @@ module.exports = {
       }
       const allowedExt = ['png', 'jpg'];
       let decodedImage = Buffer.from(event.body, 'base64');
-      const type = await FileType.fromBuffer(decodedImage);
+      console.log(decodedImage);
+      let type;
+      try {
+        type = await FileType.fromBuffer(decodedImage);
+        if (type === undefined) {
+          type = {ext: 'jpg'}
+        }
+      } catch(err) {
+        console.log("An error occured: "+ err);
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ description: 'something went wrong', result: 'error'})
+        }
+      }
+      console.log(type);
       if (allowedExt.indexOf(type.ext) < 0) {
         return {
           statusCode: 422,
           body: JSON.stringify({ description: 'Picture file extension is invalid. (Only png and jpg supported)', result: 'error', ext: type.ext})
         }
       }
-      //Transform to PNG if JPEG
-      if (type.ext === "jpg") {
+      //Transform to JPEG if PNG
+      if (type.ext === "png") {
         try {
           let jimpManipulation = await Jimp.read(decodedImage);
-          decodedImage = await jimpManipulation.getBufferAsync("image/png");
+          decodedImage = await jimpManipulation.getBufferAsync("image/jpg");
         } catch(err) {
           console.log("An error occured: " + err);
           return {
@@ -42,7 +57,7 @@ module.exports = {
       const params = {
         "Body": decodedImage,
         "Bucket": "users-profile-picture",
-        "Key": userId+".png"
+        "Key": userId+".jpg"
       };
       try {
         await s3.putObject(params).promise();
@@ -63,7 +78,7 @@ module.exports = {
           UserAttributes: [
             {
               Name: 'picture',
-              Value: 'https://users-profile-picture.s3.eu-west-2.amazonaws.com/'+userId+'.png'
+              Value: 'https://users-profile-picture.s3.eu-west-2.amazonaws.com/'+userId+'.jpg'
             }
           ],
           UserPoolId: "eu-west-2_kT5EeqP0M",
@@ -87,15 +102,13 @@ module.exports = {
       const userId = event.requestContext.authorizer.claims.sub;
       let params = {
         "Bucket": "users-profile-picture",
-        "Key": userId+".png",
+        "Key": userId+".jpg",
       };
 
-      //Verify picture exist
       try {
           const headCode = await s3.headObject(params).promise();
-          console.log(headCode);
-          //object = await s3.getObject(params).promise();
       } catch(err) {
+        console.log("An error occured: "+ err);
         return {
           statusCode: 404,
           body: JSON.stringify({ description: 'No picture', result: 'error'})
