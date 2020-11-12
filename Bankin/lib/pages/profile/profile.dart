@@ -34,12 +34,29 @@ class _ProfileState extends State<Profile> {
       'Authorization': user.token,
     };
     getAttributes();
+    getPicture();
   }
 
   @override
   void dispose() {
     _client.close();
     super.dispose();
+  }
+
+  Future<void> getPicture() async {
+    Map<String, String> tmp = _attributes;
+
+    try {
+      final response =
+          await _client.get(DotEnv().env['URL_PICTURE'], headers: _headers);
+      final jsonResponse = json.decode(response.body);
+      tmp['picture'] = jsonResponse['url'];
+      setState(() {
+        _attributes = tmp;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> getAttributes() async {
@@ -61,19 +78,6 @@ class _ProfileState extends State<Profile> {
     } catch (e) {
       print(e);
     }
-    final response =
-        await _client.get(DotEnv().env['URL_PICTURE'], headers: _headers);
-    if (response.body.isNotEmpty && response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
-      tmp['picture'] = jsonResponse['url'];
-    } else {
-      print('BODY: ' + response.body);
-      print('CODE: ' + response.statusCode.toString());
-      return;
-    }
-    setState(() {
-      _attributes = tmp;
-    });
   }
 
   Widget _profileInfos() {
