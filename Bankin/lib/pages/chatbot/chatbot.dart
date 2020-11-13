@@ -70,6 +70,10 @@ class _ChatBotState extends State<ChatBot> {
     _body['inputText'] = message;
     var response = await _client.post(DotEnv().env['URL_CHATBOT'],
         headers: _headers, body: jsonEncode(_body));
+    if (response.statusCode != 200) {
+      print('BODY: ' + response.body);
+      print('Status code: ' + response.statusCode.toString());
+    }
     final jsonResponse = json.decode(response.body);
     _botResponse = ChatBotResponse.fromJson(jsonResponse).message;
     await putBudgets(jsonResponse['sessionAttributes']['amount'],
