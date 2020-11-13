@@ -32,14 +32,10 @@ class _ProfileEditState extends State<ProfileEdit> {
   @override
   void initState() {
     super.initState();
-    if (widget.attributes['picture'] != '') {
-      _image = File(widget.attributes['picture']);
-    }
     setState(() {
       _nameController.text = widget.attributes['name'];
       _emailController.text = widget.attributes['email'];
     });
-    // print('NAME: ' + widget.attributes['name']);
   }
 
   @override
@@ -196,7 +192,7 @@ class _ProfileEditState extends State<ProfileEdit> {
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: GestureDetector(
-                child: Avatar(_image),
+                child: Avatar(_image, widget.attributes['picture']),
                 onTap: () => _showPicker(context),
               ),
             ),
@@ -205,7 +201,7 @@ class _ProfileEditState extends State<ProfileEdit> {
               minWidth: double.infinity,
               height: 50.0,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(50.0),
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
