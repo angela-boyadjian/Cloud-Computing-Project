@@ -16,10 +16,10 @@ provider:
 
 functions:
   lex_setBudget:
-    handler: chatbot/setBudget.lex_setBudget
+    handler: chatbot/handler.lex_setBudget
     events:
       - http:
-          path: /chatbot/setBudget
+          path: chatbot/setBudget
           method: post
           authorizer:
             name: AuthorizationChatbot
@@ -30,4 +30,3 @@ plugins:
 custom:
   importApiGateway:
     name: ${self:provider.stage}-user-home
-            

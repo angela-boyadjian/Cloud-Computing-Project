@@ -115,7 +115,6 @@ class _ChatBotState extends State<ChatBot> {
                 onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                 child: TextField(
                   controller: _textController,
-                  // onSubmitted: () _handleSubmitted,
                   decoration:
                       InputDecoration.collapsed(hintText: "Send a message"),
                 ),

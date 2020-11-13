@@ -36,8 +36,8 @@ module.exports.lex_setBudget = (event, context, callback) => {
                         callback(null, response_error);
                     } else {
                         console.log(response_success);
-                        callback(null, response_success);
-                    }
+                        callback(null, response_success);     
+                    }      
                 });
     
             } else {
@@ -57,6 +57,6 @@ module.exports.lex_setBudget = (event, context, callback) => {
             callback(response_error);
         }
     } catch(err) {
-        callback(err);
+        callback(err);       
     };
 };
