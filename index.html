@@ -689,10 +689,19 @@
   <script>
     // Script section to load models into a JS Var
     var defs = {}
+            defs["GetPPicture"] = {
+  "type" : "object",
+  "properties" : {
+    "url" : {
+      "type" : "string",
+      "example" : "https://xxxx.s3.eu-west-2.amazonaws.com/bdd48fed-d29c-48ef-a3d0-576378533da0.jpg"
+    }
+  }
+};
             defs["PostPPicture"] = {
   "required" : [ "base64_encoded_image" ],
   "type" : "string",
-  "example" : "/9j/4AAQSkZJRgABAQAAAQABAAD//gAfQ29tcHJlc3NlZCBieSBqcGVnLXJlY29tcHJlc3P/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIADIAMgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAABP/aAAgBAQAAAAC4AAAAAAAD/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAb/2gAIAQIQAAAAjgAB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAf/2gAIAQMQAAAAnoAA/8QAFBABAAAAAAAAAAAAAAAAAAAAUP/aAAgBAQABPwBH/8QAFBEBAAAAAAAAAAAAAAAAAAAAQP/aAAgBAgEBPwAH/8QAFBEBAAAAAAAAAAAAAAAAAAAAQP/aAAgBAwEBPwAH/9k="
+  "format" : "byte"
 };
   </script>
 
@@ -711,6 +720,9 @@
             <li class="nav-fixed nav-header active" data-group="_"><a href="#api-_">API Summary</a></li>
 
                   <li class="nav-header" data-group="ProfilePicture"><a href="#api-ProfilePicture">API Methods - ProfilePicture</a></li>
+                    <li data-group="ProfilePicture" data-name="getPPicture" class="">
+                      <a href="#api-ProfilePicture-getPPicture">getPPicture</a>
+                    </li>
                     <li data-group="ProfilePicture" data-name="postPPicture" class="">
                       <a href="#api-ProfilePicture-postPPicture">postPPicture</a>
                     </li>
@@ -735,6 +747,310 @@
         <div id="sections">
                 <section id="api-ProfilePicture">
                   <h1>ProfilePicture</h1>
+                    <div id="api-ProfilePicture-getPPicture">
+                      <article id="api-ProfilePicture-getPPicture-0" data-group="User" data-name="getPPicture" data-version="0">
+                        <div class="pull-left">
+                          <h1>getPPicture</h1>
+                          <p>Get unique link of photo using this tokenId</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Get unique link of photo using this tokenId</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/dev/user/pp-upload</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-ProfilePicture-getPPicture-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-ProfilePicture-getPPicture-0-java">Java</a></li>
+                          <li class=""><a href="#examples-ProfilePicture-getPPicture-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-ProfilePicture-getPPicture-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-ProfilePicture-getPPicture-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-ProfilePicture-getPPicture-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-ProfilePicture-getPPicture-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-ProfilePicture-getPPicture-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-ProfilePicture-getPPicture-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-ProfilePicture-getPPicture-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-ProfilePicture-getPPicture-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-ProfilePicture-getPPicture-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://k8sjcbmqde.execute-api.eu-west-2.amazonaws.com/dev/user/pp-upload"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.ProfilePictureApi;
+
+import java.io.File;
+import java.util.*;
+
+public class ProfilePictureApiExample {
+
+    public static void main(String[] args) {
+        
+        ProfilePictureApi apiInstance = new ProfilePictureApi();
+        String security = security_example; // String | tokenId generated during OAuth 2.0
+        try {
+            GetPPicture result = apiInstance.getPPicture(security);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ProfilePictureApi#getPPicture");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.ProfilePictureApi;
+
+public class ProfilePictureApiExample {
+
+    public static void main(String[] args) {
+        ProfilePictureApi apiInstance = new ProfilePictureApi();
+        String security = security_example; // String | tokenId generated during OAuth 2.0
+        try {
+            GetPPicture result = apiInstance.getPPicture(security);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ProfilePictureApi#getPPicture");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *security = security_example; // tokenId generated during OAuth 2.0
+
+ProfilePictureApi *apiInstance = [[ProfilePictureApi alloc] init];
+
+// Get unique link of photo using this tokenId
+[apiInstance getPPictureWith:security
+              completionHandler: ^(GetPPicture output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var BankinAwsApiGatewayApi = require('bankin_aws_api_gateway_api');
+
+var api = new BankinAwsApiGatewayApi.ProfilePictureApi()
+var security = security_example; // {{String}} tokenId generated during OAuth 2.0
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getPPicture(security, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class getPPictureExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new ProfilePictureApi();
+            var security = security_example;  // String | tokenId generated during OAuth 2.0
+
+            try
+            {
+                // Get unique link of photo using this tokenId
+                GetPPicture result = apiInstance.getPPicture(security);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling ProfilePictureApi.getPPicture: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiProfilePictureApi();
+$security = security_example; // String | tokenId generated during OAuth 2.0
+
+try {
+    $result = $api_instance->getPPicture($security);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ProfilePictureApi->getPPicture: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::ProfilePictureApi;
+
+my $api_instance = WWW::SwaggerClient::ProfilePictureApi->new();
+my $security = security_example; # String | tokenId generated during OAuth 2.0
+
+eval { 
+    my $result = $api_instance->getPPicture(security => $security);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling ProfilePictureApi->getPPicture: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ProfilePicture-getPPicture-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.ProfilePictureApi()
+security = security_example # String | tokenId generated during OAuth 2.0
+
+try: 
+    # Get unique link of photo using this tokenId
+    api_response = api_instance.get_p_picture(security)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ProfilePictureApi->getPPicture: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+                            <div class="methodsubtabletitle">Header parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                  <tr><td style="width:150px;">security*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_getPPicture_security">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          tokenId generated during OAuth 2.0
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - link generated </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-getPPicture-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-getPPicture-200-schema">
+                                  <div id='responses-getPPicture-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "link generated",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/GetPPicture"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-getPPicture-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-getPPicture-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-getPPicture-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 500 - error server during push </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-ProfilePicture-postPPicture">
                       <article id="api-ProfilePicture-postPPicture-0" data-group="User" data-name="postPPicture" data-version="0">
                         <div class="pull-left">
@@ -769,7 +1085,7 @@
                           <div class="tab-pane active" id="examples-ProfilePicture-postPPicture-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Content-Type: binary"\
-"https://virtserver.swaggerhub.com/B1892/Bankin/1.0.0/dev/user/pp-upload"</code></pre>
+"https://k8sjcbmqde.execute-api.eu-west-2.amazonaws.com/dev/user/pp-upload"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-ProfilePicture-postPPicture-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -785,10 +1101,11 @@ public class ProfilePictureApiExample {
     public static void main(String[] args) {
         
         ProfilePictureApi apiInstance = new ProfilePictureApi();
-        String body = ; // String | Picture in base64 encoded
+        byte[] body = ; // byte[] | Picture in base64 encoded
         String security = security_example; // String | tokenId generated during OAuth 2.0
+        String xSource = xSource_example; // String | If you are using flutter, it's required (x-source="flutter")
         try {
-            apiInstance.postPPicture(body, security);
+            apiInstance.postPPicture(body, security, xSource);
         } catch (ApiException e) {
             System.err.println("Exception when calling ProfilePictureApi#postPPicture");
             e.printStackTrace();
@@ -804,10 +1121,11 @@ public class ProfilePictureApiExample {
 
     public static void main(String[] args) {
         ProfilePictureApi apiInstance = new ProfilePictureApi();
-        String body = ; // String | Picture in base64 encoded
+        byte[] body = ; // byte[] | Picture in base64 encoded
         String security = security_example; // String | tokenId generated during OAuth 2.0
+        String xSource = xSource_example; // String | If you are using flutter, it's required (x-source="flutter")
         try {
-            apiInstance.postPPicture(body, security);
+            apiInstance.postPPicture(body, security, xSource);
         } catch (ApiException e) {
             System.err.println("Exception when calling ProfilePictureApi#postPPicture");
             e.printStackTrace();
@@ -820,14 +1138,16 @@ public class ProfilePictureApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-ProfilePicture-postPPicture-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">String *body = ; // Picture in base64 encoded
+                              <pre class="prettyprint"><code class="language-cpp">byte[] *body = ; // Picture in base64 encoded
 String *security = security_example; // tokenId generated during OAuth 2.0
+String *xSource = xSource_example; // If you are using flutter, it's required (x-source="flutter") (optional)
 
 ProfilePictureApi *apiInstance = [[ProfilePictureApi alloc] init];
 
 // Send profile picture in storage and update it in Cognito Attributes
 [apiInstance postPPictureWith:body
     security:security
+    xSource:xSource
               completionHandler: ^(NSError* error) {
                             if (error) {
                                 NSLog(@"Error: %@", error);
@@ -840,9 +1160,11 @@ ProfilePictureApi *apiInstance = [[ProfilePictureApi alloc] init];
                               <pre class="prettyprint"><code class="language-js">var BankinAwsApiGatewayApi = require('bankin_aws_api_gateway_api');
 
 var api = new BankinAwsApiGatewayApi.ProfilePictureApi()
-var body = ; // {{String}} Picture in base64 encoded
+var body = ; // {{byte[]}} Picture in base64 encoded
 var security = security_example; // {{String}} tokenId generated during OAuth 2.0
-
+var opts = { 
+  'xSource': xSource_example // {{String}} If you are using flutter, it's required (x-source="flutter")
+};
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -850,7 +1172,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully.');
   }
 };
-api.postPPicture(bodysecurity, callback);
+api.postPPicture(bodysecurity, opts, callback);
 </code></pre>
                             </div>
 
@@ -872,13 +1194,14 @@ namespace Example
         {
 
             var apiInstance = new ProfilePictureApi();
-            var body = new String(); // String | Picture in base64 encoded
+            var body = new byte[](); // byte[] | Picture in base64 encoded
             var security = security_example;  // String | tokenId generated during OAuth 2.0
+            var xSource = xSource_example;  // String | If you are using flutter, it's required (x-source="flutter") (optional) 
 
             try
             {
                 // Send profile picture in storage and update it in Cognito Attributes
-                apiInstance.postPPicture(body, security);
+                apiInstance.postPPicture(body, security, xSource);
             }
             catch (Exception e)
             {
@@ -895,11 +1218,12 @@ namespace Example
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiProfilePictureApi();
-$body = ; // String | Picture in base64 encoded
+$body = ; // byte[] | Picture in base64 encoded
 $security = security_example; // String | tokenId generated during OAuth 2.0
+$xSource = xSource_example; // String | If you are using flutter, it's required (x-source="flutter")
 
 try {
-    $api_instance->postPPicture($body, $security);
+    $api_instance->postPPicture($body, $security, $xSource);
 } catch (Exception $e) {
     echo 'Exception when calling ProfilePictureApi->postPPicture: ', $e->getMessage(), PHP_EOL;
 }
@@ -912,11 +1236,12 @@ use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::ProfilePictureApi;
 
 my $api_instance = WWW::SwaggerClient::ProfilePictureApi->new();
-my $body = WWW::SwaggerClient::Object::String->new(); # String | Picture in base64 encoded
+my $body = WWW::SwaggerClient::Object::byte[]->new(); # byte[] | Picture in base64 encoded
 my $security = security_example; # String | tokenId generated during OAuth 2.0
+my $xSource = xSource_example; # String | If you are using flutter, it's required (x-source="flutter")
 
 eval { 
-    $api_instance->postPPicture(body => $body, security => $security);
+    $api_instance->postPPicture(body => $body, security => $security, xSource => $xSource);
 };
 if ($@) {
     warn "Exception when calling ProfilePictureApi->postPPicture: $@\n";
@@ -932,12 +1257,13 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.ProfilePictureApi()
-body =  # String | Picture in base64 encoded
+body =  # byte[] | Picture in base64 encoded
 security = security_example # String | tokenId generated during OAuth 2.0
+xSource = xSource_example # String | If you are using flutter, it's required (x-source="flutter") (optional)
 
 try: 
     # Send profile picture in storage and update it in Cognito Attributes
-    api_instance.post_p_picture(body, security)
+    api_instance.post_p_picture(body, security, xSource=xSource)
 except ApiException as e:
     print("Exception when calling ProfilePictureApi->postPPicture: %s\n" % e)</code></pre>
                             </div>
@@ -970,6 +1296,25 @@ except ApiException as e:
                                                   <div class="inner required">
                                                       Required
                                                   </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">x-source</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_postPPicture_xSource">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          If you are using flutter, it&#x27;s required (x-source&#x3D;&quot;flutter&quot;)
+                                                      </div>
+                                              </div>
                                           </div>
                                       </div>
                                   </td>
