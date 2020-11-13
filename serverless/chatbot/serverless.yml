@@ -12,7 +12,7 @@ provider:
     apiGateway: true
   apiGateway:
     restApiId: k8sjcbmqde
-    restApiRootRessourceId: 3et3hse7ki
+    restApiRootResourceId: 3et3hse7ki
 
 functions:
   lex_setBudget:

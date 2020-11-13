@@ -8,8 +8,8 @@ provider:
   stage: dev
   region: eu-west-2
   apiGateway:
-    restApiId: ajexrc4gb4
-    restApiRootResourceId: qkfc6i9nvg
+    restApiId: k8sjcbmqde
+    restApiRootResourceId: 3et3hse7ki
   environment:
     BUDGETS_TABLE: user_finances
   tracing:
