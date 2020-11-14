@@ -14,7 +14,7 @@ provider:
 
 functions:
   lex_setBudget:
-    handler: chatbot/setBudget.lex_setBudget
+    handler: handler.lex_setBudget
     events:
       - http:
           path: /chatbot/setBudget

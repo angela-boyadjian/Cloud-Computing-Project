@@ -25,7 +25,6 @@ module.exports.lex_setBudget = (event, context, callback) => {
                         "body": JSON.stringify(data),
                         "isBase64Encoded": false
                     };
-
                     if (err) {
                         var response_error = {
                             "statusCode": 500,

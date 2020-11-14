@@ -34,7 +34,6 @@ const parser = (event) =>  new Promise((resolve, reject) => {
   });
 
   busboy.on('field', (fieldname, value) => {
-
       result[fieldname] = value;
   });
 

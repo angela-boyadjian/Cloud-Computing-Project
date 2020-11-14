@@ -1,0 +1,121 @@
+frameworkVersion: '2'
+service: fargate-spending-report
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: eu-west-2
+  apiGateway:
+    restApiId: k8sjcbmqde
+    restApiRootResourceId: 3et3hse7ki
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+        - "ses:*"
+        - "ecs:*"
+      Resource: "*"
+#  environment:
+#    ECS_CLUSTER_NAME: ${self:custom.clusterName}
+#    ECS_TASK_DEFINITION: ${self:custom.ecsTaskName}
+
+plugins:
+  - serverless-pseudo-parameters
+  - serverless-import-apigateway
+
+functions:
+  triggerSendReport:
+    handler: handler.crawldb
+    events:
+      - http:
+          path: /reporting
+          method: get
+          authorizer:
+            name: AuthorizationFargate
+            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+      - s3:
+          bucket: reporting-pdf-bucket
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .pdf
+
+resources:
+  Resources:
+    VPC:
+      Type: AWS::EC2::VPC
+      Properties:
+        CidrBlock: 10.0.0.0/24
+    PublicSubnetOne:
+      Type: AWS::EC2::Subnet  
+      Properties:
+        AvailabilityZone:
+           Fn::Select:
+           - 0
+           - Fn::GetAZs: {Ref: 'AWS::Region'}
+        VpcId: !Ref 'VPC'
+        CidrBlock: 10.0.0.0/24
+    EcsCluster:
+      Type: AWS::ECS::Cluster
+      Properties:
+        ClusterName: clusterReceipts
+    EcsService:
+      Type: AWS::ECS::Service
+      Properties:
+        Cluster: clusterReceipts
+        LaunchType: FARGATE
+        NetworkConfiguration: 
+          AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+            #Subnets:
+            #  - !Ref VPC
+        ServiceName: ReceiptsReportService
+        TaskDefinition: 
+          Ref: EcsTask
+    EcsTask:
+      Type: AWS::ECS::TaskDefinition
+      Properties: 
+        ExecutionRoleArn: ecsTaskExecutionRole
+        Family: ReceiptsReportingFamily
+        RequiresCompatibilities:
+          - FARGATE
+        Cpu: 512
+        Memory: 1024
+        NetworkMode: awsvpc
+        ContainerDefinitions:
+          -
+            Name: ReiceptsCrawler
+            Command:
+              - npm
+              - run
+              - start
+            Image: 843314631316.dkr.ecr.eu-west-2.amazonaws.com/cloud-computing:latest
+            Essential: true
+            DisableNetworking: false
+custom:
+  importApiGateway:
+    name: ${self:provider.stage}-user-home
+#  defaultStage: dev
+#  currentRegion: eu-west-2 
+#  ecsTaskName: ReceiptsCrawler
+#  ecsTaskVpcSubnet1: 10.0.0.0/24
+#  clusterName: clusterReceipts
+#  execRoleArn: { "Fn::Join" : ["", [ "arn:aws:iam::", { "Ref" : "AWS::AccountId" }, ":role/ecsTaskExecutionRole" ] ] }
+#  fargate:
+#    - clusterName: clusterSpending
+#      vpc:
+#        cidr: 10.0.0.0/16
+#        subnets:
+#        - 10.0.0.0/24
+#      services:
+#        - name: spendingCrawler
+#          cpu: 512
+#          memory: 1024
+#          imageTag: 1.0.0
+#          imageRepository: 843314631316.dkr.ecr.eu-west-2.amazonaws.com/cloud-computing:latest
+#          entryPoint:
+#          - npm
+#          - run
+#          - start
+#          environment:
+#            PRODUCTION: true
+#            ECS_ENABLE_CONTAINER_METADATA: true
