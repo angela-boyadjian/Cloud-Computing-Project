@@ -20,9 +20,6 @@ provider:
         - "ses:*"
         - "ecs:*"
       Resource: "*"
-#  environment:
-#    ECS_CLUSTER_NAME: ${self:custom.clusterName}
-#    ECS_TASK_DEFINITION: ${self:custom.ecsTaskName}
 
 plugins:
   - serverless-pseudo-parameters
@@ -48,15 +45,6 @@ functions:
 custom:
   importApiGateway:
     name: ${self:provider.stage}-user-home
-  #vpcConfig:
-  #  cidrBlock: '10.0.0.0/22'    
-  #  createDbSubnet: true
-  #  createNatInstance: true
-  #  createParameters: true
-  #  zones:
-  #    - 'eu-west-2a'
-  #  services:
-  #    - ecs
 
 resources:
   Resources:
@@ -152,30 +140,3 @@ resources:
             Image: 843314631316.dkr.ecr.eu-west-2.amazonaws.com/cloud-computing:latest
             Essential: true
             DisableNetworking: false
-
-
-#  defaultStage: dev
-#  currentRegion: eu-west-2 
-#  ecsTaskName: ReceiptsCrawler
-#  ecsTaskVpcSubnet1: 10.0.0.0/24
-#  clusterName: clusterReceipts
-#  execRoleArn: { "Fn::Join" : ["", [ "arn:aws:iam::", { "Ref" : "AWS::AccountId" }, ":role/ecsTaskExecutionRole" ] ] }
-#  fargate:
-#    - clusterName: clusterSpending
-#      vpc:
-#        cidr: 10.0.0.0/16
-#        subnets:
-#        - 10.0.0.0/24
-#      services:
-#        - name: spendingCrawler
-#          cpu: 512
-#          memory: 1024
-#          imageTag: 1.0.0
-#          imageRepository: 843314631316.dkr.ecr.eu-west-2.amazonaws.com/cloud-computing:latest
-#          entryPoint:
-#          - npm
-#          - run
-#          - start
-#          environment:
-#            PRODUCTION: true
-#            ECS_ENABLE_CONTAINER_METADATA: true

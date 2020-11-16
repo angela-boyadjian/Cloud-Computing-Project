@@ -1,17 +1,25 @@
 'use strict';
 
-const ECS_TASK_DEFINITION = "spendingCrawler";
+var AWS = require('aws-sdk');
+var ECS = new AWS.ECS();
+
+const ECS_TASK_DEFINITION = "ReceiptsReportingFamily";
 const pdf_file = "test.pdf";
 const OUTPUT_S3_PATH = "test.pdf";
 const OUTPUT_S3_AWS_REGION = "eu-west-2";
 
-const ecsApi = require('./ecs');
-
-
-module.exports.crawldb = (event, context, callback) => {
+module.exports.crawldb = async (event, context, callback) => {
   const params = {
-    cluster: "clusterSpending",
+    cluster: "clusterReceipts",
     launchType: 'FARGATE',
+    networkConfiguration: {
+      awsvpcConfiguration: {
+        subnets: [
+          'subnet-09a8a260e5bf1296a'
+        ],
+        assignPublicIp: 'DISABLED',
+      }
+    },
     taskDefinition: `${ECS_TASK_DEFINITION}`,
     count: 1,
     platformVersion:'LATEST',
@@ -37,25 +45,17 @@ module.exports.crawldb = (event, context, callback) => {
       ]
     }
   };
-
-  ecsApi.runECSTask(params).then(param, data=> {
-    console.log(param, data);
-    return {
-      statusCode: 200,
-      body: JSON.stringify(
-        {
-          message: `ECS Task ${params.taskDefinition} started: ${JSON.stringify(data.tasks)}`,
-        },
-        null,
-        2
-      ),
-    };
-    return data;
-  }).catch((err) => {
-    console.error(err);
-    return err;
-  });
-
- 
-
+  await ECS.runTask(params).promise();
+  console.log('Running Fargate task')
+  return {
+    statusCode: 200,
+    body: JSON.stringify(
+      {
+        message: 'Task launched',
+        input: event,
+      },
+      null,
+      2
+    ),
+  };
 }
