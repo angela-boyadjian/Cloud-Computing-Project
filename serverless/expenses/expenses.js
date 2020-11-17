@@ -3,7 +3,7 @@
 const AWS = require('aws-sdk');
 const uuid = require('uuid');
 const qs = require('querystring')
-AWS.config.update({region: process.env.AWS_REGION}); 
+AWS.config.update({region: process.env.AWS_REGION});
 const db = new AWS.DynamoDB.DocumentClient();
 const TableName = process.env.RECEIPTS_TABLE;
 
@@ -37,7 +37,9 @@ module.exports = {
         }
     },
     post: async(event, context) => {
-        const data = qs.parse(event.body);
+        let buff = Buffer.from(event.body, "base64");
+        let eventBodyStr = buff.toString('UTF-8');
+        const data = qs.parse(eventBodyStr);
         const userId = event.requestContext.authorizer.claims.sub;
 
         if (data.store === undefined || data.amount === undefined || data.category === undefined) {

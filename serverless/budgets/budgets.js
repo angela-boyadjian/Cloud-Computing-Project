@@ -38,7 +38,9 @@ module.exports = {
         }
     },
     post: async(event, context) => {
-        const data = qs.parse(event.body);
+        let buff = Buffer.from(event.body, "base64");
+        let eventBodyStr = buff.toString('UTF-8');
+        const data = qs.parse(eventBodyStr);
         const userId = event.requestContext.authorizer.claims.sub;
         
         if (data.amount === undefined || data.category === undefined) {

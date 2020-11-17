@@ -5,8 +5,9 @@ var AWS = require('aws-sdk');
 module.exports.lex_setBudget = (event, context, callback) => {
     try {
         if (event.body !== null && event.body !== undefined) {
-
-            let check = JSON.parse(event.body);
+            let buff = Buffer.from(event.body, "base64");
+            let eventBodyStr = buff.toString('UTF-8');
+            let check = JSON.parse(eventBodyStr);
             if (check !== null && check !== undefined) {
                 AWS.config.update({region: 'eu-west-2'});
                 var lexruntime = new AWS.LexRuntime();
