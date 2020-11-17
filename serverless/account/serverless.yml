@@ -6,6 +6,7 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-2
+  memorySize: 512
   environment:
     FINANCES_TABLE: user_finances
   iamRoleStatements:

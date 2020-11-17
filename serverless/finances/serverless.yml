@@ -6,6 +6,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: dev
+  memorySize: 512
   region: eu-west-2
   apiGateway:
     restApiId: k8sjcbmqde
