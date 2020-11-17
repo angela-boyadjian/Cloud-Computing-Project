@@ -1,124 +1,147 @@
 'use strict';
 
 const AWS = require('aws-sdk');
-let mime = require('mime-types');
-const Busboy = require("busboy");
 const s3 = new AWS.S3();
-
-const getContentType = (event) => {
-  const contentType = event.headers['content-type']
-  if (!contentType) {
-      return event.headers['Content-Type'];
-  }
-  return contentType;
-};
-
-const parser = (event) =>  new Promise((resolve, reject) => {
-    const busboy = new Busboy({
-      headers: {
-          'content-type': getContentType(event)
-      }
-  });
-
-  var result = {};
-
-  busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-      file.on('data', data => {
-          result.file = data;
-      });
-
-      file.on('end', () => {
-          result.filename = filename;
-          result.contentType = mimetype;
-      });
-  });
-
-  busboy.on('field', (fieldname, value) => {
-      result[fieldname] = value;
-  });
-
-  busboy.on('error', error => reject(error));
-  busboy.on('finish', () => {
-      event.body = result;
-      resolve(event);
-  });
-
-  busboy.write(event.body, event.isBase64Encoded ? 'base64' : 'binary');
-  busboy.end();
-});
-
-const uploadFile =  (buffer, event) => new Promise((resolve, reject) => {
-  const bucketName = "userbucketupload2";
-  const userId = event.requestContext.authorizer.claims.sub;
-  const contentType = getContentType(event);
-  const ext = mime.extension(contentType);
-  const fileName =  userId + `${Date.now()}` + ext;
-  const data = {
-      Bucket: bucketName,
-      Key: fileName,
-      Body: buffer,
-      ACL: 'authenticated-read',
-  };
-    s3.putObject(data, (error) => {
-              if (!error) {
-                  resolve(fileName);
-                  return fileName;
-              } else {
-                  reject(new Error('error during put'));
-              }
-          });
-  });
+const FileType = require('file-type');
+const Jimp = require('jimp');
+const atob = require('atob');
 
 module.exports = {
-    post: async (event) => {
-        if (event.body !== null && event.body !== undefined) {
-            parser(event).then(event => {
-              uploadFile(event.body.file, event).then(fileName => {
-                var response = {
-                  "statusCode": 200,
-                  "body": fileName,
-                  "isBase64Encoded": false
-                };
-                console.log(response);
-                return(response);
-              }).catch((err) => {
-                var response_error = {
-                  "statusCode": 500,
-                  "body": JSON.stringify(err),
-                  "isBase64Encoded": false
-                };
-              console.log(response_error);
-              return(response_error);
-              })
-            });
+    post: async (event, context, callback) => {
+      //Verify body type
+      console.log(event);
+      if (event.body === undefined || event.body === null || event.body === '') {
+        return {
+          statusCode: 400,
+          error: "No data sent in body."
+        }
+      }
+      let body = event.body;
+      if (event.headers["x-source"] === "flutter") {
+        body = atob(body);
+      }
+      const allowedExt = ['png', 'jpg'];
+      let decodedImage = Buffer.from(body, 'base64');
+      console.log("BASE64SIZE: "+decodedImage.length);
+      let type;
+      try {
+        type = await FileType.fromBuffer(decodedImage);
+      } catch(err) {
+        console.log("An error occured: "+ err);
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ description: 'something went wrong', result: 'error'})
+        }
+      }
+      if (type === undefined) {
+        return {
+          statusCode: 415,
+          body: JSON.stringify({ description: 'Unsupported Media Type (PNG / JPEG / JPG files only)', result: 'error'})
+        }
+      }
+      if (allowedExt.indexOf(type.ext) < 0) {
+        return {
+          statusCode: 415,
+          body: JSON.stringify({ description: 'Unsupported Media Type (PNG / JPEG / JPG files only)', result: 'error'})
+        }
+      }
+      //Transform to JPEG if PNG
+      if (type.ext === "png") {
+        try {
+          let jimpManipulation = await Jimp.read(decodedImage);
+          decodedImage = await jimpManipulation.getBufferAsync("image/jpg");
+        } catch(err) {
+          console.log("An error occured: " + err);
+          return {
+            statusCode: 500,
+            body: JSON.stringify({ description: 'something went wrong', result: 'error'})
           }
+        }
+      }
+
+      //Upload to S3 Bucket
+      const userId = event.requestContext.authorizer.claims.sub;
+      const params = {
+        "Body": decodedImage,
+        "Bucket": "users-profile-picture",
+        "ContentEncoding": 'base64',
+        "ContentType": 'image/jpeg',
+        "Key": userId+".jpg"
+      };
+      try {
+        await s3.putObject(params).promise();
+      } catch(err) {
+        console.log(err);
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ description: 'something went wrong', result: 'error'})
+        }
+      }
+
+      // Update Cognito picture attrbute
+      const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
+        apiVersion: '2016-04-18'
+      });
+      try {
+        await cognitoidentityserviceprovider.adminUpdateUserAttributes({
+          UserAttributes: [
+            {
+              Name: 'picture',
+              Value: 'https://users-profile-picture.s3.eu-west-2.amazonaws.com/'+userId+'.jpg'
+            }
+          ],
+          UserPoolId: "eu-west-2_kT5EeqP0M",
+          Username: event.requestContext.authorizer.claims['cognito:username']
+        }).promise();
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ description: 'Profile picture uploaded',
+          result: 'ok'
+        })
+        }
+      } catch(err) {
+        console.log("An error occured: " + err);
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ description: 'something went wrong', result: 'error'})
+        }
+      }
     },
     get: async (event, res, callback) => {
+      const userId = event.requestContext.authorizer.claims.sub;
+      let params = {
+        "Bucket": "users-profile-picture",
+        "Key": userId+".jpg",
+      };
+
       try {
-        const tmp = JSON.parse(event.body);
-        var filename = tmp.filepath;
-        console.log(filename);
-        var params = {
-          Bucket: "userbucketupload2", 
-          Key: filename
-        };
-        s3.getObject(params, function(err, data) {
-          if (err)
-            return err;
-          let objectData = data.Body;
-          let response = {
-            "statusCode": 200,
-            "body": `${objectData}`,
-            "isBase64Encoded": false
-          };
-          console.log(response);
-          return(response);
-        });
-      } catch (err) {
-          callback(err, null);
+          const headCode = await s3.headObject(params).promise();
+      } catch(err) {
+        console.log("An error occured: "+ err);
+        return {
+          statusCode: 404,
+          body: JSON.stringify({ description: 'No picture', result: 'error'})
+        }
       }
-    },  
-    delete :  async (event) => {
+
+      //Get a signed URL for S3 Bucket item
+      let object = {};
+      try {
+        params["Expires"] = 60 * 15 //Seconds (15 Minutes)
+        object = await s3.getSignedUrlPromise('getObject', params);
+      } catch(err) {
+        console.log("An error occured: "+ err);
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ description: 'something went wrong', result: 'error'})
+        }
+      }
+      return {
+        statusCode: 200,
+        body: JSON.stringify({url: object})
+      };
+    },
+    delete : async (event) => {
       if (event.body !== null && event.body !== undefined) {
         const userId = event.requestContext.authorizer.claims.sub;
         let fileContent = event.isBase64Encoded ? Buffer.from(event.body, 'base64') : event.body;

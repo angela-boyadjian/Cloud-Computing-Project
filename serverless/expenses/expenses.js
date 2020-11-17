@@ -42,7 +42,7 @@ module.exports = {
         const data = qs.parse(eventBodyStr);
         const userId = event.requestContext.authorizer.claims.sub;
 
-        if (data.store === undefined || data.amount === undefined || data.category === undefined) {
+        if (data.name === undefined || data.amount === undefined || data.category === undefined) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({
@@ -65,7 +65,7 @@ module.exports = {
 
         const item = {
             id: uuid.v4(),
-            name: data.store,
+            name: data.name,
             amount: parseFloat(data.amount),
             category: data.category,
             date: new Date().getTime()

@@ -18,8 +18,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-
-  final userPool = new CognitoUserPool('eu-west-2_kT5EeqP0M', '5loolat0v6rftppvpasmg89b5a');
+  final userPool =
+      new CognitoUserPool('eu-west-2_kT5EeqP0M', '5loolat0v6rftppvpasmg89b5a');
 
   CognitoUserSession session;
   var data;
@@ -33,7 +33,8 @@ class _SignUpState extends State<SignUp> {
   TextEditingController signupEmailController = TextEditingController();
   TextEditingController signupNameController = TextEditingController();
   TextEditingController signupPasswordController = TextEditingController();
-  TextEditingController signupConfirmPasswordController = TextEditingController();
+  TextEditingController signupConfirmPasswordController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -100,13 +101,13 @@ class _SignUpState extends State<SignUp> {
                                 color: Colors.black),
                           ),
                         ),
-                      ), 
+                      ),
                       Container(
                         width: 250.0,
                         height: 1.0,
                         color: Colors.grey[400],
                       ),
-                       Padding(
+                      Padding(
                         padding: EdgeInsets.only(
                             top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                         child: TextField(
@@ -202,34 +203,39 @@ class _SignUpState extends State<SignUp> {
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                  highlightColor: Colors.transparent,
-                  splashColor: Theme.Colors.loginGradientEnd,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 42.0),
-                    child: Text(
-                      "SIGN UP",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                          fontFamily: "WorkSansBold"),
+                    highlightColor: Colors.transparent,
+                    splashColor: Theme.Colors.loginGradientEnd,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 42.0),
+                      child: Text(
+                        "SIGN UP",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                            fontFamily: "WorkSansBold"),
+                      ),
                     ),
-                  ),
-                  onPressed: () async {
-                    print('Pressed Sign up');
-                    final userAttribute = [new AttributeArg(name:'email', value: signupEmailController.text)];
-                    try {
-                      data = await userPool.signUp(signupNameController.text, signupPasswordController.text, userAttributes: userAttribute);
-                    } catch (e){
-                      print(e);
-                      return;
-                    }
-                    print('RegistratinConfirmed');
-                    Provider.of<UserData>(context, listen: false).setUsername(signupNameController.text);
-                    Provider.of<RouteManager>(context, listen: false)
-                    .showConfirmingUser(context);
-                  }
-                ),
+                    onPressed: () async {
+                      print('Pressed Sign up');
+                      final userAttribute = [
+                        new AttributeArg(
+                            name: 'email', value: signupEmailController.text)
+                      ];
+                      try {
+                        data = await userPool.signUp(signupNameController.text,
+                            signupPasswordController.text,
+                            userAttributes: userAttribute);
+                      } catch (e) {
+                        print(e);
+                        return;
+                      }
+                      print('RegistratinConfirmed');
+                      Provider.of<UserData>(context, listen: false)
+                          .setUsername(signupNameController.text);
+                      Provider.of<RouteManager>(context, listen: false)
+                          .showConfirmingUser(context);
+                    }),
               ),
             ],
           ),

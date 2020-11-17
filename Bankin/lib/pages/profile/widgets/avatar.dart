@@ -4,11 +4,22 @@ import 'package:flutter/material.dart';
 
 class Avatar extends StatelessWidget {
   final File image;
+  final String url;
 
-  const Avatar(this.image);
+  const Avatar(this.image, this.url);
 
   @override
   Widget build(BuildContext context) {
+    if (url != '' || url != null) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: CircleAvatar(
+          radius: 80.0,
+          backgroundImage: NetworkImage(url),
+          backgroundColor: Colors.transparent,
+        ),
+      );
+    }
     return CircleAvatar(
       radius: 80,
       backgroundColor: Colors.grey,
@@ -31,23 +42,5 @@ class Avatar extends StatelessWidget {
               ),
             ),
     );
-    // return avatar != ''
-    //     ? Padding(
-    //         padding: const EdgeInsets.only(top: 20.0),
-    //         child: CircleAvatar(
-    //           radius: 60.0,
-    //           backgroundColor: Colors.grey,
-    //           backgroundImage:
-    //               CachedNetworkImageProvider(avatar),
-    //         ),
-    //       )
-    //     : Padding(
-    //         padding: const EdgeInsets.only(top: 20.0),
-    //         child: CircleAvatar(
-    //           radius: 60.0,
-    //           backgroundImage: NetworkImage('https://via.placeholder.com/150'),
-    //           backgroundColor: Colors.transparent,
-    //         ),
-    //       );
   }
 }

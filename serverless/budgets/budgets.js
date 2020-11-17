@@ -63,23 +63,24 @@ module.exports = {
                 })
             }
         }
-
-        const item = {
-            id: uuid.v4(),
-            amount: parseFloat(data.amount),
-            category: data.category,
+        const categories = ['family', 'vacation', 'saving'];
+        if (categories.indexOf(data.category) === -1) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({
+                    error: "Missing parameters."
+                })
+            }
         }
+
         const params = {
             TableName,
             Key:{
                 "userId": userId,
             },
-            UpdateExpression: "set #attrName = list_append(#attrName, :i)",
-            ExpressionAttributeNames : {
-                "#attrName" : "budgets"
-            },
+            UpdateExpression: "set budgets[" + categories.indexOf(data.category) + "].amount = :i",
             ExpressionAttributeValues:{
-                ":i": [item]
+                ":i": parseFloat(data.amount)
             },
             ReturnValues:"UPDATED_NEW"
         };

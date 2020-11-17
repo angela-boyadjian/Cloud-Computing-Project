@@ -144,10 +144,10 @@ class _ImageCaptureState extends State<ImageCapture> {
               child: animatedButton(context, clear, icon: Icon(Icons.refresh))),
           Flexible(
             child: AnimatedOpacity(
-                opacity: imageFile != null ? 1.0 : 0.0,
-                duration: Duration(milliseconds: 500),
-                child: SizedBox(), // TODO Upload image
-                ),
+              opacity: imageFile != null ? 1.0 : 0.0,
+              duration: Duration(milliseconds: 500),
+              child: SizedBox(), // TODO Upload image
+            ),
           )
         ]));
   }
