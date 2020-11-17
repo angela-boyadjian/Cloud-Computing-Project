@@ -2,18 +2,21 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
 import 'package:Bankin/models/user.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'widgets/avatar.dart';
 
 class ProfileEdit extends StatefulWidget {
-  final User user;
   final Map<String, String> attributes;
 
-  ProfileEdit(this.user, this.attributes);
+  ProfileEdit(this.attributes);
 
   @override
   _ProfileEditState createState() => _ProfileEditState();
@@ -23,38 +26,57 @@ class _ProfileEditState extends State<ProfileEdit> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   File _image;
+  final http.Client _client = http.Client();
+  Map<String, String> _headers;
 
   @override
   void initState() {
     super.initState();
-    if (widget.attributes['picture'] != '') _image = File(widget.attributes['picture']);
-    _nameController.text = widget.attributes['name'];
-    _emailController.text = widget.attributes['email'];
+    setState(() {
+      _nameController.text = widget.attributes['name'];
+      _emailController.text = widget.attributes['email'];
+    });
   }
 
   @override
   void dispose() {
+    _client.close();
     _nameController.dispose();
     _emailController.dispose();
     super.dispose();
   }
 
+  Future<void> postPicture(String picture) async {
+    var user = Provider.of<User>(context, listen: false);
+    _headers = {
+      'Content-Type': 'image/jpeg',
+      'Content-Length': picture.length.toString(),
+      'Authorization': user.token,
+      'x-source': 'flutter'
+    };
+    var response = await _client.post(
+      DotEnv().env['URL_PICTURE'],
+      headers: _headers,
+      body: picture,
+    );
+    if (response.statusCode != 200) {
+      print(response.body);
+    }
+  }
+
   Future<void> _save() async {
+    var user = Provider.of<User>(context, listen: false);
+
     final List<CognitoUserAttribute> attributes = [];
     attributes
         .add(CognitoUserAttribute(name: 'name', value: _nameController.text));
-    attributes
-        .add(CognitoUserAttribute(name: 'email', value: _emailController.text));
     if (_image != null) {
       List<int> imageBytes = _image.readAsBytesSync();
       String base64Image = base64.encode(imageBytes);
-      // ignore: todo
-      // TODO Upload in S3 and store URL in Cognito
-      attributes.add(CognitoUserAttribute(name: 'picture', value: base64Image));
-      print('IMG SIZE: ' + base64Image.length.toString());
+      await postPicture(base64Image);
     }
     try {
-      await widget.user.cognitoUser.updateAttributes(attributes);
+      await user.cognitoUser.updateAttributes(attributes);
     } catch (e) {
       print(e);
     }
@@ -131,6 +153,7 @@ class _ProfileEditState extends State<ProfileEdit> {
   }
 
   Widget buildTextFields() {
+    print(_nameController);
     return Column(
       children: <Widget>[
         Padding(
@@ -169,7 +192,7 @@ class _ProfileEditState extends State<ProfileEdit> {
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: GestureDetector(
-                child: Avatar(_image),
+                child: Avatar(_image, widget.attributes['picture']),
                 onTap: () => _showPicker(context),
               ),
             ),
@@ -178,7 +201,7 @@ class _ProfileEditState extends State<ProfileEdit> {
               minWidth: double.infinity,
               height: 50.0,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(50.0),
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),

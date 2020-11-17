@@ -15,8 +15,7 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login>
-    with SingleTickerProviderStateMixin {
+class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   PageController _pageController;
@@ -95,7 +94,7 @@ class _LoginState extends State<Login>
     );
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,

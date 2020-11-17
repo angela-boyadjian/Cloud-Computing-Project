@@ -6,9 +6,12 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-2
+  tracing:
+    apiGateway: true
+    lambda: true
   apiGateway:
-    restApiId: ajexrc4gb4
-    restApiRootResourceId: qkfc6i9nvg
+    restApiId: k8sjcbmqde
+    restApiRootResourceId: 3et3hse7ki
   environment:
     RECEIPTS_TABLE: user_finances
   iamRoleStatements:

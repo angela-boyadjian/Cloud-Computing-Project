@@ -1,24 +1,24 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
 import 'package:Bankin/models/user.dart';
 import 'package:Bankin/utils/route_manager.dart';
 
-import 'widgets/avatar.dart';
-
 class Profile extends StatefulWidget {
-  final User user;
-
-  Profile(this.user);
+  Profile();
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  final http.Client _client = http.Client();
+  Map<String, String> _headers;
   Map<String, String> _attributes = {
     'name': '',
     'email': '',
@@ -28,34 +28,78 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+    var user = Provider.of<User>(context, listen: false);
+    _headers = {
+      'Authorization': user.token,
+    };
     getAttributes();
+    getPicture();
   }
 
-  Future<void> getAttributes() async {
-    List<CognitoUserAttribute> attributes;
+  @override
+  void dispose() {
+    _client.close();
+    super.dispose();
+  }
+
+  Future<void> getPicture() async {
     Map<String, String> tmp = _attributes;
+
     try {
-      attributes = await widget.user.cognitoUser.getUserAttributes();
-      attributes.forEach((attribute) {
-        if (tmp.containsKey(attribute.getName())) {
-          tmp[attribute.getName()] = attribute.getValue();
-        }
+      final response =
+          await _client.get(DotEnv().env['URL_PICTURE'], headers: _headers);
+      final jsonResponse = json.decode(response.body);
+      tmp['picture'] = jsonResponse['url'];
+      setState(() {
+        _attributes = tmp;
       });
     } catch (e) {
       print(e);
     }
-    setState(() {
-      _attributes = tmp;
-    });
+  }
+
+  Future<void> getAttributes() async {
+    var user = Provider.of<User>(context, listen: false);
+
+    List<CognitoUserAttribute> attributes;
+    Map<String, String> tmp = _attributes;
+    try {
+      attributes = await user.cognitoUser.getUserAttributes();
+      attributes.forEach((attribute) {
+        if (attribute.getName() != 'picture' &&
+            tmp.containsKey(attribute.getName())) {
+          tmp[attribute.getName()] = attribute.getValue();
+        }
+      });
+      setState(() {
+        _attributes = tmp;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   Widget _profileInfos() {
     return ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Avatar(_attributes['picture'] == '' ? null : File(_attributes['picture'])),
-        ),
+        _attributes['picture'] == '' || _attributes == null
+            ? Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: CircleAvatar(
+                  radius: 80.0,
+                  backgroundImage:
+                      NetworkImage("https://via.placeholder.com/150"),
+                  backgroundColor: Colors.transparent,
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: CircleAvatar(
+                  radius: 80.0,
+                  backgroundImage: NetworkImage(_attributes['picture']),
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
         Padding(
           padding: const EdgeInsets.only(top: 50.0),
           child: Center(
@@ -70,13 +114,14 @@ class _ProfileState extends State<Profile> {
           minWidth: double.infinity,
           height: 40.0,
           child: Padding(
-            padding: const EdgeInsets.only(top: 150.0, bottom: 50.0, left: 20.0, right: 20.0),
+            padding: const EdgeInsets.only(
+                top: 150.0, bottom: 50.0, left: 20.0, right: 20.0),
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0)),
               onPressed: () {
                 Provider.of<RouteManager>(context, listen: false)
-                    .showProfileEdit(context, widget.user, _attributes);
+                    .showProfileEdit(context, _attributes);
               },
               color: Colors.orange,
               textColor: Colors.white,
@@ -90,6 +135,8 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    getAttributes();
+
     return Stack(
       children: <Widget>[
         Scaffold(

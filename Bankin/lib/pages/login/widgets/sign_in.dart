@@ -1,9 +1,14 @@
-import 'package:Bankin/models/user.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:Bankin/models/user.dart';
+import 'package:Bankin/models/finances.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:Bankin/utils/route_manager.dart';
 import '../style/theme.dart' as Theme;
@@ -22,10 +27,11 @@ class _SignInState extends State<SignIn> {
       new CognitoUserPool('eu-west-2_kT5EeqP0M', '5loolat0v6rftppvpasmg89b5a');
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
-
+  final http.Client _client = http.Client();
   TextEditingController loginEmailController = TextEditingController();
   TextEditingController loginPasswordController = TextEditingController();
-
+  Map<String, String> _headers;
+  Finances _finances;
   CognitoUserSession session;
   bool _obscureTextLogin = true;
 
@@ -35,8 +41,35 @@ class _SignInState extends State<SignIn> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _client.close();
+    super.dispose();
+  }
+
+  Future<void> getFinances(token) async {
+    _headers = {
+      'Authorization': token,
+    };
+    final response =
+        await _client.get(DotEnv().env['URL_FINANCES'], headers: _headers);
+    if (response.body.isNotEmpty) {
+      final jsonResponse = json.decode(response.body);
+      setState(() {
+        _finances = Finances.fromJson(jsonResponse);
+      });
+    } else {
+      return;
+    }
+  }
+
   Future<void> _loginUser() async {
-    User user;
+    // User user;
     try {
       final cognitoUser = new CognitoUser(loginEmailController.text, userPool);
       final authDetails = new AuthenticationDetails(
@@ -51,17 +84,21 @@ class _SignInState extends State<SignIn> {
       } catch (e) {
         print(e);
       }
-      user = User(
-        cognitoUser: cognitoUser,
-        token: session.getIdToken().getJwtToken(),
+      await getFinances(session.getIdToken().getJwtToken());
+      ChangeNotifierProvider<User>(
+        create: (_) =>
+            User(cognitoUser, session.getIdToken().getJwtToken(), _finances),
       );
+      var user = Provider.of<User>(context, listen: false);
+      user.cognitoUser = cognitoUser;
+      user.token = session.getIdToken().getJwtToken();
+      user.finances = _finances;
     } on CognitoClientException catch (e) {
       print("Error: " + e.message);
     } catch (e) {
       print("Error: " + e.message);
     }
-    print(session.getAccessToken().getJwtToken());
-    Provider.of<RouteManager>(context, listen: false).showNavBar(context, user);
+    Provider.of<RouteManager>(context, listen: false).showNavBar(context);
   }
 
   Widget build(BuildContext context) {
