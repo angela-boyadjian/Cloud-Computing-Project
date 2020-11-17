@@ -1,4 +1,4 @@
-FROM amazon/lambda-build-node10.x
+FROM integritystlwizard/node-aws-sdk
 
 WORKDIR /usr/src
 

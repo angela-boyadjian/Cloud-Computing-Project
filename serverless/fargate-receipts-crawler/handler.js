@@ -1,6 +1,7 @@
 'use strict';
 
-var AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
+AWS.config.update({region: process.env.AWS_REGION}); 
 var ECS = new AWS.ECS();
 
 const ECS_TASK_DEFINITION = "ReceiptsReportingFamily";
@@ -10,7 +11,7 @@ const OUTPUT_S3_AWS_REGION = "eu-west-2";
 
 module.exports.crawldb = async (event, context, callback) => {
   const params = {
-    cluster: "clusterReceipts",
+    cluster: "cluster-receipts",
     launchType: 'FARGATE',
     networkConfiguration: {
       awsvpcConfiguration: {
@@ -26,7 +27,7 @@ module.exports.crawldb = async (event, context, callback) => {
     overrides: {
       containerOverrides: [
         {
-          name: 'spendingCrawler',
+          name: 'reicepts-crawler',
           environment: [
             {
               name: 'OUTPUT_PDF_FILE_NAME',

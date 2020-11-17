@@ -1,10 +1,5 @@
 frameworkVersion: '2'
 service: fargate-receipts-report
-Parameters:
-  VPC:
-    Type: AWS::EC2::VPC::Id
-  SubnetA:
-    Type: AWS::EC2::Subnet::Id
 provider:
   name: aws
   runtime: nodejs12.x
@@ -37,7 +32,7 @@ functions:
             name: Authorizationfargate
             arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
       - s3:
-          bucket: fargate-receipts-pdf-bucket
+          bucket: fargate-receipts-pdf
           event: s3:ObjectCreated:*
           rules:
             - suffix: .pdf
@@ -77,7 +72,7 @@ resources:
     EcsCluster:
       Type: AWS::ECS::Cluster
       Properties:
-        ClusterName: clusterReceipts
+        ClusterName: cluster-receipts
     ECSSecurityGroup:
       Type: AWS::EC2::SecurityGroup
       Properties:
@@ -110,16 +105,17 @@ resources:
     EcsService:
       Type: AWS::ECS::Service
       Properties:
-        Cluster: clusterReceipts
+        Cluster: cluster-receipts
         LaunchType: FARGATE
+        DesiredCount: 0
+        SchedulingStrategy: REPLICA
         NetworkConfiguration: 
           AwsvpcConfiguration:
             AssignPublicIp: DISABLED
             Subnets:
               - !Ref PublicSubnetOne
         ServiceName: ReceiptsReportService
-        TaskDefinition: 
-          Ref: EcsTask
+        TaskDefinition: !Ref EcsTask
     EcsTask:
       Type: AWS::ECS::TaskDefinition
       Properties: 
@@ -131,12 +127,23 @@ resources:
         Memory: 1024
         NetworkMode: awsvpc
         ContainerDefinitions:
-          -
-            Name: ReiceptsCrawler
+          - Name: reicepts-crawler
+            Essential: true
+            Cpu: 256
+            Memory: 1024
+            MemoryReservation: 512
             Command:
               - npm
               - run
               - start
-            Image: 843314631316.dkr.ecr.eu-west-2.amazonaws.com/cloud-computing:latest
-            Essential: true
+            Image: 843314631316.dkr.ecr.eu-west-2.amazonaws.com/fargate-task:latest
             DisableNetworking: false
+            PortMappings:
+              - ContainerPort: 8001
+#            LogConfiguration:
+#              LogDriver: awslogs
+#    CloudWatchLogsGroup:
+#      Type: AWS::Logs::LogGroup
+#      Properties: 
+#          LogGroupName: Fargate/ECS
+#          RetentionInDays: 365  
