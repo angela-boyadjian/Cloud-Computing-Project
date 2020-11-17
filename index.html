@@ -810,18 +810,12 @@
             -->
             <li class="nav-fixed nav-header active" data-group="_"><a href="#api-_">API Summary</a></li>
 
-                  <li class="nav-header" data-group="Finances"><a href="#api-Finances">API Methods - Finances</a></li>
-                    <li data-group="Finances" data-name="getBudgets" class="">
-                      <a href="#api-Finances-getBudgets">getBudgets</a>
+                  <li class="nav-header" data-group="Budgets"><a href="#api-Budgets">API Methods - Budgets</a></li>
+                    <li data-group="Budgets" data-name="getBudgets" class="">
+                      <a href="#api-Budgets-getBudgets">getBudgets</a>
                     </li>
-                    <li data-group="Finances" data-name="getReceipts" class="">
-                      <a href="#api-Finances-getReceipts">getReceipts</a>
-                    </li>
-                    <li data-group="Finances" data-name="postReceipts" class="">
-                      <a href="#api-Finances-postReceipts">postReceipts</a>
-                    </li>
-                    <li data-group="Finances" data-name="putBudgets" class="">
-                      <a href="#api-Finances-putBudgets">putBudgets</a>
+                    <li data-group="Budgets" data-name="putBudgets" class="">
+                      <a href="#api-Budgets-putBudgets">putBudgets</a>
                     </li>
                   <li class="nav-header" data-group="ProfilePicture"><a href="#api-ProfilePicture">API Methods - ProfilePicture</a></li>
                     <li data-group="ProfilePicture" data-name="getPPicture" class="">
@@ -829,6 +823,17 @@
                     </li>
                     <li data-group="ProfilePicture" data-name="postPPicture" class="">
                       <a href="#api-ProfilePicture-postPPicture">postPPicture</a>
+                    </li>
+                  <li class="nav-header" data-group="Receipts"><a href="#api-Receipts">API Methods - Receipts</a></li>
+                    <li data-group="Receipts" data-name="getReceipts" class="">
+                      <a href="#api-Receipts-getReceipts">getReceipts</a>
+                    </li>
+                    <li data-group="Receipts" data-name="postReceipts" class="">
+                      <a href="#api-Receipts-postReceipts">postReceipts</a>
+                    </li>
+                  <li class="nav-header" data-group="SendReceipts"><a href="#api-SendReceipts">API Methods - SendReceipts</a></li>
+                    <li data-group="SendReceipts" data-name="sendReceipts" class="">
+                      <a href="#api-SendReceipts-sendReceipts">sendReceipts</a>
                     </li>
           </ul>
         </nav>
@@ -849,10 +854,10 @@
           </div>
         </div>
         <div id="sections">
-                <section id="api-Finances">
-                  <h1>Finances</h1>
-                    <div id="api-Finances-getBudgets">
-                      <article id="api-Finances-getBudgets-0" data-group="User" data-name="getBudgets" data-version="0">
+                <section id="api-Budgets">
+                  <h1>Budgets</h1>
+                    <div id="api-Budgets-getBudgets">
+                      <article id="api-Budgets-getBudgets-0" data-group="User" data-name="getBudgets" data-version="0">
                         <div class="pull-left">
                           <h1>getBudgets</h1>
                           <p>Get budgets values</p>
@@ -868,77 +873,77 @@
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Finances-getBudgets-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Finances-getBudgets-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Finances-getBudgets-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Finances-getBudgets-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Finances-getBudgets-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Finances-getBudgets-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Finances-getBudgets-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Finances-getBudgets-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Finances-getBudgets-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Finances-getBudgets-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Finances-getBudgets-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-Budgets-getBudgets-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Budgets-getBudgets-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Budgets-getBudgets-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Budgets-getBudgets-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Budgets-getBudgets-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Budgets-getBudgets-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Budgets-getBudgets-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Budgets-getBudgets-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Budgets-getBudgets-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Budgets-getBudgets-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Budgets-getBudgets-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Finances-getBudgets-0-curl">
+                          <div class="tab-pane active" id="examples-Budgets-getBudgets-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
 "https://k8sjcbmqde.execute-api.eu-west-2.amazonaws.com/dev/budgets"</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Finances-getBudgets-0-java">
+                          <div class="tab-pane" id="examples-Budgets-getBudgets-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
-import io.swagger.client.api.FinancesApi;
+import io.swagger.client.api.BudgetsApi;
 
 import java.io.File;
 import java.util.*;
 
-public class FinancesApiExample {
+public class BudgetsApiExample {
 
     public static void main(String[] args) {
         
-        FinancesApi apiInstance = new FinancesApi();
+        BudgetsApi apiInstance = new BudgetsApi();
         String security = security_example; // String | tokenId generated during OAuth 2.0
         try {
             GetBudgets result = apiInstance.getBudgets(security);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling FinancesApi#getBudgets");
+            System.err.println("Exception when calling BudgetsApi#getBudgets");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Finances-getBudgets-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.FinancesApi;
+                          <div class="tab-pane" id="examples-Budgets-getBudgets-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.BudgetsApi;
 
-public class FinancesApiExample {
+public class BudgetsApiExample {
 
     public static void main(String[] args) {
-        FinancesApi apiInstance = new FinancesApi();
+        BudgetsApi apiInstance = new BudgetsApi();
         String security = security_example; // String | tokenId generated during OAuth 2.0
         try {
             GetBudgets result = apiInstance.getBudgets(security);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling FinancesApi#getBudgets");
+            System.err.println("Exception when calling BudgetsApi#getBudgets");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Finances-getBudgets-0-groovy">
+  <div class="tab-pane" id="examples-Budgets-getBudgets-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Finances-getBudgets-0-objc">
+                            <div class="tab-pane" id="examples-Budgets-getBudgets-0-objc">
                               <pre class="prettyprint"><code class="language-cpp">String *security = security_example; // tokenId generated during OAuth 2.0
 
-FinancesApi *apiInstance = [[FinancesApi alloc] init];
+BudgetsApi *apiInstance = [[BudgetsApi alloc] init];
 
 // Get budgets values
 [apiInstance getBudgetsWith:security
@@ -953,10 +958,10 @@ FinancesApi *apiInstance = [[FinancesApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Finances-getBudgets-0-javascript">
+                            <div class="tab-pane" id="examples-Budgets-getBudgets-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var BankinAwsApiGatewayApi = require('bankin_aws_api_gateway_api');
 
-var api = new BankinAwsApiGatewayApi.FinancesApi()
+var api = new BankinAwsApiGatewayApi.BudgetsApi()
 var security = security_example; // {{String}} tokenId generated during OAuth 2.0
 
 var callback = function(error, data, response) {
@@ -970,10 +975,10 @@ api.getBudgets(security, callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Finances-getBudgets-0-angular">
+                            <!--<div class="tab-pane" id="examples-Budgets-getBudgets-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Finances-getBudgets-0-csharp">
+                            <div class="tab-pane" id="examples-Budgets-getBudgets-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -987,7 +992,7 @@ namespace Example
         public void main()
         {
 
-            var apiInstance = new FinancesApi();
+            var apiInstance = new BudgetsApi();
             var security = security_example;  // String | tokenId generated during OAuth 2.0
 
             try
@@ -998,7 +1003,7 @@ namespace Example
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling FinancesApi.getBudgets: " + e.Message );
+                Debug.Print("Exception when calling BudgetsApi.getBudgets: " + e.Message );
             }
         }
     }
@@ -1006,28 +1011,28 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Finances-getBudgets-0-php">
+                            <div class="tab-pane" id="examples-Budgets-getBudgets-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\ApiFinancesApi();
+$api_instance = new Swagger\Client\ApiBudgetsApi();
 $security = security_example; // String | tokenId generated during OAuth 2.0
 
 try {
     $result = $api_instance->getBudgets($security);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling FinancesApi->getBudgets: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling BudgetsApi->getBudgets: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Finances-getBudgets-0-perl">
+                            <div class="tab-pane" id="examples-Budgets-getBudgets-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::FinancesApi;
+use WWW::SwaggerClient::BudgetsApi;
 
-my $api_instance = WWW::SwaggerClient::FinancesApi->new();
+my $api_instance = WWW::SwaggerClient::BudgetsApi->new();
 my $security = security_example; # String | tokenId generated during OAuth 2.0
 
 eval { 
@@ -1035,11 +1040,11 @@ eval {
     print Dumper($result);
 };
 if ($@) {
-    warn "Exception when calling FinancesApi->getBudgets: $@\n";
+    warn "Exception when calling BudgetsApi->getBudgets: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Finances-getBudgets-0-python">
+                            <div class="tab-pane" id="examples-Budgets-getBudgets-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
@@ -1047,7 +1052,7 @@ from swagger_client.rest import ApiException
 from pprint import pprint
 
 # create an instance of the API class
-api_instance = swagger_client.FinancesApi()
+api_instance = swagger_client.BudgetsApi()
 security = security_example # String | tokenId generated during OAuth 2.0
 
 try: 
@@ -1055,7 +1060,7 @@ try:
     api_response = api_instance.get_budgets(security)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling FinancesApi->getBudgets: %s\n" % e)</code></pre>
+    print("Exception when calling BudgetsApi->getBudgets: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -1155,619 +1160,8 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
-                    <div id="api-Finances-getReceipts">
-                      <article id="api-Finances-getReceipts-0" data-group="User" data-name="getReceipts" data-version="0">
-                        <div class="pull-left">
-                          <h1>getReceipts</h1>
-                          <p>Get all receipts</p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked">Get all receipts</p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/receipts</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Finances-getReceipts-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Finances-getReceipts-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Finances-getReceipts-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Finances-getReceipts-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Finances-getReceipts-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Finances-getReceipts-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Finances-getReceipts-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Finances-getReceipts-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Finances-getReceipts-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Finances-getReceipts-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Finances-getReceipts-0-python">Python</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Finances-getReceipts-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
--H "Accept: application/json"\
-"https://k8sjcbmqde.execute-api.eu-west-2.amazonaws.com/dev/receipts"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Finances-getReceipts-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.FinancesApi;
-
-import java.io.File;
-import java.util.*;
-
-public class FinancesApiExample {
-
-    public static void main(String[] args) {
-        
-        FinancesApi apiInstance = new FinancesApi();
-        String security = security_example; // String | tokenId generated during OAuth 2.0
-        try {
-            GetReceipts result = apiInstance.getReceipts(security);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling FinancesApi#getReceipts");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Finances-getReceipts-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.FinancesApi;
-
-public class FinancesApiExample {
-
-    public static void main(String[] args) {
-        FinancesApi apiInstance = new FinancesApi();
-        String security = security_example; // String | tokenId generated during OAuth 2.0
-        try {
-            GetReceipts result = apiInstance.getReceipts(security);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling FinancesApi#getReceipts");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Finances-getReceipts-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Finances-getReceipts-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">String *security = security_example; // tokenId generated during OAuth 2.0
-
-FinancesApi *apiInstance = [[FinancesApi alloc] init];
-
-// Get all receipts
-[apiInstance getReceiptsWith:security
-              completionHandler: ^(GetReceipts output, NSError* error) {
-                            if (output) {
-                                NSLog(@"%@", output);
-                            }
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Finances-getReceipts-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var BankinAwsApiGatewayApi = require('bankin_aws_api_gateway_api');
-
-var api = new BankinAwsApiGatewayApi.FinancesApi()
-var security = security_example; // {{String}} tokenId generated during OAuth 2.0
-
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-};
-api.getReceipts(security, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Finances-getReceipts-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Finances-getReceipts-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class getReceiptsExample
-    {
-        public void main()
-        {
-
-            var apiInstance = new FinancesApi();
-            var security = security_example;  // String | tokenId generated during OAuth 2.0
-
-            try
-            {
-                // Get all receipts
-                GetReceipts result = apiInstance.getReceipts(security);
-                Debug.WriteLine(result);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling FinancesApi.getReceipts: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Finances-getReceipts-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\ApiFinancesApi();
-$security = security_example; // String | tokenId generated during OAuth 2.0
-
-try {
-    $result = $api_instance->getReceipts($security);
-    print_r($result);
-} catch (Exception $e) {
-    echo 'Exception when calling FinancesApi->getReceipts: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Finances-getReceipts-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::FinancesApi;
-
-my $api_instance = WWW::SwaggerClient::FinancesApi->new();
-my $security = security_example; # String | tokenId generated during OAuth 2.0
-
-eval { 
-    my $result = $api_instance->getReceipts(security => $security);
-    print Dumper($result);
-};
-if ($@) {
-    warn "Exception when calling FinancesApi->getReceipts: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Finances-getReceipts-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.FinancesApi()
-security = security_example # String | tokenId generated during OAuth 2.0
-
-try: 
-    # Get all receipts
-    api_response = api_instance.get_receipts(security)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling FinancesApi->getReceipts: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Parameters</h2>
-
-
-                            <div class="methodsubtabletitle">Header parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                                  <tr><td style="width:150px;">security*</td>
-                                  <td>
-                                  
-                                  
-                                      <div id="d2e199_getReceipts_security">
-                                          <div class="json-schema-view">
-                                              <div class="primitive">
-                                                  <span class="type">
-                                                      String
-                                                  </span>
-                                  
-                                                      <div class="inner description">
-                                                          tokenId generated during OAuth 2.0
-                                                      </div>
-                                              </div>
-                                                  <div class="inner required">
-                                                      Required
-                                                  </div>
-                                          </div>
-                                      </div>
-                                  </td>
-                                  </tr>
-                            </table>
-
-
-
-
-                          <h2>Responses</h2>
-                            <h3> Status: 200 - Get Receipts </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-getReceipts-200-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-getReceipts-200-schema">
-                                  <div id='responses-getReceipts-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "Get Receipts",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/GetReceipts"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-getReceipts-200-schema-data').val(stringify(schema));
-                                        var result = $('#responses-getReceipts-200-schema-200');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-getReceipts-200-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                            <h3> Status: 500 - error server during push </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                            </div>
-
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-Finances-postReceipts">
-                      <article id="api-Finances-postReceipts-0" data-group="User" data-name="postReceipts" data-version="0">
-                        <div class="pull-left">
-                          <h1>postReceipts</h1>
-                          <p>Post receipt to database</p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked">Post receipt</p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/receipts</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Finances-postReceipts-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Finances-postReceipts-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Finances-postReceipts-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Finances-postReceipts-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Finances-postReceipts-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Finances-postReceipts-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Finances-postReceipts-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Finances-postReceipts-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Finances-postReceipts-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Finances-postReceipts-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Finances-postReceipts-0-python">Python</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Finances-postReceipts-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
--H "Content-Type: application/json"\
-"https://k8sjcbmqde.execute-api.eu-west-2.amazonaws.com/dev/receipts"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Finances-postReceipts-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.FinancesApi;
-
-import java.io.File;
-import java.util.*;
-
-public class FinancesApiExample {
-
-    public static void main(String[] args) {
-        
-        FinancesApi apiInstance = new FinancesApi();
-        String security = security_example; // String | tokenId generated during OAuth 2.0
-        PostReceipt body = ; // PostReceipt | 
-        try {
-            apiInstance.postReceipts(security, body);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling FinancesApi#postReceipts");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Finances-postReceipts-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.FinancesApi;
-
-public class FinancesApiExample {
-
-    public static void main(String[] args) {
-        FinancesApi apiInstance = new FinancesApi();
-        String security = security_example; // String | tokenId generated during OAuth 2.0
-        PostReceipt body = ; // PostReceipt | 
-        try {
-            apiInstance.postReceipts(security, body);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling FinancesApi#postReceipts");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Finances-postReceipts-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Finances-postReceipts-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">String *security = security_example; // tokenId generated during OAuth 2.0
-PostReceipt *body = ; //  (optional)
-
-FinancesApi *apiInstance = [[FinancesApi alloc] init];
-
-// Post receipt to database
-[apiInstance postReceiptsWith:security
-    body:body
-              completionHandler: ^(NSError* error) {
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Finances-postReceipts-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var BankinAwsApiGatewayApi = require('bankin_aws_api_gateway_api');
-
-var api = new BankinAwsApiGatewayApi.FinancesApi()
-var security = security_example; // {{String}} tokenId generated during OAuth 2.0
-var opts = { 
-  'body':  // {{PostReceipt}} 
-};
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully.');
-  }
-};
-api.postReceipts(security, opts, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Finances-postReceipts-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Finances-postReceipts-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class postReceiptsExample
-    {
-        public void main()
-        {
-
-            var apiInstance = new FinancesApi();
-            var security = security_example;  // String | tokenId generated during OAuth 2.0
-            var body = new PostReceipt(); // PostReceipt |  (optional) 
-
-            try
-            {
-                // Post receipt to database
-                apiInstance.postReceipts(security, body);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling FinancesApi.postReceipts: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Finances-postReceipts-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\ApiFinancesApi();
-$security = security_example; // String | tokenId generated during OAuth 2.0
-$body = ; // PostReceipt | 
-
-try {
-    $api_instance->postReceipts($security, $body);
-} catch (Exception $e) {
-    echo 'Exception when calling FinancesApi->postReceipts: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Finances-postReceipts-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::FinancesApi;
-
-my $api_instance = WWW::SwaggerClient::FinancesApi->new();
-my $security = security_example; # String | tokenId generated during OAuth 2.0
-my $body = WWW::SwaggerClient::Object::PostReceipt->new(); # PostReceipt | 
-
-eval { 
-    $api_instance->postReceipts(security => $security, body => $body);
-};
-if ($@) {
-    warn "Exception when calling FinancesApi->postReceipts: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Finances-postReceipts-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.FinancesApi()
-security = security_example # String | tokenId generated during OAuth 2.0
-body =  # PostReceipt |  (optional)
-
-try: 
-    # Post receipt to database
-    api_instance.post_receipts(security, body=body)
-except ApiException as e:
-    print("Exception when calling FinancesApi->postReceipts: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Parameters</h2>
-
-
-                            <div class="methodsubtabletitle">Header parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                                  <tr><td style="width:150px;">security*</td>
-                                  <td>
-                                  
-                                  
-                                      <div id="d2e199_postReceipts_security">
-                                          <div class="json-schema-view">
-                                              <div class="primitive">
-                                                  <span class="type">
-                                                      String
-                                                  </span>
-                                  
-                                                      <div class="inner description">
-                                                          tokenId generated during OAuth 2.0
-                                                      </div>
-                                              </div>
-                                                  <div class="inner required">
-                                                      Required
-                                                  </div>
-                                          </div>
-                                      </div>
-                                  </td>
-                                  </tr>
-                            </table>
-
-                            <div class="methodsubtabletitle">Body parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                                <tr><td style="width:150px;">body </td>
-                                <td>
-                                
-                                
-                                <script>
-                                $(document).ready(function() {
-                                  var schemaWrapper = {
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "$ref" : "#/components/schemas/PostReceipt"
-      }
-    }
-  }
-};
-                                  var schema = schemaWrapper.content["application/json"].schema;
-                                  if (schema.$ref != null) {
-                                    schema = defsParser.$refs.get(schema.$ref);
-                                  } else {
-                                    schemaWrapper.components = {};
-                                    schemaWrapper.components.schemas = Object.assign({}, defs);
-                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                      console.log(err);
-                                    });
-                                  }
-                                
-                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-                                  var result = $('#d2e199_postReceipts_body');
-                                  result.empty();
-                                  result.append(view.render());
-                                });
-                                </script>
-                                <div id="d2e199_postReceipts_body"></div>
-                                </td>
-                                </tr>
-                            </table>
-
-
-
-                          <h2>Responses</h2>
-                            <h3> Status: 200 - Post Receipts </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                            </div>
-
-                            <h3> Status: 500 - error server during push </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                            </div>
-
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-Finances-putBudgets">
-                      <article id="api-Finances-putBudgets-0" data-group="User" data-name="putBudgets" data-version="0">
+                    <div id="api-Budgets-putBudgets">
+                      <article id="api-Budgets-putBudgets-0" data-group="User" data-name="putBudgets" data-version="0">
                         <div class="pull-left">
                           <h1>putBudgets</h1>
                           <p>Update budgets values</p>
@@ -1783,78 +1177,78 @@ except ApiException as e:
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Finances-putBudgets-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Finances-putBudgets-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Finances-putBudgets-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Finances-putBudgets-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Finances-putBudgets-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Finances-putBudgets-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Finances-putBudgets-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Finances-putBudgets-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Finances-putBudgets-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Finances-putBudgets-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Finances-putBudgets-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-Budgets-putBudgets-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Budgets-putBudgets-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Budgets-putBudgets-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Budgets-putBudgets-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Budgets-putBudgets-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Budgets-putBudgets-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Budgets-putBudgets-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Budgets-putBudgets-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Budgets-putBudgets-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Budgets-putBudgets-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Budgets-putBudgets-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Finances-putBudgets-0-curl">
+                          <div class="tab-pane active" id="examples-Budgets-putBudgets-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Content-Type: application/json"\
 "https://k8sjcbmqde.execute-api.eu-west-2.amazonaws.com/dev/budgets"</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Finances-putBudgets-0-java">
+                          <div class="tab-pane" id="examples-Budgets-putBudgets-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
-import io.swagger.client.api.FinancesApi;
+import io.swagger.client.api.BudgetsApi;
 
 import java.io.File;
 import java.util.*;
 
-public class FinancesApiExample {
+public class BudgetsApiExample {
 
     public static void main(String[] args) {
         
-        FinancesApi apiInstance = new FinancesApi();
+        BudgetsApi apiInstance = new BudgetsApi();
         String security = security_example; // String | tokenId generated during OAuth 2.0
         PutBudgets body = ; // PutBudgets | 
         try {
             apiInstance.putBudgets(security, body);
         } catch (ApiException e) {
-            System.err.println("Exception when calling FinancesApi#putBudgets");
+            System.err.println("Exception when calling BudgetsApi#putBudgets");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Finances-putBudgets-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.FinancesApi;
+                          <div class="tab-pane" id="examples-Budgets-putBudgets-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.BudgetsApi;
 
-public class FinancesApiExample {
+public class BudgetsApiExample {
 
     public static void main(String[] args) {
-        FinancesApi apiInstance = new FinancesApi();
+        BudgetsApi apiInstance = new BudgetsApi();
         String security = security_example; // String | tokenId generated during OAuth 2.0
         PutBudgets body = ; // PutBudgets | 
         try {
             apiInstance.putBudgets(security, body);
         } catch (ApiException e) {
-            System.err.println("Exception when calling FinancesApi#putBudgets");
+            System.err.println("Exception when calling BudgetsApi#putBudgets");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Finances-putBudgets-0-groovy">
+  <div class="tab-pane" id="examples-Budgets-putBudgets-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Finances-putBudgets-0-objc">
+                            <div class="tab-pane" id="examples-Budgets-putBudgets-0-objc">
                               <pre class="prettyprint"><code class="language-cpp">String *security = security_example; // tokenId generated during OAuth 2.0
 PutBudgets *body = ; //  (optional)
 
-FinancesApi *apiInstance = [[FinancesApi alloc] init];
+BudgetsApi *apiInstance = [[BudgetsApi alloc] init];
 
 // Update budgets values
 [apiInstance putBudgetsWith:security
@@ -1867,10 +1261,10 @@ FinancesApi *apiInstance = [[FinancesApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Finances-putBudgets-0-javascript">
+                            <div class="tab-pane" id="examples-Budgets-putBudgets-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var BankinAwsApiGatewayApi = require('bankin_aws_api_gateway_api');
 
-var api = new BankinAwsApiGatewayApi.FinancesApi()
+var api = new BankinAwsApiGatewayApi.BudgetsApi()
 var security = security_example; // {{String}} tokenId generated during OAuth 2.0
 var opts = { 
   'body':  // {{PutBudgets}} 
@@ -1886,10 +1280,10 @@ api.putBudgets(security, opts, callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Finances-putBudgets-0-angular">
+                            <!--<div class="tab-pane" id="examples-Budgets-putBudgets-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Finances-putBudgets-0-csharp">
+                            <div class="tab-pane" id="examples-Budgets-putBudgets-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -1903,7 +1297,7 @@ namespace Example
         public void main()
         {
 
-            var apiInstance = new FinancesApi();
+            var apiInstance = new BudgetsApi();
             var security = security_example;  // String | tokenId generated during OAuth 2.0
             var body = new PutBudgets(); // PutBudgets |  (optional) 
 
@@ -1914,7 +1308,7 @@ namespace Example
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling FinancesApi.putBudgets: " + e.Message );
+                Debug.Print("Exception when calling BudgetsApi.putBudgets: " + e.Message );
             }
         }
     }
@@ -1922,28 +1316,28 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Finances-putBudgets-0-php">
+                            <div class="tab-pane" id="examples-Budgets-putBudgets-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\ApiFinancesApi();
+$api_instance = new Swagger\Client\ApiBudgetsApi();
 $security = security_example; // String | tokenId generated during OAuth 2.0
 $body = ; // PutBudgets | 
 
 try {
     $api_instance->putBudgets($security, $body);
 } catch (Exception $e) {
-    echo 'Exception when calling FinancesApi->putBudgets: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling BudgetsApi->putBudgets: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Finances-putBudgets-0-perl">
+                            <div class="tab-pane" id="examples-Budgets-putBudgets-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::FinancesApi;
+use WWW::SwaggerClient::BudgetsApi;
 
-my $api_instance = WWW::SwaggerClient::FinancesApi->new();
+my $api_instance = WWW::SwaggerClient::BudgetsApi->new();
 my $security = security_example; # String | tokenId generated during OAuth 2.0
 my $body = WWW::SwaggerClient::Object::PutBudgets->new(); # PutBudgets | 
 
@@ -1951,11 +1345,11 @@ eval {
     $api_instance->putBudgets(security => $security, body => $body);
 };
 if ($@) {
-    warn "Exception when calling FinancesApi->putBudgets: $@\n";
+    warn "Exception when calling BudgetsApi->putBudgets: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Finances-putBudgets-0-python">
+                            <div class="tab-pane" id="examples-Budgets-putBudgets-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
@@ -1963,7 +1357,7 @@ from swagger_client.rest import ApiException
 from pprint import pprint
 
 # create an instance of the API class
-api_instance = swagger_client.FinancesApi()
+api_instance = swagger_client.BudgetsApi()
 security = security_example # String | tokenId generated during OAuth 2.0
 body =  # PutBudgets |  (optional)
 
@@ -1971,7 +1365,7 @@ try:
     # Update budgets values
     api_instance.put_budgets(security, body=body)
 except ApiException as e:
-    print("Exception when calling FinancesApi->putBudgets: %s\n" % e)</code></pre>
+    print("Exception when calling BudgetsApi->putBudgets: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -2723,6 +2117,877 @@ except ApiException as e:
                             </div>
 
                             <h3> Status: 500 - error server during push </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
+                <section id="api-Receipts">
+                  <h1>Receipts</h1>
+                    <div id="api-Receipts-getReceipts">
+                      <article id="api-Receipts-getReceipts-0" data-group="User" data-name="getReceipts" data-version="0">
+                        <div class="pull-left">
+                          <h1>getReceipts</h1>
+                          <p>Get all receipts</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Get all receipts</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/receipts</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Receipts-getReceipts-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Receipts-getReceipts-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Receipts-getReceipts-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Receipts-getReceipts-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Receipts-getReceipts-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Receipts-getReceipts-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Receipts-getReceipts-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Receipts-getReceipts-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Receipts-getReceipts-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Receipts-getReceipts-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Receipts-getReceipts-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Receipts-getReceipts-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://k8sjcbmqde.execute-api.eu-west-2.amazonaws.com/dev/receipts"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Receipts-getReceipts-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.ReceiptsApi;
+
+import java.io.File;
+import java.util.*;
+
+public class ReceiptsApiExample {
+
+    public static void main(String[] args) {
+        
+        ReceiptsApi apiInstance = new ReceiptsApi();
+        String security = security_example; // String | tokenId generated during OAuth 2.0
+        try {
+            GetReceipts result = apiInstance.getReceipts(security);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ReceiptsApi#getReceipts");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Receipts-getReceipts-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.ReceiptsApi;
+
+public class ReceiptsApiExample {
+
+    public static void main(String[] args) {
+        ReceiptsApi apiInstance = new ReceiptsApi();
+        String security = security_example; // String | tokenId generated during OAuth 2.0
+        try {
+            GetReceipts result = apiInstance.getReceipts(security);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ReceiptsApi#getReceipts");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Receipts-getReceipts-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Receipts-getReceipts-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *security = security_example; // tokenId generated during OAuth 2.0
+
+ReceiptsApi *apiInstance = [[ReceiptsApi alloc] init];
+
+// Get all receipts
+[apiInstance getReceiptsWith:security
+              completionHandler: ^(GetReceipts output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Receipts-getReceipts-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var BankinAwsApiGatewayApi = require('bankin_aws_api_gateway_api');
+
+var api = new BankinAwsApiGatewayApi.ReceiptsApi()
+var security = security_example; // {{String}} tokenId generated during OAuth 2.0
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getReceipts(security, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Receipts-getReceipts-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Receipts-getReceipts-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class getReceiptsExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new ReceiptsApi();
+            var security = security_example;  // String | tokenId generated during OAuth 2.0
+
+            try
+            {
+                // Get all receipts
+                GetReceipts result = apiInstance.getReceipts(security);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling ReceiptsApi.getReceipts: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Receipts-getReceipts-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiReceiptsApi();
+$security = security_example; // String | tokenId generated during OAuth 2.0
+
+try {
+    $result = $api_instance->getReceipts($security);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ReceiptsApi->getReceipts: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Receipts-getReceipts-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::ReceiptsApi;
+
+my $api_instance = WWW::SwaggerClient::ReceiptsApi->new();
+my $security = security_example; # String | tokenId generated during OAuth 2.0
+
+eval { 
+    my $result = $api_instance->getReceipts(security => $security);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling ReceiptsApi->getReceipts: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Receipts-getReceipts-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.ReceiptsApi()
+security = security_example # String | tokenId generated during OAuth 2.0
+
+try: 
+    # Get all receipts
+    api_response = api_instance.get_receipts(security)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ReceiptsApi->getReceipts: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+                            <div class="methodsubtabletitle">Header parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                  <tr><td style="width:150px;">security*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_getReceipts_security">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          tokenId generated during OAuth 2.0
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Get Receipts </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-getReceipts-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-getReceipts-200-schema">
+                                  <div id='responses-getReceipts-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Get Receipts",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/GetReceipts"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-getReceipts-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-getReceipts-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-getReceipts-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 500 - error server during push </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Receipts-postReceipts">
+                      <article id="api-Receipts-postReceipts-0" data-group="User" data-name="postReceipts" data-version="0">
+                        <div class="pull-left">
+                          <h1>postReceipts</h1>
+                          <p>Post receipt to database</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Post receipt</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/receipts</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Receipts-postReceipts-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Receipts-postReceipts-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Receipts-postReceipts-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Receipts-postReceipts-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Receipts-postReceipts-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Receipts-postReceipts-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Receipts-postReceipts-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Receipts-postReceipts-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Receipts-postReceipts-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Receipts-postReceipts-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Receipts-postReceipts-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Receipts-postReceipts-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Content-Type: application/json"\
+"https://k8sjcbmqde.execute-api.eu-west-2.amazonaws.com/dev/receipts"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Receipts-postReceipts-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.ReceiptsApi;
+
+import java.io.File;
+import java.util.*;
+
+public class ReceiptsApiExample {
+
+    public static void main(String[] args) {
+        
+        ReceiptsApi apiInstance = new ReceiptsApi();
+        String security = security_example; // String | tokenId generated during OAuth 2.0
+        PostReceipt body = ; // PostReceipt | 
+        try {
+            apiInstance.postReceipts(security, body);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ReceiptsApi#postReceipts");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Receipts-postReceipts-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.ReceiptsApi;
+
+public class ReceiptsApiExample {
+
+    public static void main(String[] args) {
+        ReceiptsApi apiInstance = new ReceiptsApi();
+        String security = security_example; // String | tokenId generated during OAuth 2.0
+        PostReceipt body = ; // PostReceipt | 
+        try {
+            apiInstance.postReceipts(security, body);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ReceiptsApi#postReceipts");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Receipts-postReceipts-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Receipts-postReceipts-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *security = security_example; // tokenId generated during OAuth 2.0
+PostReceipt *body = ; //  (optional)
+
+ReceiptsApi *apiInstance = [[ReceiptsApi alloc] init];
+
+// Post receipt to database
+[apiInstance postReceiptsWith:security
+    body:body
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Receipts-postReceipts-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var BankinAwsApiGatewayApi = require('bankin_aws_api_gateway_api');
+
+var api = new BankinAwsApiGatewayApi.ReceiptsApi()
+var security = security_example; // {{String}} tokenId generated during OAuth 2.0
+var opts = { 
+  'body':  // {{PostReceipt}} 
+};
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.postReceipts(security, opts, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Receipts-postReceipts-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Receipts-postReceipts-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class postReceiptsExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new ReceiptsApi();
+            var security = security_example;  // String | tokenId generated during OAuth 2.0
+            var body = new PostReceipt(); // PostReceipt |  (optional) 
+
+            try
+            {
+                // Post receipt to database
+                apiInstance.postReceipts(security, body);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling ReceiptsApi.postReceipts: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Receipts-postReceipts-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiReceiptsApi();
+$security = security_example; // String | tokenId generated during OAuth 2.0
+$body = ; // PostReceipt | 
+
+try {
+    $api_instance->postReceipts($security, $body);
+} catch (Exception $e) {
+    echo 'Exception when calling ReceiptsApi->postReceipts: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Receipts-postReceipts-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::ReceiptsApi;
+
+my $api_instance = WWW::SwaggerClient::ReceiptsApi->new();
+my $security = security_example; # String | tokenId generated during OAuth 2.0
+my $body = WWW::SwaggerClient::Object::PostReceipt->new(); # PostReceipt | 
+
+eval { 
+    $api_instance->postReceipts(security => $security, body => $body);
+};
+if ($@) {
+    warn "Exception when calling ReceiptsApi->postReceipts: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Receipts-postReceipts-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.ReceiptsApi()
+security = security_example # String | tokenId generated during OAuth 2.0
+body =  # PostReceipt |  (optional)
+
+try: 
+    # Post receipt to database
+    api_instance.post_receipts(security, body=body)
+except ApiException as e:
+    print("Exception when calling ReceiptsApi->postReceipts: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+                            <div class="methodsubtabletitle">Header parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                  <tr><td style="width:150px;">security*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_postReceipts_security">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          tokenId generated during OAuth 2.0
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body </td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/PostReceipt"
+      }
+    }
+  }
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_postReceipts_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_postReceipts_body"></div>
+                                </td>
+                                </tr>
+                            </table>
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Post Receipts </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 500 - error server during push </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
+                <section id="api-SendReceipts">
+                  <h1>SendReceipts</h1>
+                    <div id="api-SendReceipts-sendReceipts">
+                      <article id="api-SendReceipts-sendReceipts-0" data-group="User" data-name="sendReceipts" data-version="0">
+                        <div class="pull-left">
+                          <h1>sendReceipts</h1>
+                          <p>Send an email with receipts</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Send an email with all receipts of user</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/send-receipts</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-SendReceipts-sendReceipts-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-SendReceipts-sendReceipts-0-java">Java</a></li>
+                          <li class=""><a href="#examples-SendReceipts-sendReceipts-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-SendReceipts-sendReceipts-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-SendReceipts-sendReceipts-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-SendReceipts-sendReceipts-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-SendReceipts-sendReceipts-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-SendReceipts-sendReceipts-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-SendReceipts-sendReceipts-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-SendReceipts-sendReceipts-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-SendReceipts-sendReceipts-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-SendReceipts-sendReceipts-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+"https://k8sjcbmqde.execute-api.eu-west-2.amazonaws.com/dev/send-receipts"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.SendReceiptsApi;
+
+import java.io.File;
+import java.util.*;
+
+public class SendReceiptsApiExample {
+
+    public static void main(String[] args) {
+        
+        SendReceiptsApi apiInstance = new SendReceiptsApi();
+        String security = security_example; // String | tokenId generated during OAuth 2.0
+        try {
+            apiInstance.sendReceipts(security);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling SendReceiptsApi#sendReceipts");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.SendReceiptsApi;
+
+public class SendReceiptsApiExample {
+
+    public static void main(String[] args) {
+        SendReceiptsApi apiInstance = new SendReceiptsApi();
+        String security = security_example; // String | tokenId generated during OAuth 2.0
+        try {
+            apiInstance.sendReceipts(security);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling SendReceiptsApi#sendReceipts");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *security = security_example; // tokenId generated during OAuth 2.0
+
+SendReceiptsApi *apiInstance = [[SendReceiptsApi alloc] init];
+
+// Send an email with receipts
+[apiInstance sendReceiptsWith:security
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var BankinAwsApiGatewayApi = require('bankin_aws_api_gateway_api');
+
+var api = new BankinAwsApiGatewayApi.SendReceiptsApi()
+var security = security_example; // {{String}} tokenId generated during OAuth 2.0
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.sendReceipts(security, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class sendReceiptsExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new SendReceiptsApi();
+            var security = security_example;  // String | tokenId generated during OAuth 2.0
+
+            try
+            {
+                // Send an email with receipts
+                apiInstance.sendReceipts(security);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling SendReceiptsApi.sendReceipts: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiSendReceiptsApi();
+$security = security_example; // String | tokenId generated during OAuth 2.0
+
+try {
+    $api_instance->sendReceipts($security);
+} catch (Exception $e) {
+    echo 'Exception when calling SendReceiptsApi->sendReceipts: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::SendReceiptsApi;
+
+my $api_instance = WWW::SwaggerClient::SendReceiptsApi->new();
+my $security = security_example; # String | tokenId generated during OAuth 2.0
+
+eval { 
+    $api_instance->sendReceipts(security => $security);
+};
+if ($@) {
+    warn "Exception when calling SendReceiptsApi->sendReceipts: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-SendReceipts-sendReceipts-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.SendReceiptsApi()
+security = security_example # String | tokenId generated during OAuth 2.0
+
+try: 
+    # Send an email with receipts
+    api_instance.send_receipts(security)
+except ApiException as e:
+    print("Exception when calling SendReceiptsApi->sendReceipts: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+                            <div class="methodsubtabletitle">Header parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                  <tr><td style="width:150px;">security*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_sendReceipts_security">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          tokenId generated during OAuth 2.0
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Receipts sent </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 500 - Error server </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
