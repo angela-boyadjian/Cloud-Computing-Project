@@ -1,0 +1,11 @@
+{
+  "name": "fargate-receipts-report",
+  "description": "",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "serverless-import-apigateway": "^1.1.1",
+    "serverless-pseudo-parameters": "^2.5.0",
+    "serverless-vpc-plugin": "^1.0.1"
+  }
+}

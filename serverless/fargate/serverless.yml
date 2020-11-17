@@ -2,7 +2,7 @@ service: my-pdf
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: nodejs12.x
   logRetentionInDays: 1
   region: eu-west-2
 
@@ -52,18 +52,8 @@ provider:
         - !GetAtt FargateTaskRole.Arn
 
 functions:
-  fargateScrape:
-    handler: launch_fargate.launch_fargate
-
-# We include files by whitelisting to reduce the deployment time.
-# Just remember to add any files you create!
-package:
-  include:
-    - launch_fargate.py
-    - pdf-gen/**
-    - scrapy.cfg
-  exclude:
-    - "./**"
+  launchGenerationPDF:
+    handler: handler.launch
 
 resources:
   - AWSTemplateFormatVersion: "2010-09-09"
