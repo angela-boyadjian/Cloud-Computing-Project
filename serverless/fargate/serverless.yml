@@ -1,39 +1,33 @@
-service: my-pdf
+service: my-fargate-pdf
 
 provider:
   name: aws
   runtime: nodejs12.x
   logRetentionInDays: 1
+  stage: dev
   region: eu-west-2
+  apiGateway:
+    restApiId: k8sjcbmqde
+    restApiRootResourceId: 3et3hse7ki
 
   environment:
-    FEED_BUCKET_NAME: !Ref ScraperFeedBucket
-    HTTP_CACHE_BUCKET_NAME: !Ref HttpCacheBucket
+    PDF_BUCKET: "fargate-receipts-pdf-bucket"
     CONTAINER_NAME: "pdf_generator_container"
     ECS_CLUSTER: !GetAtt FargateECSCluster.Arn
     ECS_TASK_ARN: !Ref FargateECSTaskDefinition
     ECS_SUBNET: !Ref FargateSubnet
     ECS_SEC_GROUP: !Ref FargateSG
+    RECEIPTS_TABLE: "user_finances"
 
   iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "s3:PutObject"
-      Resource: !Sub
-        - "arn:aws:s3:::#{BucketName}/*"
-        - BucketName: !Ref ScraperFeedBucket
     - Effect: "Allow"
       Action:
         - "s3:GetObject"
         - "s3:PutObject"
         - "s3:ListBucket"
-      Resource:
-        - !Sub
+      Resource: !Sub
           - "arn:aws:s3:::#{BucketName}/*"
-          - BucketName: !Ref HttpCacheBucket
-        - !Sub
-          - "arn:aws:s3:::#{BucketName}"
-          - BucketName: !Ref HttpCacheBucket
+          - BucketName: "fargate-receipts-pdf-bucket"
 
     - Effect: Allow
       Action:
@@ -50,16 +44,38 @@ provider:
         - iam:PassRole
       Resource:
         - !GetAtt FargateTaskRole.Arn
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+      Resource:
+        - "arn:aws:dynamodb:eu-west-2:843314631316:table/user_finances"
 
 functions:
   launchGenerationPDF:
     handler: handler.launch
+    events:
+      - http:
+          path: /send-receipts
+          method: get
+          authorizer:
+            name: AuthorizationPdf
+            arn: arn:aws:cognito-idp:eu-west-2:843314631316:userpool/eu-west-2_kT5EeqP0M
+      - s3:
+          bucket: fargate-receipts-pdf-bucket
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .pdf
+
 
 resources:
   - AWSTemplateFormatVersion: "2010-09-09"
     Transform: "AWS::Serverless-2016-10-31"
-  - ${file(./s3-template.yml)}
   - ${file(./fargate-template.yml)}
 
 plugins:
   - serverless-cloudformation-sub-variables
+  - serverless-import-apigateway
+
+custom:
+  importApiGateway:
+    name: ${self:provider.stage}-user-home

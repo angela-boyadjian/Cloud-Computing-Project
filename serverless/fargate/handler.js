@@ -3,8 +3,34 @@
 const AWS = require('aws-sdk');
 AWS.config.update({region: process.env.AWS_REGION});
 const ECS = new AWS.ECS();
+const db = new AWS.DynamoDB.DocumentClient();
+const TableName = process.env.RECEIPTS_TABLE;
 
 module.exports.launch = async(event, context) => {
+    //DynamoDB Query
+    const userId = event.requestContext.authorizer.claims.sub;
+    const email = event.requestContext.authorizer.claims.email;
+    const params = {
+        KeyConditionExpression: "#uid = :uid",
+        ExpressionAttributeNames:{
+            "#uid": "userId"
+        },
+        ExpressionAttributeValues: {
+            ":uid": userId
+        },
+        TableName
+    }
+    let result = {};
+    try {
+        result = await db.query(params).promise();
+    } catch (error) {
+        console.log("An error occurred.", error);
+        return {
+            statusCode: 500
+        }
+    }
+
+    //Run Docker
     const ECSCluster = process.env.ECS_CLUSTER;
     const ECSSecGroup = process.env.ECS_SEC_GROUP;
     const ECSSubnet = process.env.ECS_SUBNET;
@@ -27,13 +53,17 @@ module.exports.launch = async(event, context) => {
                     ],
                     "environment": [
                         {
-                            "name": "FEED_BUCKET_NAME",
-                            "value": process.env.FEED_BUCKET_NAME
+                            "name": "PDF_BUCKET",
+                            "value": process.env.PDF_BUCKET
                         },
                         {
-                            "name": "HTTP_CACHE_BUCKET_NAME",
-                            "value": process.env.HTTP_CACHE_BUCKET_NAME
+                            "name": "USER_EMAIL",
+                            "value": email
                         },
+                        {
+                            "name": "USER_DATA",
+                            "value": JSON.stringify(result.Items[0].receipts)
+                        }
                     ]
                 }]
             },
@@ -52,5 +82,11 @@ module.exports.launch = async(event, context) => {
         console.log(data);
     } catch(err) {
         console.log("An error occured: "+err);
+        return {
+            statusCode: 500
+        }
+    }
+    return {
+        statusCode: 200
     }
 }

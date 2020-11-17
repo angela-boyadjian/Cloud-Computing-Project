@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "serverless-cloudformation-sub-variables": "^0.2.1",
+    "serverless-import-apigateway": "^1.1.1",
     "serverless-python-requirements": "^5.1.0"
   }
 }

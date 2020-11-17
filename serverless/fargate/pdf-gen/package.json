@@ -9,5 +9,12 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.793.0"
+  },
+  "dependencies": {
+    "mailcomposer": "^4.0.2",
+    "nodemailer": "^6.4.16"
+  }
 }
