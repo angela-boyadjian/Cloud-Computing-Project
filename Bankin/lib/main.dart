@@ -19,7 +19,7 @@ Future<void> main() async {
       ListenableProvider(create: (_) => new UserData()),
       ListenableProvider(create: (_) => new Storage()),
       ChangeNotifierProvider<User>(
-        create: (_) => User(null, null, null),
+        create: (_) => User(null, null, null, null),
       ),
     ], child: MyApp()),
   ));

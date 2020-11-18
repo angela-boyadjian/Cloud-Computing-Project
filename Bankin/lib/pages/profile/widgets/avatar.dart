@@ -1,16 +1,19 @@
 import 'dart:io';
 
+import 'package:Bankin/models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Avatar extends StatelessWidget {
   final File image;
-  final String url;
 
-  const Avatar(this.image, this.url);
+  const Avatar(this.image);
 
   @override
   Widget build(BuildContext context) {
-    if (url != '' || url != null) {
+    var user = Provider.of<User>(context, listen: false);
+    final String url = user.picture;
+    if (image == null) {
       return Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: CircleAvatar(

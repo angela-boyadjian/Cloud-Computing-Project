@@ -82,33 +82,37 @@ class _AccountsState extends State<Accounts> {
   Widget addDialog() {
     return AlertDialog(
       title: Text('Add expense'),
-      content: ListView(
-        shrinkWrap: true,
-        children: [
-          TextField(
-            controller: _nameController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Name',
+      content: Container(
+        height: 200,
+        width: 200,
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Name',
+              ),
             ),
-          ),
-          SizedBox(height: 10.0),
-          TextField(
-            controller: _categoryController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Category',
+            SizedBox(height: 10.0),
+            TextField(
+              controller: _categoryController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Category',
+              ),
             ),
-          ),
-          SizedBox(height: 10.0),
-          TextField(
-            controller: _amountController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Amount',
-            ),
-          )
-        ],
+            SizedBox(height: 10.0),
+            TextField(
+              controller: _amountController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Amount',
+              ),
+            )
+          ],
+        ),
       ),
       actions: [
         FlatButton(

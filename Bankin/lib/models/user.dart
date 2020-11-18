@@ -9,10 +9,12 @@ class User extends ChangeNotifier {
   CognitoUser _cognitoUser;
   String _token;
   Finances _finances;
+  String _picture;
 
-  User(this._cognitoUser, this._token, this._finances);
+  User(this._cognitoUser, this._token, this._finances, this._picture);
 
   Finances get finances => _finances;
+  String get picture => _picture;
   List<Receipts> get receipts => _finances.receipts;
   List<Budgets> get budgets => _finances.budgets;
   get cognitoUser => _cognitoUser;
@@ -21,6 +23,7 @@ class User extends ChangeNotifier {
   set cognitoUser(CognitoUser value) => _cognitoUser = value;
   set token(String value) => _token = value;
   set finances(Finances value) => _finances = value;
+  set picture(String value) => _picture = value;
 
   void setReceipts(List<Receipts> value) async {
     _finances.receipts = value;
@@ -29,6 +32,11 @@ class User extends ChangeNotifier {
 
   void setBudgets(List<Budgets> value) async {
     _finances.budgets = value;
+    notifyListeners();
+  }
+  
+  void setPicture(String value) async {
+    _picture = value;
     notifyListeners();
   }
 

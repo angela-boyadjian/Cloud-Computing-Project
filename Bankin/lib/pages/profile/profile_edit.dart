@@ -60,8 +60,11 @@ class _ProfileEditState extends State<ProfileEdit> {
       body: picture,
     );
     if (response.statusCode != 200) {
+      print(response.statusCode);
       print(response.body);
     }
+    final jsonResponse = json.decode(response.body);
+    user.setPicture(jsonResponse['url']);
   }
 
   Future<void> _save() async {
@@ -192,7 +195,7 @@ class _ProfileEditState extends State<ProfileEdit> {
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: GestureDetector(
-                child: Avatar(_image, widget.attributes['picture']),
+                child: Avatar(_image),
                 onTap: () => _showPicker(context),
               ),
             ),
