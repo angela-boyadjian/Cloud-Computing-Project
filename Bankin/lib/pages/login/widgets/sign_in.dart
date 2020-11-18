@@ -32,6 +32,7 @@ class _SignInState extends State<SignIn> {
   TextEditingController loginPasswordController = TextEditingController();
   Map<String, String> _headers;
   Finances _finances;
+  String _picture;
   CognitoUserSession session;
   bool _obscureTextLogin = true;
 
@@ -67,9 +68,21 @@ class _SignInState extends State<SignIn> {
       return;
     }
   }
+  
+  Future<void> getPicture() async {
+    try {
+      final response =
+          await _client.get(DotEnv().env['URL_PICTURE'], headers: _headers);
+      final jsonResponse = json.decode(response.body);
+      setState(() {
+        _picture = jsonResponse['url'].toString();
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<void> _loginUser() async {
-    // User user;
     try {
       final cognitoUser = new CognitoUser(loginEmailController.text, userPool);
       final authDetails = new AuthenticationDetails(
@@ -85,14 +98,16 @@ class _SignInState extends State<SignIn> {
         print(e);
       }
       await getFinances(session.getIdToken().getJwtToken());
+      await getPicture();
       ChangeNotifierProvider<User>(
         create: (_) =>
-            User(cognitoUser, session.getIdToken().getJwtToken(), _finances),
+            User(cognitoUser, session.getIdToken().getJwtToken(), _finances, _picture),
       );
       var user = Provider.of<User>(context, listen: false);
       user.cognitoUser = cognitoUser;
       user.token = session.getIdToken().getJwtToken();
       user.finances = _finances;
+      user.picture = _picture;
     } on CognitoClientException catch (e) {
       print("Error: " + e.message);
     } catch (e) {

@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -18,44 +15,26 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final http.Client _client = http.Client();
-  Map<String, String> _headers;
   Map<String, String> _attributes = {
     'name': '',
     'email': '',
-    'picture': '',
   };
+  String _picture;
 
   @override
   void initState() {
     super.initState();
     var user = Provider.of<User>(context, listen: false);
-    _headers = {
-      'Authorization': user.token,
-    };
+    setState(() {
+      _picture = user.picture;
+    });
     getAttributes();
-    getPicture();
   }
 
   @override
   void dispose() {
     _client.close();
     super.dispose();
-  }
-
-  Future<void> getPicture() async {
-    Map<String, String> tmp = _attributes;
-
-    try {
-      final response =
-          await _client.get(DotEnv().env['URL_PICTURE'], headers: _headers);
-      final jsonResponse = json.decode(response.body);
-      tmp['picture'] = jsonResponse['url'];
-      setState(() {
-        _attributes = tmp;
-      });
-    } catch (e) {
-      print(e);
-    }
   }
 
   Future<void> getAttributes() async {
@@ -82,7 +61,7 @@ class _ProfileState extends State<Profile> {
   Widget _profileInfos() {
     return ListView(
       children: [
-        _attributes['picture'] == '' || _attributes == null
+        _picture == '' || _picture == null
             ? Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: CircleAvatar(
@@ -96,7 +75,7 @@ class _ProfileState extends State<Profile> {
                 padding: const EdgeInsets.only(top: 10.0),
                 child: CircleAvatar(
                   radius: 80.0,
-                  backgroundImage: NetworkImage(_attributes['picture']),
+                  backgroundImage: NetworkImage(_picture),
                   backgroundColor: Colors.transparent,
                 ),
               ),
